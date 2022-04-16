@@ -6,5 +6,5 @@ interface ChatDataSource {
 
     suspend fun insertMessage(message: Message) : Boolean
 
-    suspend fun getAllMessages() : List<Message>
+    suspend fun getAllMessages(username: String): List<Message>
 }

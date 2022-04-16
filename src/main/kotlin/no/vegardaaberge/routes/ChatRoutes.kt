@@ -1,6 +1,7 @@
 package no.vegardaaberge.routes
 
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -9,26 +10,37 @@ import no.vegardaaberge.controllers.ChatController
 import no.vegardaaberge.data.requests.ChatMessageRequest
 
 fun Route.getAllMessages(chatController: ChatController) {
-    get("/getChatMessages") {
+    authenticate {
+        get("/getChatMessages") {
 
-        val messages = chatController.getAllMessages()
+            val username = call.principal<UserIdPrincipal>()!!.name
 
-        call.respond(HttpStatusCode.OK, messages)
+            val messages = chatController.getAllMessages(username)
+
+            call.respond(HttpStatusCode.OK, messages)
+        }
     }
 }
 
 fun Route.sendChatMessage(chatController: ChatController) {
-    post("/sendChatMessage") {
+    authenticate {
+        post("/sendChatMessage") {
 
-        val request = try {
-            call.receive<ChatMessageRequest>()
-        }catch (e: ContentTransformationException){
-            call.respond(HttpStatusCode.BadRequest, e.message.toString())
-            return@post
+            val username = call.principal<UserIdPrincipal>()!!.name
+            val request = try {
+                call.receive<ChatMessageRequest>()
+            }catch (e: ContentTransformationException){
+                call.respond(HttpStatusCode.BadRequest, e.message.toString())
+                return@post
+            }
+
+            val messageResponse = chatController.sendMessage(
+                username = username,
+                message = request.message,
+                receivers = listOf(request.receiver)
+            )
+
+            call.respond(HttpStatusCode.OK, messageResponse)
         }
-
-        val messageResponse = chatController.sendMessage(request.username, request.message)
-
-        call.respond(HttpStatusCode.OK, messageResponse)
     }
 }

@@ -2,6 +2,7 @@ package no.vegardaaberge.data.sources
 
 import no.vegardaaberge.data.model.Message
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.eq
 
 class ChatDataSourceImpl(
     private val db: CoroutineDatabase
@@ -9,9 +10,9 @@ class ChatDataSourceImpl(
 
     private val messages = db.getCollection<Message>()
 
-    override suspend fun getAllMessages(): List<Message> {
+    override suspend fun getAllMessages(username: String): List<Message> {
         return messages
-            .find()
+            .find(Message::username eq username)
             .descendingSort(Message::timestamp)
             .toList()
     }

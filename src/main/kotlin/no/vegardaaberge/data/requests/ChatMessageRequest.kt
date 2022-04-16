@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChatMessageRequest (
-    val username: String,
-    val message: String
+    val message: String,
+    val receiver: String
 )

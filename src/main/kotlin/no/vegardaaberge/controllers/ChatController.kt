@@ -1,8 +1,5 @@
 package no.vegardaaberge.controllers
 
-import io.ktor.http.cio.websocket.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import no.vegardaaberge.data.model.Message
 import no.vegardaaberge.data.responses.SimpleResponse
 import no.vegardaaberge.data.sources.ChatDataSource
@@ -10,10 +7,16 @@ import no.vegardaaberge.data.sources.ChatDataSource
 class ChatController(
     private val chatDataSource: ChatDataSource
 ) {
-    suspend fun sendMessage(username: String, message: String) : SimpleResponse {
+    suspend fun sendMessage(
+        username: String,
+        message: String,
+        receivers: List<String>
+    ) : SimpleResponse
+    {
         val messageEntity = Message(
             text = message,
             username = username,
+            receivers = receivers,
             timestamp = System.currentTimeMillis()
         )
 
@@ -25,7 +28,7 @@ class ChatController(
         )
     }
 
-    suspend fun getAllMessages(): List<Message> {
-        return chatDataSource.getAllMessages()
+    suspend fun getAllMessages(username: String): List<Message> {
+        return chatDataSource.getAllMessages(username)
     }
 }
