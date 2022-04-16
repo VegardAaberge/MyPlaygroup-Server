@@ -1,34 +1,31 @@
 package no.vegardaaberge
 
-import io.ktor.server.routing.*
+import io.ktor.routing.*
 import io.ktor.http.*
-import io.ktor.server.websocket.*
+import io.ktor.http.cio.websocket.*
 import io.ktor.websocket.*
-import java.time.Duration
-import io.ktor.server.sessions.*
-import io.ktor.server.plugins.*
-import io.ktor.serialization.kotlinx.json.*
+import java.time.*
+import io.ktor.serialization.*
+import io.ktor.features.*
 import org.slf4j.event.*
-import io.ktor.server.request.*
-import io.ktor.server.auth.*
+import io.ktor.request.*
+import io.ktor.sessions.*
+import io.ktor.auth.*
 import io.ktor.util.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
+import io.ktor.application.*
+import io.ktor.response.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 import no.vegardaaberge.plugins.*
 
 class ApplicationTest {
     @Test
-    fun testRoot() = testApplication {
-        application {
-            configureRouting()
-        }
-        client.get("/").apply {
-            assertEquals(HttpStatusCode.OK, status)
-            assertEquals("Hello World!", bodyAsText())
+    fun testRoot() {
+        withTestApplication({ configureRouting() }) {
+            handleRequest(HttpMethod.Get, "/").apply {
+                assertEquals(HttpStatusCode.OK, response.status())
+                assertEquals("Hello World!", response.content)
+            }
         }
     }
 }

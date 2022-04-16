@@ -1,8 +1,13 @@
 package no.vegardaaberge.plugins
 
-import io.ktor.server.application.*
-import io.ktor.server.plugins.defaultheaders.*
+import io.ktor.features.*
+import io.ktor.application.*
+import io.ktor.response.*
+import io.ktor.request.*
 
 fun Application.configureHTTP() {
-    install(DefaultHeaders)
+    install(DefaultHeaders) {
+        header("X-Engine", "Ktor") // will send this header with each response
+    }
+
 }

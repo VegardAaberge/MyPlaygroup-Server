@@ -1,15 +1,18 @@
 package no.vegardaaberge.plugins
 
-import io.ktor.server.sessions.*
-import io.ktor.server.auth.*
+import io.ktor.sessions.*
+import io.ktor.auth.*
 import io.ktor.util.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.server.request.*
-import io.ktor.server.routing.*
-import no.vegardaaberge.data.checkPasswordForEmail
+import io.ktor.application.*
+import io.ktor.response.*
+import io.ktor.request.*
+import io.ktor.routing.*
 
 fun Application.configureSecurity() {
-    //data class MySession(val count: Int = 0)
-    //install(Sessions)
+    /*data class MySession(val count: Int = 0)
+    install(Sessions) {
+        cookie<MySession>("MY_SESSION") {
+            cookie.extensions["SameSite"] = "lax"
+        }
+    }*/
 }
