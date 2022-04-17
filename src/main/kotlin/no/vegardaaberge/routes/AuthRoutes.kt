@@ -8,7 +8,7 @@ import io.ktor.routing.*
 import no.vegardaaberge.controllers.AuthController
 import no.vegardaaberge.data.requests.AccountRequest
 
-fun Route.registerRoute(authController: AuthController){
+fun Route.register(authController: AuthController){
     post("/register") {
         val request = try {
             call.receive<AccountRequest>()
@@ -23,7 +23,7 @@ fun Route.registerRoute(authController: AuthController){
     }
 }
 
-fun Route.loginRoute(authController: AuthController) {
+fun Route.login(authController: AuthController) {
     post("/login") {
         val request = try {
             call.receive<AccountRequest>()

@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ChatMessageRequest (
     val message: String,
-    val receiver: String
+    val receivers: List<String>
 )

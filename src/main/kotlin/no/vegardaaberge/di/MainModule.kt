@@ -26,6 +26,6 @@ val mainModule = module {
         ChatDataSourceImpl(get())
     }
     single {
-        ChatController(get())
+        ChatController(get(), get())
     }
 }

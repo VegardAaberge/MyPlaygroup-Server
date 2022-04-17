@@ -9,7 +9,7 @@ import io.ktor.routing.*
 import no.vegardaaberge.controllers.ChatController
 import no.vegardaaberge.data.requests.ChatMessageRequest
 
-fun Route.getAllMessages(chatController: ChatController) {
+fun Route.getChatMessages(chatController: ChatController) {
     authenticate {
         get("/getChatMessages") {
 
@@ -37,7 +37,7 @@ fun Route.sendChatMessage(chatController: ChatController) {
             val messageResponse = chatController.sendMessage(
                 username = username,
                 message = request.message,
-                receivers = listOf(request.receiver)
+                receivers = request.receivers
             )
 
             call.respond(HttpStatusCode.OK, messageResponse)

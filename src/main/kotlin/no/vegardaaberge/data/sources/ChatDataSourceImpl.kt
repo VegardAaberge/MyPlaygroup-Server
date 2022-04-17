@@ -1,8 +1,10 @@
 package no.vegardaaberge.data.sources
 
 import no.vegardaaberge.data.model.Message
+import org.litote.kmongo.contains
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
+import org.litote.kmongo.or
 
 class ChatDataSourceImpl(
     private val db: CoroutineDatabase
@@ -12,7 +14,7 @@ class ChatDataSourceImpl(
 
     override suspend fun getAllMessages(username: String): List<Message> {
         return messages
-            .find(Message::username eq username)
+            .find(or(Message::username eq username, Message::receivers contains username))
             .descendingSort(Message::timestamp)
             .toList()
     }
