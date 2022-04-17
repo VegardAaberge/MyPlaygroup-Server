@@ -29,10 +29,10 @@ class ChatController(
 
         if(validUsers.isNotEmpty()){
             val messageEntity = Message(
-                text = message,
-                username = username,
+                message = message,
+                owner = username,
                 receivers = validUsers,
-                timestamp = System.currentTimeMillis()
+                created = System.currentTimeMillis()
             )
 
             val isSuccessful = chatDataSource.insertMessage(messageEntity)

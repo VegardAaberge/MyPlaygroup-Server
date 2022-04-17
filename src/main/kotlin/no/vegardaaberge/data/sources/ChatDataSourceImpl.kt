@@ -14,8 +14,8 @@ class ChatDataSourceImpl(
 
     override suspend fun getAllMessages(username: String): List<Message> {
         return messages
-            .find(or(Message::username eq username, Message::receivers contains username))
-            .descendingSort(Message::timestamp)
+            .find(or(Message::owner eq username, Message::receivers contains username))
+            .descendingSort(Message::created)
             .toList()
     }
 
