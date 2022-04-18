@@ -1,14 +1,14 @@
 package no.vegardaaberge.data.model
 
-import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 
-@Serializable
-data class User (
+class Reset (
+    val userID : String,
     val username: String,
-    val password: String,
-    val email: String,
+    val code: String,
+    val request_time: Long,
+
     @BsonId
     val id: String = ObjectId().toString()
 )
