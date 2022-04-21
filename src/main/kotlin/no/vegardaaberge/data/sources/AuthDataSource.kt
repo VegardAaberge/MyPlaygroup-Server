@@ -7,6 +7,8 @@ interface AuthDataSource {
 
     suspend fun registerUser(user: User) : Boolean
 
+    suspend fun replaceUser(user: User) : Boolean
+
     suspend fun checkIfUserExist(username: String) : Boolean
 
     suspend fun checkPasswordForUser(username: String, password: String) : Boolean
@@ -14,4 +16,6 @@ interface AuthDataSource {
     suspend fun insertResetRequest(resetRequest: Reset): Boolean
 
     suspend fun verifyResetRequestCode(code: String): Boolean
+
+    suspend fun getUser(username: String): User?
 }

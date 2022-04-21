@@ -15,6 +15,7 @@ fun Application.configureRouting() {
     routing {
         login(authController)
         register(authController)
+        registerProfile(authController)
         sendEmailRequest(authController)
         checkVerificationCode(authController)
         getChatMessages(chatController)

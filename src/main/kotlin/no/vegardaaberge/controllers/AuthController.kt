@@ -2,20 +2,23 @@ package no.vegardaaberge.controllers
 
 import no.vegardaaberge.data.model.Reset
 import no.vegardaaberge.data.model.User
+import no.vegardaaberge.data.responses.LoginResponse
 import no.vegardaaberge.data.responses.SimpleResponse
 import no.vegardaaberge.data.sources.AuthDataSource
 
 class AuthController(
     private val authDataSource: AuthDataSource
 ) {
-    suspend fun tryLogin(username: String, password: String) : SimpleResponse{
+    suspend fun tryLogin(username: String, password: String) : LoginResponse{
 
         val isPasswordCorrect = authDataSource.checkPasswordForUser(username, password)
 
-        return if(isPasswordCorrect){
-            SimpleResponse(true, "You are now logged in")
+        return if(isPasswordCorrect && password == "123") {
+            LoginResponse(true, "You are now logged in", true)
+        }else if(isPasswordCorrect) {
+            LoginResponse(true, "You are now logged in")
         }else{
-            SimpleResponse(false, "The email or password is incorrect")
+            LoginResponse(false, "The email or password is incorrect")
         }
     }
 
@@ -27,7 +30,7 @@ class AuthController(
             val newUser = User(
                 username = username,
                 password = password,
-                email = email
+                email = email,
             )
             val registerSuccessful = authDataSource.registerUser(newUser)
             if(registerSuccessful){
@@ -74,5 +77,31 @@ class AuthController(
         }else{
             SimpleResponse(false, "Typed in the wrong code")
         }
+    }
+
+    suspend fun tryRegisterProfile(
+        username: String,
+        profileName: String,
+        email: String,
+        phoneNumber: String,
+        newPassword: String
+    ): SimpleResponse {
+
+        val user = authDataSource.getUser(username)
+        user?.let { user ->
+            user.profileName = profileName
+            user.email = email
+            user.phoneNumber = phoneNumber
+            user.password = newPassword
+
+            val isReplaced = authDataSource.replaceUser(user)
+            return if(isReplaced){
+                SimpleResponse(true, "Added the user data")
+            }else{
+                SimpleResponse(false, "Unknown error occurred when replacing the user")
+            }
+        }
+
+        return SimpleResponse(false, "User does not exist")
     }
 }

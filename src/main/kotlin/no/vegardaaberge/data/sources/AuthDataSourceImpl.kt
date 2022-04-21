@@ -3,6 +3,7 @@ package no.vegardaaberge.data.sources
 import no.vegardaaberge.data.model.Reset
 import no.vegardaaberge.data.model.User
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.coroutine.replaceOne
 import org.litote.kmongo.eq
 
 class AuthDataSourceImpl(
@@ -15,6 +16,12 @@ class AuthDataSourceImpl(
     override suspend fun registerUser(user: User): Boolean {
         return users
             .insertOne(user)
+            .wasAcknowledged()
+    }
+
+    override suspend fun replaceUser(user: User): Boolean {
+        return users
+            .replaceOne(user)
             .wasAcknowledged()
     }
 
@@ -47,5 +54,9 @@ class AuthDataSourceImpl(
 
         val timeElapsed = System.currentTimeMillis() - requestTime
         return timeElapsed in 1..65000
+    }
+
+    override suspend fun getUser(username: String): User? {
+        return users.findOne(User::username eq username)
     }
 }
