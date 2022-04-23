@@ -29,12 +29,11 @@ class AuthDataSourceImpl(
         return users.findOne(User::username eq username) != null
     }
 
-    override suspend fun checkPasswordForUser(username: String, password: String): Boolean {
-        val actualPassword = users
-            .findOne(User::username eq username)
-            ?.password ?: return false
-
-        return actualPassword == password
+    override suspend fun getUserFromUsernameAndPassword(username: String, password: String): User? {
+        return users.findOne(
+            User::username eq username,
+            User::password eq password
+        )
     }
 
     override suspend fun getUsernameFromEmail(email: String): User? {

@@ -11,7 +11,7 @@ interface AuthDataSource {
 
     suspend fun checkIfUserExist(username: String) : Boolean
 
-    suspend fun checkPasswordForUser(username: String, password: String) : Boolean
+    suspend fun getUserFromUsernameAndPassword(username: String, password: String) : User?
     suspend fun getUsernameFromEmail(email: String) : User?
     suspend fun insertResetRequest(resetRequest: Reset): Boolean
 

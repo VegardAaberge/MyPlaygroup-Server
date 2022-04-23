@@ -11,15 +11,18 @@ class AuthController(
 ) {
     suspend fun tryLogin(username: String, password: String) : LoginResponse{
 
-        val isPasswordCorrect = authDataSource.checkPasswordForUser(username, password)
+        val currentUser = authDataSource.getUserFromUsernameAndPassword(username, password)
 
-        return if(isPasswordCorrect && password == "123") {
-            LoginResponse(true, "You are now logged in", true)
-        }else if(isPasswordCorrect) {
-            LoginResponse(true, "You are now logged in")
-        }else{
-            LoginResponse(false, "The email or password is incorrect")
-        }
+        return currentUser?.let {user ->
+            LoginResponse(
+                successful = true,
+                message = "You are now logged in",
+                email = user.email,
+                profileName = user.profileName,
+                phoneNumber = user.phoneNumber,
+                createProfile = password == "123"
+            )
+        } ?: LoginResponse(false, "The email or password is incorrect")
     }
 
     suspend fun tryRegister(username: String, password: String, email: String) : SimpleResponse{
