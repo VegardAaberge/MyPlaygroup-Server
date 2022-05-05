@@ -1,0 +1,13 @@
+package com.myplaygroup.server;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class MyPlaygroupServerApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
