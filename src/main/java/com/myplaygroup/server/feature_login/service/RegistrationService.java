@@ -1,9 +1,9 @@
 package com.myplaygroup.server.feature_login.service;
 
 import com.myplaygroup.server.feature_login.model.AppUser;
-import com.myplaygroup.server.feature_login.model.ConfirmationToken;
+import com.myplaygroup.server.feature_login.model.AppToken;
 import com.myplaygroup.server.feature_login.repository.AppUserRepository;
-import com.myplaygroup.server.feature_login.repository.ConfirmationTokenRepository;
+import com.myplaygroup.server.feature_login.repository.AppTokenRepository;
 import com.myplaygroup.server.feature_login.request.RegistrationRequest;
 import com.myplaygroup.server.feature_login.validator.EmailValidator;
 import com.myplaygroup.server.feature_login.validator.PhoneNumberValidator;
@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,7 +23,7 @@ import static com.myplaygroup.server.feature_login.model.AppUser.UserRole.*;
 public class RegistrationService {
 
     private final AppUserRepository appUserRepository;
-    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final AppTokenRepository appTokenRepository;
 
     private final EmailValidator emailValidator;
     private final PhoneNumberValidator phoneNumberValidator;
@@ -50,18 +49,7 @@ public class RegistrationService {
         );
         appUserRepository.save(appUser);
 
-        String token = UUID.randomUUID().toString();
-
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                appUser
-        );
-
-        confirmationTokenRepository.save(confirmationToken);
-
-        return token;
+        return "Registered user: " + request.username;
     }
 
     public String updateProfile(String username,
@@ -94,7 +82,7 @@ public class RegistrationService {
             appUser.setEmail(email);
         }
 
-        return "Updated profile";
+        return "Updated profile: " + appUser.getUsername();
     }
 
     private boolean isNullOrEmpty(String newValue){

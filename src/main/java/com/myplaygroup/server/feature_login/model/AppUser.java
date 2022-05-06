@@ -33,16 +33,10 @@ public class AppUser implements UserDetails {
             strategy = GenerationType.SEQUENCE,
             generator = "app_user_sequence"
     )
-    @Column(
-            name= "id",
-            updatable = false
-    )
+    @Column(name= "id", updatable = false)
     private long id;
 
-    @Column(
-            name = "username",
-            nullable = false
-    )
+    @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "profile_name")
@@ -54,29 +48,17 @@ public class AppUser implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Column(
-            name = "password",
-            nullable = false
-    )
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(
-            name = "app_user_role",
-            nullable = false
-    )
+    @Column(name = "app_user_role", nullable = false)
     private UserRole appUserRole;
 
-    @Column(
-            name = "locked",
-            nullable = false
-    )
+    @Column(name = "locked", nullable = false)
     private Boolean locked = false;
 
-    @Column(
-            name = "enabled",
-            nullable = false
-    )
+    @Column(name = "enabled", nullable = false)
     private Boolean enabled = false;
 
     public AppUser(String username,
