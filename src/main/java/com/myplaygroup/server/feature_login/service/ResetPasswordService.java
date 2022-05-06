@@ -27,7 +27,8 @@ public class ResetPasswordService {
 
         String token = UUID.randomUUID().toString();
 
-        Double code = (Math.random() * (99999 - 11111)) + 11111;
+        Double codeFloat = (Math.random() * (99999 - 11111)) + 11111;
+        Long code = Math.round(codeFloat);
 
         AppToken appToken = new AppToken(
                 token,
@@ -59,11 +60,13 @@ public class ResetPasswordService {
             throw new IllegalStateException("token expired");
         }
 
-        if(appToken.getCode() != request.code){
+        if(!appToken.getCode().equals(request.code)){
             throw new IllegalStateException("reset code is incorrect");
         }
 
         appToken.setConfirmedAt(currentTime);
+
+        appTokenRepository.save(appToken);
 
         // TODO Reset Password form
 
