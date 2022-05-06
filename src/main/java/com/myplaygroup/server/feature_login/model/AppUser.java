@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -59,7 +60,10 @@ public class AppUser implements UserDetails {
     private Boolean locked = false;
 
     @Column(name = "enabled", nullable = false)
-    private Boolean enabled = false;
+    private Boolean enabled = true;
+
+    @Column(name = "profile_created", nullable = false)
+    private Boolean profileCreated = false;
 
     public AppUser(String username,
                    String password,

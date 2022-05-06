@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static com.myplaygroup.server.feature_login.model.AppUser.UserRole.ADMIN;
@@ -30,11 +28,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/v*/registration/").hasRole(ADMIN.name())
-                .antMatchers(HttpMethod.PUT,"/api/v*/registration/{username}").hasAnyRole(USER.name(), ADMIN.name())
-                .antMatchers("/api/v*/login/**").permitAll()
+            .csrf().disable()
+            .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/api/v*/registration/update/**").hasAnyAuthority(ADMIN.name(), USER.name())
+                .antMatchers(HttpMethod.POST,"/api/v*/registration/**").hasAuthority(ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/api/v*/login/**").permitAll()
                 .antMatchers("/api/v*/reset-password/**").permitAll()
                 .anyRequest()
                 .authenticated().and()

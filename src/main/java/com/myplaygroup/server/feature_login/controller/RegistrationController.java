@@ -1,6 +1,7 @@
 package com.myplaygroup.server.feature_login.controller;
 
 import com.myplaygroup.server.feature_login.request.RegistrationRequest;
+import com.myplaygroup.server.feature_login.request.UpdateProfileRequest;
 import com.myplaygroup.server.feature_login.service.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +20,11 @@ public class RegistrationController {
         return registrationService.register(registrationRequest);
     }
 
-    @PutMapping(path = "{username}")
+    @PostMapping(path = "update/{username}")
     public String updateProfile(
             @PathVariable("username") String username,
-            @RequestParam String profileName,
-            @RequestParam String password,
-            @RequestParam(required = false) String phoneNumber,
-            @RequestParam(required = false) String email
+            @RequestBody UpdateProfileRequest request
     ){
-        return registrationService.updateProfile(username, profileName, password, phoneNumber, email);
+        return registrationService.updateProfile(username, request);
     }
 }

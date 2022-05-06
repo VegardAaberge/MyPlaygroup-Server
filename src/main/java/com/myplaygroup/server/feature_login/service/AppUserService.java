@@ -8,8 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.myplaygroup.server.feature_login.model.AppUser.UserRole.*;
 import static com.myplaygroup.server.util.Constants.USER_NOT_FOUND_MSG;
 
 @Service
@@ -17,6 +19,7 @@ import static com.myplaygroup.server.util.Constants.USER_NOT_FOUND_MSG;
 public class AppUserService implements UserDetailsService {
 
     private final AppUserRepository appUserRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -31,12 +34,18 @@ public class AppUserService implements UserDetailsService {
             if(!isAdminPresent){
                 AppUser admin = new AppUser(
                         "admin",
-                        "123", // Need to be changed
-                        AppUser.UserRole.ADMIN
+                        bCryptPasswordEncoder.encode("123"), // Need to be changed
+                        ADMIN
                 );
                 appUserRepository.save(admin);
+
+                AppUser vegard = new AppUser(
+                        "vegard",
+                        bCryptPasswordEncoder.encode("123"), // Need to be changed
+                        USER
+                );
+                appUserRepository.save(vegard);
             }
         };
-
     }
 }

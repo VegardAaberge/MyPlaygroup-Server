@@ -21,23 +21,23 @@ public class LoginService {
     private final AppUserRepository appUserRepository;
     private final AppTokenRepository appTokenRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AppUserService appUserService;
 
     public String authenticate(LoginRequest loginRequest) {
         AppUser appUser = appUserRepository.findByUsername(loginRequest.username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username was not found"));
 
-        if(appUser.isAccountNonLocked()){
+        if (!appUser.isAccountNonLocked()) {
             throw new IllegalStateException("Account is locked");
         }
 
-        if(!appUser.isEnabled()){
+        if (!appUser.isEnabled()) {
             throw new IllegalStateException("Account is not enabled");
         }
 
-       String encodedPassword = bCryptPasswordEncoder.encode(loginRequest.password);
-       if(encodedPassword != appUser.getPassword()){
-           throw new IllegalStateException("Password was incorrect");
-       }
+        if (!bCryptPasswordEncoder.matches(loginRequest.password, appUser.getPassword())) {
+            throw new IllegalStateException("Password was incorrect");
+        }
 
         return "Success";
     }

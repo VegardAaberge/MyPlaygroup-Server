@@ -5,8 +5,11 @@ import com.myplaygroup.server.feature_login.model.AppToken;
 import com.myplaygroup.server.feature_login.repository.AppUserRepository;
 import com.myplaygroup.server.feature_login.repository.AppTokenRepository;
 import com.myplaygroup.server.feature_login.request.RegistrationRequest;
+import com.myplaygroup.server.feature_login.request.UpdateProfileRequest;
 import com.myplaygroup.server.feature_login.validator.EmailValidator;
+import com.myplaygroup.server.feature_login.validator.PasswordValidator;
 import com.myplaygroup.server.feature_login.validator.PhoneNumberValidator;
+import com.myplaygroup.server.feature_login.validator.ProfileNameValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,15 +19,22 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.myplaygroup.server.feature_login.model.AppUser.UserRole.*;
+import static com.myplaygroup.server.feature_login.model.AppUser.UserRole.USER;
 
 @Service
 @AllArgsConstructor
 public class RegistrationService {
 
+    private final static String PROFILE_NAME = "Profile name";
+    private final static String PASSWORD = "Password";
+    private final static String PHONE_NUMBER = "Phone number";
+    private final static String EMAIL = "Email";
+
     private final AppUserRepository appUserRepository;
     private final AppTokenRepository appTokenRepository;
 
+    private final ProfileNameValidator profileNameValidator;
+    private final PasswordValidator passwordValidator;
     private final EmailValidator emailValidator;
     private final PhoneNumberValidator phoneNumberValidator;
 
@@ -45,44 +55,65 @@ public class RegistrationService {
         AppUser appUser = new AppUser(
                 request.username,
                 encodedPassword,
-                request.isAdmin ? ADMIN : USER
+                USER
         );
         appUserRepository.save(appUser);
 
         return "Registered user: " + request.username;
     }
 
-    public String updateProfile(String username,
-                                String profileName,
-                                String password,
-                                String phoneNumber,
-                                String email) {
+    public String updateProfile(String username, UpdateProfileRequest request) {
 
         AppUser appUser = appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
-        if(isNullOrEmpty(profileName)){
-            throw new IllegalStateException("Profile name must have a value");
+        Boolean isProfileNameValid = !isNullOrEmpty(request.profileName) && profileNameValidator.test(request.profileName);
+        Boolean isPasswordValid = !isNullOrEmpty(request.password) && passwordValidator.test(request.password);
+        Boolean isPhoneNumberValid = !isNullOrEmpty(request.phoneNumber) && phoneNumberValidator.test(request.phoneNumber);
+        Boolean isEmailValid = !isNullOrEmpty(request.profileName) && emailValidator.test(request.email);
+
+        CheckForInvalidInfo(request.profileName, isProfileNameValid, PROFILE_NAME);
+        CheckForInvalidInfo(request.password, isPasswordValid, PASSWORD);
+        CheckForInvalidInfo(request.phoneNumber, isPhoneNumberValid, PHONE_NUMBER);
+        CheckForInvalidInfo(request.email, isEmailValid, EMAIL);
+
+        CheckForRequiredFields(request.profileName, appUser.getProfileName(), PROFILE_NAME);
+        CheckForRequiredFields(request.profileName, appUser.getProfileName(), PASSWORD);
+
+        if(isProfileNameValid){
+            appUser.setProfileName(request.profileName);
         }
 
-        if(isNullOrEmpty(password)){
-            throw new IllegalStateException("password must have a value");
+        if(isPasswordValid){
+            String encodedPassword = bCryptPasswordEncoder.encode(request.password);
+            appUser.setPassword(encodedPassword);
         }
 
-        appUser.setProfileName(profileName);
-
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
-        appUser.setPassword(encodedPassword);
-
-        if(!isNullOrEmpty(phoneNumber) && phoneNumberValidator.test(phoneNumber)){
-            appUser.setPhoneNumber(phoneNumber);
+        if(isPhoneNumberValid){
+            appUser.setPhoneNumber(request.phoneNumber);
         }
 
-        if(!isNullOrEmpty(email) && emailValidator.test(email)){
-            appUser.setEmail(email);
+        if(isEmailValid){
+            appUser.setEmail(request.email);
         }
+
+        appUser.setProfileCreated(true);
+
+        appUserRepository.save(appUser);
 
         return "Updated profile: " + appUser.getUsername();
+    }
+
+    private void CheckForInvalidInfo(String info, Boolean isValid, String name){
+        if(!isNullOrEmpty(info) && !isValid){
+            throw new IllegalStateException(name + " is not valid");
+        }
+    }
+
+    private void CheckForRequiredFields(String info, String storedInfo, String name){
+        if(!isNullOrEmpty(info) && !isNullOrEmpty(storedInfo)){
+            throw new IllegalStateException(name + "  must have a value");
+        }
     }
 
     private boolean isNullOrEmpty(String newValue){
