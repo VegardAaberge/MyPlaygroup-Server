@@ -34,8 +34,9 @@ public class Message {
     @Column(name = "message", nullable = false)
     private String message;
 
-    @Column(name = "owner", nullable = false)
-    private String owner;
+    @ManyToOne
+    @JoinColumn(name = "app_user_id", nullable = false)
+    private AppUser ownerUser;
 
     @ElementCollection(targetClass=String.class)
     @Column(name = "receivers", nullable = false)
@@ -48,11 +49,11 @@ public class Message {
     private LocalDateTime read;
 
     public Message(String message,
-                   String owner,
+                   AppUser ownerUser,
                    List<String> receivers,
                    LocalDateTime created) {
         this.message = message;
-        this.owner = owner;
+        this.ownerUser = ownerUser;
         this.receivers = receivers;
         this.created = created;
     }
