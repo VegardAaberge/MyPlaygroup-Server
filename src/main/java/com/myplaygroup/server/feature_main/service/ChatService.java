@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -39,16 +41,21 @@ public class ChatService {
 
         AppUser appUser = (AppUser) appUserService.loadUserByUsername(username);
 
+        List<AppUser> appUsers = new ArrayList<AppUser>();
         try {
-            receivers.forEach(receiver -> appUserService.loadUserByUsername(receiver));
+            receivers.forEach(receiver -> {
+                appUsers.add(
+                        (AppUser) appUserService.loadUserByUsername(receiver)
+                );
+            });
         }catch(Exception e) {
-            return "Receiver " + e.getMessage();
+            return "Receiver exception cause:  " + e.getCause() + " message: " + e.getMessage();
         }
 
         Message messageEntity = new Message(
                 message,
                 appUser,
-                receivers,
+                appUsers,
                 LocalDateTime.now()
         );
 

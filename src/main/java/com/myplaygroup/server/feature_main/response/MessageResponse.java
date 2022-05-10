@@ -8,8 +8,6 @@ public interface MessageResponse {
 
      String getMessage();
 
-     List<String> getReceivers();
-
      LocalDateTime getCreated();
 
      LocalDateTime getRead();

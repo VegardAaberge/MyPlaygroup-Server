@@ -3,6 +3,8 @@ package com.myplaygroup.server.feature_login.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Check;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -11,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -19,7 +24,8 @@ import java.util.Collections;
 @Table(
         name = "app_user",
         uniqueConstraints = {
-                @UniqueConstraint(name = "username_unique", columnNames = "username")
+                @UniqueConstraint(name = "username_unique", columnNames = "username"),
+                @UniqueConstraint(name = "email_unique", columnNames = "email")
         }
 )
 public class AppUser implements UserDetails {
@@ -37,6 +43,7 @@ public class AppUser implements UserDetails {
     @Column(name= "id", updatable = false)
     private long id;
 
+    @Pattern(regexp="^[a-z\\d_]*$", message="Username must be lowercase alphanumeric with no spaces")
     @Column(name = "username", nullable = false)
     private String username;
 
@@ -46,6 +53,7 @@ public class AppUser implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Email
     @Column(name = "email")
     private String email;
 

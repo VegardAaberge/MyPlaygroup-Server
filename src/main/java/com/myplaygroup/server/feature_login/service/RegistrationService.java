@@ -111,7 +111,7 @@ public class RegistrationService {
     }
 
     private void CheckForRequiredFields(String info, String storedInfo, String name){
-        if(!isNullOrEmpty(info) && !isNullOrEmpty(storedInfo)){
+        if(isNullOrEmpty(info) && isNullOrEmpty(storedInfo)){
             throw new IllegalStateException(name + "  must have a value");
         }
     }
