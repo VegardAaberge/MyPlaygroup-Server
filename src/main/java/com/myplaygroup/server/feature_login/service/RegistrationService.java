@@ -1,11 +1,14 @@
 package com.myplaygroup.server.feature_login.service;
 
+import com.myplaygroup.server.exception.BadRequestException;
+import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.feature_login.model.AppUser;
 import com.myplaygroup.server.feature_login.model.AppToken;
 import com.myplaygroup.server.feature_login.repository.AppUserRepository;
 import com.myplaygroup.server.feature_login.repository.AppTokenRepository;
 import com.myplaygroup.server.feature_login.request.RegistrationRequest;
 import com.myplaygroup.server.feature_login.request.UpdateProfileRequest;
+import com.myplaygroup.server.feature_login.response.UpdateProfileResponse;
 import com.myplaygroup.server.feature_login.validator.EmailValidator;
 import com.myplaygroup.server.feature_login.validator.PasswordValidator;
 import com.myplaygroup.server.feature_login.validator.PhoneNumberValidator;
@@ -62,10 +65,10 @@ public class RegistrationService {
         return "Registered user: " + request.username;
     }
 
-    public String updateProfile(String username, UpdateProfileRequest request) {
+    public UpdateProfileResponse updateProfile(String username, UpdateProfileRequest request) {
 
         AppUser appUser = appUserRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+                .orElseThrow(() -> new NotFoundException("Username not found"));
 
         Boolean isProfileNameValid = !isNullOrEmpty(request.profileName) && profileNameValidator.test(request.profileName);
         Boolean isPasswordValid = !isNullOrEmpty(request.password) && passwordValidator.test(request.password);
@@ -101,7 +104,12 @@ public class RegistrationService {
 
         appUserRepository.save(appUser);
 
-        return "Updated profile: " + appUser.getUsername();
+        return new UpdateProfileResponse(
+                username,
+                appUser.getProfileName(),
+                appUser.getPhoneNumber(),
+                appUser.getEmail()
+        );
     }
 
     private void CheckForInvalidInfo(String info, Boolean isValid, String name){

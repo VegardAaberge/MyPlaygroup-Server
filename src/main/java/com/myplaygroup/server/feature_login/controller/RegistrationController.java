@@ -2,11 +2,15 @@ package com.myplaygroup.server.feature_login.controller;
 
 import com.myplaygroup.server.feature_login.request.RegistrationRequest;
 import com.myplaygroup.server.feature_login.request.UpdateProfileRequest;
+import com.myplaygroup.server.feature_login.response.UpdateProfileResponse;
 import com.myplaygroup.server.feature_login.service.RegistrationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.Registration;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/v1/registration")
@@ -21,10 +25,10 @@ public class RegistrationController {
     }
 
     @PostMapping(path = "update/{username}")
-    public String updateProfile(
+    public UpdateProfileResponse updateProfile(
             @PathVariable("username") String username,
-            @RequestBody UpdateProfileRequest request
-    ){
+            @RequestBody @Valid UpdateProfileRequest request
+    ) {
         return registrationService.updateProfile(username, request);
     }
 }

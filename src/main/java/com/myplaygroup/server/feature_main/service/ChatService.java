@@ -43,7 +43,7 @@ public class ChatService {
             receivers.forEach(receiver -> {
                 AppUser receiverUser = appUserService.loadUserByUsername(receiver);
                 if(receiverUser.getUsername() == appUser.getUsername()){
-                    throw  new IllegalStateException("Not allowed to add app user as a reciever");
+                    throw  new IllegalStateException("Not allowed to add app user as a receiver");
                 }
                 receiversUsers.add(receiverUser);
             });

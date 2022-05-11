@@ -53,7 +53,7 @@ public class AppUser implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Email
+    @Email(message = "Need to be a valid email")
     @Column(name = "email")
     private String email;
 
