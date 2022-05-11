@@ -7,6 +7,7 @@ import com.myplaygroup.server.security.IAuthenticationFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class ChatController {
     }
 
     @PostMapping
-    public String sendMessage(@RequestBody MessageRequest request){
+    public String sendMessage(@RequestBody @Valid MessageRequest request){
         String username = authenticationFacade.getUsername();
 
         return chatService.storeMessage(

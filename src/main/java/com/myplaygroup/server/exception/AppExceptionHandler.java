@@ -12,6 +12,17 @@ import java.util.Map;
 @ControllerAdvice
 public class AppExceptionHandler {
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Object> handleBadRequestException(IllegalStateException ex){
+        return new ResponseEntity<>(
+                new AppErrorResponse(
+                        HttpStatus.BAD_REQUEST,
+                        ex
+                ),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> handleBadRequestException(BadRequestException ex){
         return new ResponseEntity<>(
