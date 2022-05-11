@@ -16,28 +16,18 @@ public class AppErrorResponse {
     private final int code;
     private final String status;
     private final String message;
-    private String stackTrace;
     private Object data;
 
     public AppErrorResponse(
             HttpStatus httpStatus,
             Exception ex
     ){
-        this(httpStatus, ex.getMessage(), ex, null);
+        this(httpStatus, ex.getMessage(), null);
     }
 
     public AppErrorResponse(
             HttpStatus httpStatus,
             String message,
-            Object data
-    ){
-        this(httpStatus, message, null, data);
-    }
-
-    public AppErrorResponse(
-            HttpStatus httpStatus,
-            String message,
-            Exception ex,
             Object data
     ) {
         this.timestamp = new Date();
@@ -47,13 +37,6 @@ public class AppErrorResponse {
 
         if(data != null){
             this.data = data;
-        }
-
-        if(ex != null){
-            StringWriter stringWriter = new StringWriter();
-            PrintWriter printWriter = new PrintWriter(stringWriter);
-            ex.printStackTrace(printWriter);
-            this.stackTrace = stringWriter.toString();
         }
     }
 }

@@ -6,21 +6,25 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
+import static com.myplaygroup.server.util.Constants.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateProfileRequest {
-    @NotBlank(message = "profileName shouldn't be blank")
+    @NotBlank(message = PROFILE_NAME_VALIDATION_MSG)
     public String profileName;
 
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message = "Password must be at least 8 letters, contain one number, lowercase and one uppercase letter")
+    @NotNull(message = PASSWORD_VALIDATION_MSG)
+    @Pattern(regexp = PASSWORD_VALIDATION_REGEX, message = PASSWORD_VALIDATION_MSG)
     public String password;
 
-    @Pattern(regexp = "^\\d{11}$", message = "Phone number need to have 11 digits")
+    @Pattern(regexp = PHONE_NUMBER_VALIDATION_REGEX, message = PHONE_NUMBER_VALIDATION_MSG)
     public String phoneNumber;
 
-    @Email(message = "Not a valid email")
+    @Email(message = EMAIL_VALIDATION_MSG)
     public String email;
 }

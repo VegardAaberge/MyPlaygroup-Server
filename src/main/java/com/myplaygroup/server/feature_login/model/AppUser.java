@@ -18,6 +18,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import static com.myplaygroup.server.util.Constants.*;
+import static com.myplaygroup.server.util.Constants.PHONE_NUMBER_VALIDATION_MSG;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -44,22 +47,22 @@ public class AppUser implements UserDetails {
     @Column(name= "id", updatable = false)
     private long id;
 
-    @Pattern(regexp="^[a-z\\d_]*$", message="Username must be lowercase alphanumeric with no spaces")
+    @Pattern(regexp=USERNAME_VALIDATION_REGEX, message=USERNAME_VALIDATION_MSG)
     @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "profile_name")
     private String profileName;
 
-    @Pattern(regexp = "^\\d{11}$", message = "invalid mobile number")
+    @Pattern(regexp = PHONE_NUMBER_VALIDATION_REGEX, message = PHONE_NUMBER_VALIDATION_MSG)
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Email(message = "Need to be a valid email")
+    @Email(message = EMAIL_VALIDATION_MSG)
     @Column(name = "email")
     private String email;
 
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message = "Password must be at least 8 letters, contain one number, lowercase and one uppercase letter")
+    @Pattern(regexp = PASSWORD_VALIDATION_REGEX, message = PASSWORD_VALIDATION_MSG)
     @Column(name = "password", nullable = false)
     private String password;
 

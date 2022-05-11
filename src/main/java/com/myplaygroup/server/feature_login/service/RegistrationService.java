@@ -25,6 +25,7 @@ public class RegistrationService {
     private final static String EMAIL = "Email";
 
     private final AppUserRepository appUserRepository;
+    private final AppUserService appUserService;
     private final AppTokenRepository appTokenRepository;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -53,8 +54,7 @@ public class RegistrationService {
 
     public UpdateProfileResponse updateProfile(String username, UpdateProfileRequest request) {
 
-        AppUser appUser = appUserRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException("Username not found"));
+        AppUser appUser = appUserService.loadUserByUsername(username);
 
         String encodedPassword = bCryptPasswordEncoder.encode(request.password);
 

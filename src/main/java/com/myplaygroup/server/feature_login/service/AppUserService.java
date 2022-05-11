@@ -1,5 +1,6 @@
 package com.myplaygroup.server.feature_login.service;
 
+import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.feature_login.model.AppUser;
 import com.myplaygroup.server.feature_login.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class AppUserService implements UserDetailsService {
     @Override
     public AppUser loadUserByUsername(String username) throws UsernameNotFoundException {
         return appUserRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, username)));
+                .orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND_MSG, username)));
     }
 
     @Bean
