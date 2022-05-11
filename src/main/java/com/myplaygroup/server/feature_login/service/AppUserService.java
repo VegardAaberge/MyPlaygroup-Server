@@ -34,21 +34,21 @@ public class AppUserService implements UserDetailsService {
             if(!isAdminPresent){
                 AppUser admin = new AppUser(
                         "admin",
-                        bCryptPasswordEncoder.encode("123"), // Need to be changed
+                        bCryptPasswordEncoder.encode("a123456B"), // Need to be changed
                         ADMIN
                 );
                 appUserRepository.save(admin);
 
                 AppUser vegard = new AppUser(
                         "vegard",
-                        bCryptPasswordEncoder.encode("123"), // Need to be changed
+                        bCryptPasswordEncoder.encode("a123456B"),
                         USER
                 );
                 appUserRepository.save(vegard);
 
                 AppUser meng = new AppUser(
                         "meng",
-                        bCryptPasswordEncoder.encode("123"), // Need to be changed
+                        bCryptPasswordEncoder.encode("a123456B"),
                         USER
                 );
                 appUserRepository.save(meng);

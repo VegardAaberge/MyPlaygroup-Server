@@ -14,6 +14,7 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -50,6 +51,7 @@ public class AppUser implements UserDetails {
     @Column(name = "profile_name")
     private String profileName;
 
+    @Pattern(regexp = "^\\d{11}$", message = "invalid mobile number")
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -57,6 +59,7 @@ public class AppUser implements UserDetails {
     @Column(name = "email")
     private String email;
 
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message = "Password must be at least 8 letters, contain one number, lowercase and one uppercase letter")
     @Column(name = "password", nullable = false)
     private String password;
 
