@@ -29,6 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/v*/registration/update/**").hasAnyAuthority(ADMIN.name(), USER.name())
