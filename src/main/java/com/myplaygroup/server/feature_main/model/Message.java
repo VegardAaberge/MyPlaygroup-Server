@@ -36,7 +36,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "app_user_id", nullable = false)
-    private AppUser ownerUser;
+    private AppUser createdBy;
 
     @ManyToMany
     @Column(name = "receivers", nullable = false)
@@ -45,15 +45,12 @@ public class Message {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
-    @Column(name = "read")
-    private LocalDateTime read;
-
     public Message(String message,
-                   AppUser ownerUser,
+                   AppUser createdBy,
                    List<AppUser> receivers,
                    LocalDateTime created) {
         this.message = message;
-        this.ownerUser = ownerUser;
+        this.createdBy = createdBy;
         this.receivers = receivers;
         this.created = created;
     }

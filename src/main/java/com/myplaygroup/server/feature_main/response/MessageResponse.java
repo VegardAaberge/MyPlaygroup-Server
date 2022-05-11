@@ -10,5 +10,7 @@ public interface MessageResponse {
 
      LocalDateTime getCreated();
 
-     LocalDateTime getRead();
+     String getCreatedBy();
+
+     String getProfileName();
 }

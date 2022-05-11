@@ -23,13 +23,10 @@ public class ChatService {
     private final AppUserService appUserService;
     private final MessageRepository messageRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     public List<MessageResponse> findByUsernameAndRecipient(String username) {
-        UserDetails userDetails = appUserService.loadUserByUsername(username);
+        AppUser appUser = appUserService.loadUserByUsername(username);
 
-        List<MessageResponse> messages = messageRepository.findByOwnerAndReceiver((AppUser) userDetails)
+        List<MessageResponse> messages = messageRepository.findByOwnerAndReceiver(appUser.getId())
                 .orElseThrow(() -> new IllegalStateException("test"));
 
         return messages;
@@ -39,14 +36,16 @@ public class ChatService {
                                String message,
                                List<String> receivers) {
 
-        AppUser appUser = (AppUser) appUserService.loadUserByUsername(username);
+        AppUser appUser = appUserService.loadUserByUsername(username);
 
-        List<AppUser> appUsers = new ArrayList<AppUser>();
+        List<AppUser> receiversUsers = new ArrayList<AppUser>();
         try {
             receivers.forEach(receiver -> {
-                appUsers.add(
-                        (AppUser) appUserService.loadUserByUsername(receiver)
-                );
+                AppUser receiverUser = appUserService.loadUserByUsername(receiver);
+                if(receiverUser.getUsername() == appUser.getUsername()){
+                    throw  new IllegalStateException("Not allowed to add app user as a reciever");
+                }
+                receiversUsers.add(receiverUser);
             });
         }catch(Exception e) {
             return "Receiver exception cause:  " + e.getCause() + " message: " + e.getMessage();
@@ -55,7 +54,7 @@ public class ChatService {
         Message messageEntity = new Message(
                 message,
                 appUser,
-                appUsers,
+                receiversUsers,
                 LocalDateTime.now()
         );
 

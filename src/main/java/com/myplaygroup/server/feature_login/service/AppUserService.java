@@ -22,7 +22,7 @@ public class AppUserService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public AppUser loadUserByUsername(String username) throws UsernameNotFoundException {
         return appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, username)));
     }
@@ -45,6 +45,13 @@ public class AppUserService implements UserDetailsService {
                         USER
                 );
                 appUserRepository.save(vegard);
+
+                AppUser meng = new AppUser(
+                        "meng",
+                        bCryptPasswordEncoder.encode("123"), // Need to be changed
+                        USER
+                );
+                appUserRepository.save(meng);
             }
         };
     }
