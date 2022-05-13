@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface AuthorizationService {
 
-    UserInfo getUserInfoFromToken(HttpServletRequest request);
+    UserInfo getUserInfoFromRequest(HttpServletRequest request);
 
     void setAuthenticationToken(String token);
 

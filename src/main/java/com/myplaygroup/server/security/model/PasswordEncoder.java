@@ -1,4 +1,4 @@
-package com.myplaygroup.server.security;
+package com.myplaygroup.server.security.model;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

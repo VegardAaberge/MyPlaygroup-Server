@@ -21,14 +21,14 @@ public class ChatController {
 
     @GetMapping
     public List<MessageResponse> getChatMessages(HttpServletRequest servletRequest){
-        String username = authorizationService.getUserInfoFromToken(servletRequest).getUsername();
+        String username = authorizationService.getUserInfoFromRequest(servletRequest).getUsername();
 
         return chatService.findByUsernameAndRecipient(username);
     }
 
     @PostMapping
     public String sendMessage(@RequestBody @Valid MessageRequest request, HttpServletRequest servletRequest){
-        String username = authorizationService.getUserInfoFromToken(servletRequest).getUsername();
+        String username = authorizationService.getUserInfoFromRequest(servletRequest).getUsername();
 
         return chatService.storeMessage(
                 username,

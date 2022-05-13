@@ -31,7 +31,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     private Algorithm algorithm;
 
-    public UserInfo getUserInfoFromToken(HttpServletRequest request){
+    public UserInfo getUserInfoFromRequest(HttpServletRequest request){
 
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){

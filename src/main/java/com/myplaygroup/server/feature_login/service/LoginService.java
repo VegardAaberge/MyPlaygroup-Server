@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 @Service
 @AllArgsConstructor
 public class LoginService {
@@ -42,7 +40,7 @@ public class LoginService {
 
     public Map<String, String> refreshTokens(HttpServletRequest request) {
 
-        UserInfo userInfo = authorizationService.getUserInfoFromToken(request);
+        UserInfo userInfo = authorizationService.getUserInfoFromRequest(request);
         AppUser user = appUserService.loadUserByUsername(userInfo.getUsername());
 
         return authorizationService.getAccessTokenFromRefreshToken(
