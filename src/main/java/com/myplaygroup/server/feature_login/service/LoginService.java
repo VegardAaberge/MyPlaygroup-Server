@@ -1,31 +1,31 @@
 package com.myplaygroup.server.feature_login.service;
 
-import com.myplaygroup.server.feature_login.model.AppToken;
 import com.myplaygroup.server.feature_login.model.AppUser;
-import com.myplaygroup.server.feature_login.repository.AppTokenRepository;
 import com.myplaygroup.server.feature_login.repository.AppUserRepository;
 import com.myplaygroup.server.feature_login.request.LoginRequest;
-import com.sun.jdi.request.InvalidRequestStateException;
+import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Map;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 @AllArgsConstructor
 public class LoginService {
 
-    private final AppUserRepository appUserRepository;
-    private final AppTokenRepository appTokenRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserService appUserService;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthorizationService authorizationService;
+
     public String authenticate(LoginRequest loginRequest) {
-        AppUser appUser = appUserRepository.findByUsername(loginRequest.username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username was not found"));
+        AppUser appUser = appUserService.loadUserByUsername(loginRequest.username);
 
         if (!appUser.isAccountNonLocked()) {
             throw new IllegalStateException("Account is locked");
@@ -40,5 +40,21 @@ public class LoginService {
         }
 
         return "Success";
+    }
+
+    public Map<String, String> refreshTokens(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+
+            String refresh_token = authorizationHeader.substring("Bearer ".length());
+            String requestUrl = request.getRequestURL().toString();
+
+            String username = authorizationService.getUsernameFromToken(refresh_token);
+            AppUser user = appUserService.loadUserByUsername(username);
+
+            return authorizationService.getAccessTokenFromRefreshToken(refresh_token, requestUrl, user);
+        }else {
+            throw new IllegalStateException("Refresh token is missing");
+        }
     }
 }
