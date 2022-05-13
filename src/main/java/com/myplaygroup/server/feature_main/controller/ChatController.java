@@ -3,10 +3,11 @@ package com.myplaygroup.server.feature_main.controller;
 import com.myplaygroup.server.feature_main.requests.MessageRequest;
 import com.myplaygroup.server.feature_main.response.MessageResponse;
 import com.myplaygroup.server.feature_main.service.ChatService;
-import com.myplaygroup.server.security.IAuthenticationFacade;
+import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -16,18 +17,18 @@ import java.util.List;
 public class ChatController {
 
     private ChatService chatService;
-    private IAuthenticationFacade authenticationFacade;
+    private AuthorizationService authorizationService;
 
     @GetMapping
-    public List<MessageResponse> getChatMessages(){
-        String username = authenticationFacade.getUsername();
+    public List<MessageResponse> getChatMessages(HttpServletRequest servletRequest){
+        String username = authorizationService.getUserInfoFromToken(servletRequest).getUsername();
 
         return chatService.findByUsernameAndRecipient(username);
     }
 
     @PostMapping
-    public String sendMessage(@RequestBody @Valid MessageRequest request){
-        String username = authenticationFacade.getUsername();
+    public String sendMessage(@RequestBody @Valid MessageRequest request, HttpServletRequest servletRequest){
+        String username = authorizationService.getUserInfoFromToken(servletRequest).getUsername();
 
         return chatService.storeMessage(
                 username,

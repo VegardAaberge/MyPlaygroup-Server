@@ -3,6 +3,7 @@ package com.myplaygroup.server.feature_login.service;
 import com.myplaygroup.server.feature_login.model.AppUser;
 import com.myplaygroup.server.feature_login.request.LoginRequest;
 import com.myplaygroup.server.security.AuthorizationService;
+import com.myplaygroup.server.security.model.UserInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,18 +41,14 @@ public class LoginService {
     }
 
     public Map<String, String> refreshTokens(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
 
-            String refresh_token = authorizationHeader.substring("Bearer ".length());
-            String requestUrl = request.getRequestURL().toString();
+        UserInfo userInfo = authorizationService.getUserInfoFromToken(request);
+        AppUser user = appUserService.loadUserByUsername(userInfo.getUsername());
 
-            String username = authorizationService.getUsernameFromToken(refresh_token);
-            AppUser user = appUserService.loadUserByUsername(username);
-
-            return authorizationService.getAccessTokenFromRefreshToken(refresh_token, requestUrl, user);
-        }else {
-            throw new IllegalStateException("Refresh token is missing");
-        }
+        return authorizationService.getAccessTokenFromRefreshToken(
+                userInfo.token,
+                request.getRequestURL().toString(),
+                user
+        );
     }
 }
