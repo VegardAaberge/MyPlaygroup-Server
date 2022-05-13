@@ -1,16 +1,13 @@
 package com.myplaygroup.server.feature_login.service;
 
 import com.myplaygroup.server.feature_login.model.AppUser;
-import com.myplaygroup.server.feature_login.repository.AppUserRepository;
 import com.myplaygroup.server.feature_login.request.LoginRequest;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

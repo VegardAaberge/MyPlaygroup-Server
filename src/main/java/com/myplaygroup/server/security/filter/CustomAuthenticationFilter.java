@@ -1,6 +1,7 @@
 package com.myplaygroup.server.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myplaygroup.server.feature_login.model.AppUser;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,10 +42,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                             FilterChain chain,
                                             Authentication authentication) throws IOException, ServletException {
 
+        AppUser user = (AppUser) authentication.getPrincipal();
+
         Map<String, String> tokens = authorizationService.getAccessAndRefreshToken(
-                authentication,
+                user,
                 request.getRequestURL().toString()
         );
+
+        tokens.put("profile_created", user.getProfileCreated().toString());
 
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
