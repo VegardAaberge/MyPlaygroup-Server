@@ -69,7 +69,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
-    public Map<String, String> getAccessAndRefreshToken(AppUser user, String requestUrl){
+    public Map<String, Object> getAccessAndRefreshToken(AppUser user, String requestUrl){
 
         String username = user.getUsername();
         Algorithm algorithm = getAlgorithm();
@@ -84,7 +84,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return getAuthorizationTokens(requestUrl, username, roles, algorithm, refresh_token);
     }
 
-    public Map<String, String> getAccessTokenFromRefreshToken(String refresh_token, String requestUrl, AppUser user) {
+    public Map<String, Object> getAccessTokenFromRefreshToken(String refresh_token, String requestUrl, AppUser user) {
 
         Algorithm algorithm = getAlgorithm();
 
@@ -95,7 +95,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return getAuthorizationTokens(requestUrl, username, roles, algorithm, refresh_token);
     }
 
-    private Map<String, String> getAuthorizationTokens(String requestUrl, String username, List<?> roles, Algorithm algorithm, String refresh_token){
+    private Map<String, Object> getAuthorizationTokens(String requestUrl, String username, List<?> roles, Algorithm algorithm, String refresh_token){
         String access_token = JWT.create()
                 .withSubject(username)
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
@@ -103,7 +103,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                 .withClaim("roles", roles)
                 .sign(algorithm);
 
-        Map<String, String> tokens = new HashMap<>();
+        Map<String, Object> tokens = new HashMap<>();
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
 

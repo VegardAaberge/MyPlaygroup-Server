@@ -38,7 +38,7 @@ public class LoginService {
         return "Success";
     }
 
-    public Map<String, String> refreshTokens(HttpServletRequest request) {
+    public Map<String, Object> refreshTokens(HttpServletRequest request) {
 
         UserInfo userInfo = authorizationService.getUserInfoFromRequest(request);
         AppUser user = appUserService.loadUserByUsername(userInfo.getUsername());

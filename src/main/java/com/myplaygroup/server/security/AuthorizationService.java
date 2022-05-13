@@ -12,7 +12,7 @@ public interface AuthorizationService {
 
     void setAuthenticationToken(String token);
 
-    Map<String, String> getAccessAndRefreshToken(AppUser user, String requestUrl);
+    Map<String, Object> getAccessAndRefreshToken(AppUser user, String requestUrl);
 
-    Map<String, String> getAccessTokenFromRefreshToken(String refresh_token, String requestUrl, AppUser user);
+    Map<String, Object> getAccessTokenFromRefreshToken(String refresh_token, String requestUrl, AppUser user);
 }

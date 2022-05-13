@@ -44,12 +44,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         AppUser user = (AppUser) authentication.getPrincipal();
 
-        Map<String, String> tokens = authorizationService.getAccessAndRefreshToken(
+        Map<String, Object> tokens = authorizationService.getAccessAndRefreshToken(
                 user,
                 request.getRequestURL().toString()
         );
 
-        tokens.put("profile_created", user.getProfileCreated().toString());
+        tokens.put("profile_created", user.getProfileCreated());
 
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);

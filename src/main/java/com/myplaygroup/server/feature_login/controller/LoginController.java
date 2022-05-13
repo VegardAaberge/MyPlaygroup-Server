@@ -17,7 +17,7 @@ public class LoginController {
     // UsernamePasswordAuthenticationFilter provides the api/v1/login authentication route
 
     @GetMapping(path = "refresh_token")
-    public Map<String, String> refreshToken(HttpServletRequest request){
+    public Map<String, Object> refreshToken(HttpServletRequest request){
         return loginService.refreshTokens(request);
     }
 }
