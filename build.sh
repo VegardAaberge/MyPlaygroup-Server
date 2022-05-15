@@ -1,0 +1,1 @@
+nohup mvn clean install
