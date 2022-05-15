@@ -1,1 +1,0 @@
-nohup java -jar target/MyPlaygroup-Server-0.0.1-SNAPSHOT.jar --spring.config.location=file:src/main/resources/server.yml >/dev/null 2>&1 &
