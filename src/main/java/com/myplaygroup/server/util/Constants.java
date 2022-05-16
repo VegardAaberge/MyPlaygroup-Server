@@ -2,9 +2,10 @@ package com.myplaygroup.server.util;
 
 public final class Constants {
 
-    private Constants() {
+    private Constants() {}
 
-    }
+    public static final Long AccessTokenValidity = 10 * 60 * 1000L; // 10 minutes
+    public static final Long RefreshTokenValidity = 30 * 24 * 60 * 60 * 1000L; // 30 days
 
     // Error message
     public static final String USER_NOT_FOUND_MSG = "username %s not found";

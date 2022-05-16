@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserInfo {
-    public String username;
-    public String token;
+    private String username;
+    private String token;
 }

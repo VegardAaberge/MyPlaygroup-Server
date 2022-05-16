@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.myplaygroup.server.util.Constants.AccessTokenValidity;
+import static com.myplaygroup.server.util.Constants.RefreshTokenValidity;
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -77,7 +79,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + RefreshTokenValidity))
                 .withIssuer(requestUrl)
                 .sign(algorithm);
 
@@ -98,7 +100,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private Map<String, Object> getAuthorizationTokens(String requestUrl, String username, List<?> roles, Algorithm algorithm, String refresh_token){
         String access_token = JWT.create()
                 .withSubject(username)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + AccessTokenValidity))
                 .withIssuer(requestUrl)
                 .withClaim("roles", roles)
                 .sign(algorithm);
