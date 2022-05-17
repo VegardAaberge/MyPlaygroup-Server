@@ -1,12 +1,12 @@
 package com.myplaygroup.server.feature_login.service;
 
-import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.feature_login.model.AppUser;
 import com.myplaygroup.server.feature_login.repository.AppUserRepository;
 import com.myplaygroup.server.feature_login.repository.AppTokenRepository;
+import com.myplaygroup.server.feature_login.request.EditProfileRequest;
 import com.myplaygroup.server.feature_login.request.RegistrationRequest;
 import com.myplaygroup.server.feature_login.request.UpdateProfileRequest;
-import com.myplaygroup.server.feature_login.response.UpdateProfileResponse;
+import com.myplaygroup.server.feature_login.response.EditProfileResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class RegistrationService {
         return "Registered user: " + request.username;
     }
 
-    public UpdateProfileResponse updateProfile(String username, UpdateProfileRequest request) {
+    public EditProfileResponse updateProfile(String username, UpdateProfileRequest request) {
 
         AppUser appUser = appUserService.loadUserByUsername(username);
 
@@ -66,7 +66,41 @@ public class RegistrationService {
 
         appUserRepository.save(appUser);
 
-        return new UpdateProfileResponse(
+        return new EditProfileResponse(
+                username,
+                appUser.getProfileName(),
+                appUser.getPhoneNumber(),
+                appUser.getEmail()
+        );
+    }
+
+    public EditProfileResponse editProfile(String username, EditProfileRequest request)
+    {
+        AppUser appUser = appUserService.loadUserByUsername(username);
+        if(!appUser.getProfileCreated()){
+            throw new IllegalStateException("User profile hasn't been created");
+        }
+
+        if(request.password != null){
+            String encodedPassword = bCryptPasswordEncoder.encode(request.password);
+            appUser.setPassword(encodedPassword);
+        }
+
+        if(request.profileName != null){
+            appUser.setProfileName(request.profileName);
+        }
+
+        if(request.email != null){
+            appUser.setEmail(request.email);
+        }
+
+        if(request.phoneNumber != null){
+            appUser.setPhoneNumber(request.phoneNumber);
+        }
+
+        appUserRepository.save(appUser);
+
+        return new EditProfileResponse(
                 username,
                 appUser.getProfileName(),
                 appUser.getPhoneNumber(),
