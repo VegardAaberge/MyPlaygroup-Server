@@ -27,7 +27,7 @@ public class ChatController {
     }
 
     @PostMapping
-    public String sendMessage(@RequestBody @Valid MessageRequest request, HttpServletRequest servletRequest){
+    public MessageResponse sendMessage(@RequestBody @Valid MessageRequest request, HttpServletRequest servletRequest){
         String username = authorizationService.getUserInfoFromRequest(servletRequest).getUsername();
 
         return chatService.storeMessage(

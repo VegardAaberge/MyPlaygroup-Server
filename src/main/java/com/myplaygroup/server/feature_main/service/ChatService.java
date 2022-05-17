@@ -1,5 +1,6 @@
 package com.myplaygroup.server.feature_main.service;
 
+import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.feature_login.model.AppUser;
 import com.myplaygroup.server.feature_login.service.AppUserService;
 import com.myplaygroup.server.feature_main.model.Message;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -32,24 +34,21 @@ public class ChatService {
         return messages;
     }
 
-    public String storeMessage(String username,
+    public MessageResponse storeMessage(String username,
                                String message,
                                List<String> receivers) {
 
         AppUser appUser = appUserService.loadUserByUsername(username);
 
         List<AppUser> receiversUsers = new ArrayList<AppUser>();
-        try {
-            receivers.forEach(receiver -> {
-                AppUser receiverUser = appUserService.loadUserByUsername(receiver);
-                if(receiverUser.getUsername() == appUser.getUsername()){
-                    throw  new IllegalStateException("Not allowed to add app user as a receiver");
-                }
-                receiversUsers.add(receiverUser);
-            });
-        }catch(Exception e) {
-            return "Receiver exception cause:  " + e.getCause() + " message: " + e.getMessage();
-        }
+
+        receivers.forEach(receiver -> {
+            AppUser receiverUser = appUserService.loadUserByUsername(receiver);
+            if(receiverUser.getUsername() == appUser.getUsername()){
+                throw new IllegalStateException("Not allowed to add app user as a receiver");
+            }
+            receiversUsers.add(receiverUser);
+        });
 
         Message messageEntity = new Message(
                 message,
@@ -60,6 +59,10 @@ public class ChatService {
 
         messageRepository.save(messageEntity);
 
-        return "Successfully sent message";
+        MessageResponse messageResponse = messageRepository.findMessageResponseById(
+                messageEntity.getId()
+        ).orElseThrow(() -> new NotFoundException("Message was not added"));
+
+        return messageResponse;
     }
 }
