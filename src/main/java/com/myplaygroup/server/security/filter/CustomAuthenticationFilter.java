@@ -1,7 +1,7 @@
 package com.myplaygroup.server.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myplaygroup.server.feature_login.model.AppUser;
+import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package com.myplaygroup.server.security;
 
-import com.myplaygroup.server.feature_login.model.AppUser;
+import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.security.model.UserInfo;
 
 import javax.servlet.http.HttpServletRequest;

@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.myplaygroup.server.feature_login.model.AppUser;
+import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.security.model.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
