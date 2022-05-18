@@ -45,6 +45,17 @@ public class AppExceptionHandler {
         );
     }
 
+    @ExceptionHandler(ServerErrorException.class)
+    public ResponseEntity<Object> handleServerErrorException(ServerErrorException ex){
+        return new ResponseEntity<>(
+                new AppErrorResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        ex
+                ),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
         Map<String, String> errorMap = new HashMap<>();

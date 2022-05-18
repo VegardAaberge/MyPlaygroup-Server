@@ -22,20 +22,4 @@ public class RegistrationController {
     public SimpleResponse register(@RequestBody @Valid RegistrationRequest registrationRequest){
         return registrationService.register(registrationRequest);
     }
-
-    @PostMapping(path = "profile/create/{username}")
-    public EditProfileResponse updateProfile(
-            @PathVariable("username") String username,
-            @RequestBody @Valid UpdateProfileRequest request
-    ) {
-        return registrationService.updateProfile(username, request);
-    }
-
-    @PostMapping(path = "profile/edit/{username}")
-    public EditProfileResponse editProfile(
-            @PathVariable("username") String username,
-            @RequestBody @Valid EditProfileRequest request
-    ) {
-        return registrationService.editProfile(username, request);
-    }
 }
