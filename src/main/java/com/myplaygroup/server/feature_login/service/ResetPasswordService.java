@@ -4,7 +4,10 @@ import com.myplaygroup.server.feature_login.model.AppToken;
 import com.myplaygroup.server.feature_login.model.AppUser;
 import com.myplaygroup.server.feature_login.repository.AppTokenRepository;
 import com.myplaygroup.server.feature_login.repository.AppUserRepository;
-import com.myplaygroup.server.feature_login.request.ResetPasswordRequest;
+import com.myplaygroup.server.feature_login.request.SendResetPasswordRequest;
+import com.myplaygroup.server.feature_login.request.VerifyResetPasswordRequest;
+import com.myplaygroup.server.feature_login.response.SendResetPasswordResponse;
+import com.myplaygroup.server.other.SimpleResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,7 @@ public class ResetPasswordService {
 
     LoginService loginService;
 
-    public String requestResetPassword(String email) {
+    public SendResetPasswordResponse sendResetPasswordRequest(String email) {
 
         AppUser appUser = appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalStateException("Email not found"));
@@ -42,10 +45,10 @@ public class ResetPasswordService {
 
         // TODO send email
 
-        return token;
+        return new SendResetPasswordResponse(token);
     }
 
-    public String resetPassword(ResetPasswordRequest request) {
+    public SimpleResponse verifyResetPasswordRequest(VerifyResetPasswordRequest request) {
         AppToken appToken = appTokenRepository
                 .findByToken(request.token)
                 .orElseThrow(() -> new IllegalStateException("token not found"));
@@ -70,6 +73,6 @@ public class ResetPasswordService {
 
         // TODO Reset Password form
 
-        return "Reset password";
+        return new SimpleResponse("Reset password successful");
     }
 }

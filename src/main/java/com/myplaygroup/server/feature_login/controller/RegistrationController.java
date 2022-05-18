@@ -5,6 +5,7 @@ import com.myplaygroup.server.feature_login.request.RegistrationRequest;
 import com.myplaygroup.server.feature_login.request.UpdateProfileRequest;
 import com.myplaygroup.server.feature_login.response.EditProfileResponse;
 import com.myplaygroup.server.feature_login.service.RegistrationService;
+import com.myplaygroup.server.other.SimpleResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public String register(@RequestBody @Valid RegistrationRequest registrationRequest){
+    public SimpleResponse register(@RequestBody @Valid RegistrationRequest registrationRequest){
         return registrationService.register(registrationRequest);
     }
 

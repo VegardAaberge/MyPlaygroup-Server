@@ -7,6 +7,7 @@ import com.myplaygroup.server.feature_login.request.EditProfileRequest;
 import com.myplaygroup.server.feature_login.request.RegistrationRequest;
 import com.myplaygroup.server.feature_login.request.UpdateProfileRequest;
 import com.myplaygroup.server.feature_login.response.EditProfileResponse;
+import com.myplaygroup.server.other.SimpleResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class RegistrationService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public String register(RegistrationRequest request) {
+    public SimpleResponse register(RegistrationRequest request) {
         Optional<AppUser> appUserOptional = appUserRepository.findByUsername(request.username);
 
         if(appUserOptional.isPresent()){
@@ -49,7 +50,7 @@ public class RegistrationService {
         );
         appUserRepository.save(appUser);
 
-        return "Registered user: " + request.username;
+        return new SimpleResponse("Registered user: " + request.username);
     }
 
     public EditProfileResponse updateProfile(String username, UpdateProfileRequest request) {

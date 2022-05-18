@@ -4,8 +4,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-import static com.myplaygroup.server.util.Constants.MESSAGE_VALIDATION_MSG;
-import static com.myplaygroup.server.util.Constants.RECEIVERS_VALIDATION_MSG;
+import static com.myplaygroup.server.other.Constants.MESSAGE_VALIDATION_MSG;
+import static com.myplaygroup.server.other.Constants.RECEIVERS_VALIDATION_MSG;
 
 public class MessageRequest {
 

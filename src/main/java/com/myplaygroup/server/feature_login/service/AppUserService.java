@@ -6,14 +6,13 @@ import com.myplaygroup.server.feature_login.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.myplaygroup.server.feature_login.model.AppUser.UserRole.*;
-import static com.myplaygroup.server.util.Constants.USER_NOT_FOUND_MSG;
+import static com.myplaygroup.server.other.Constants.USER_NOT_FOUND_MSG;
 
 @Service
 @AllArgsConstructor

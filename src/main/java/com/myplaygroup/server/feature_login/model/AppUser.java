@@ -3,23 +3,17 @@ package com.myplaygroup.server.feature_login.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Check;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Collections;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
-import static com.myplaygroup.server.util.Constants.*;
-import static com.myplaygroup.server.util.Constants.PHONE_NUMBER_VALIDATION_MSG;
+import static com.myplaygroup.server.other.Constants.*;
 
 @Getter
 @Setter

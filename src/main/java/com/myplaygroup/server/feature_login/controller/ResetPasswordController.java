@@ -1,8 +1,12 @@
 package com.myplaygroup.server.feature_login.controller;
 
-import com.myplaygroup.server.feature_login.request.ResetPasswordRequest;
+import com.myplaygroup.server.feature_login.request.SendResetPasswordRequest;
+import com.myplaygroup.server.feature_login.request.VerifyResetPasswordRequest;
+import com.myplaygroup.server.feature_login.response.SendResetPasswordResponse;
 import com.myplaygroup.server.feature_login.service.ResetPasswordService;
+import com.myplaygroup.server.other.SimpleResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,13 +18,13 @@ public class ResetPasswordController {
 
     ResetPasswordService resetPasswordService;
 
-    @GetMapping
-    public String resetPassword(@RequestParam String email){
-        return resetPasswordService.requestResetPassword(email);
+    @PostMapping(path = "send")
+    public SendResetPasswordResponse resetPassword(@RequestBody @Valid SendResetPasswordRequest request){
+        return resetPasswordService.sendResetPasswordRequest(request.email);
     }
 
-    @PostMapping
-    public String resetPassword(@RequestBody @Valid ResetPasswordRequest request){
-        return resetPasswordService.resetPassword(request);
+    @PostMapping(path = "verify")
+    public SimpleResponse resetPassword(@RequestBody @Valid VerifyResetPasswordRequest request){
+        return resetPasswordService.verifyResetPasswordRequest(request);
     }
 }
