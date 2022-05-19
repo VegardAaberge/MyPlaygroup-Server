@@ -112,6 +112,7 @@ public class ProfileService {
 
         try(InputStream inputStream = file.getInputStream()) {
             Path filePath = documentService.getProfileStorageLocation().resolve(filename);
+            log.error("Copy file to " + filePath.toAbsolutePath());
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         }catch (IOException ioe) {
             log.error("Error saving uploaded file", ioe);
@@ -132,6 +133,8 @@ public class ProfileService {
             }
 
             Path profileImage = profileImages.get(profileImages.size() - 1);
+            log.error("Get profile image " + profileImage.toAbsolutePath());
+
             return new UrlResource(profileImage.toUri());
 
         }catch (IOException ioe) {
