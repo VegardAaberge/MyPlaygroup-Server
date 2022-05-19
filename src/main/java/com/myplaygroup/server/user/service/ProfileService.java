@@ -2,6 +2,7 @@ package com.myplaygroup.server.user.service;
 
 import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.exception.ServerErrorException;
+import com.myplaygroup.server.other.DocumentServiceImpl;
 import com.myplaygroup.server.other.SimpleResponse;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.repository.AppUserRepository;
@@ -41,6 +42,7 @@ public class ProfileService {
 
     private final AppUserService appUserService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private DocumentServiceImpl documentService;
 
     public EditProfileResponse updateProfile(String username, UpdateProfileRequest request) {
 
@@ -99,18 +101,17 @@ public class ProfileService {
 
     public Resource getProfileImage(String username) {
 
-        Path uploadDir = Paths.get(ProfilePath);
+        Path profileDir = documentService.getProfileStorageLocation();
 
-        return getMostRecentProfileImage(uploadDir, username);
+        return getMostRecentProfileImage(profileDir, username);
     }
 
     public SimpleResponse uploadProfileImage(String username, MultipartFile file) {
 
-        Path uploadDir = Paths.get(ProfilePath);
         String filename = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + "." + username;
 
         try(InputStream inputStream = file.getInputStream()) {
-            Path filePath = uploadDir.resolve(filename);
+            Path filePath = documentService.getProfileStorageLocation().resolve(filename);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         }catch (IOException ioe) {
             log.error("Error saving uploaded file", ioe);
@@ -120,9 +121,9 @@ public class ProfileService {
         return new SimpleResponse("Success");
     }
 
-    Resource getMostRecentProfileImage(Path uploadDir, String username) {
+    Resource getMostRecentProfileImage(Path profileDir, String username) {
         try {
-            List<Path> profileImages = Files.list(uploadDir).filter(file ->
+            List<Path> profileImages = Files.list(profileDir).filter(file ->
                     file.getFileName().toString().endsWith(username)
             ).collect(Collectors.toList());
 

@@ -23,6 +23,10 @@ spring:
         format_sql: true
     show-sql: true
 
+document:
+  upload-directory: uploads
+  profile-directory: uploads/profile
+
 playgroup:
   app:
     jwtSecret: add_secret_text
