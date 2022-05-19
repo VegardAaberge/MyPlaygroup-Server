@@ -9,6 +9,7 @@ import com.myplaygroup.server.user.request.EditProfileRequest;
 import com.myplaygroup.server.user.request.UpdateProfileRequest;
 import com.myplaygroup.server.user.response.EditProfileResponse;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,11 +26,13 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.myplaygroup.server.other.Constants.ProfilePath;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ProfileService {
@@ -110,6 +113,7 @@ public class ProfileService {
             Path filePath = uploadDir.resolve(filename);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         }catch (IOException ioe) {
+            log.error("Error saving uploaded file", ioe);
             throw new ServerErrorException("Error saving uploaded file");
         }
 
@@ -130,6 +134,7 @@ public class ProfileService {
             return new UrlResource(profileImage.toUri());
 
         }catch (IOException ioe) {
+            log.error("Error getting uploaded file", ioe);
             throw new ServerErrorException("Error getting uploaded file");
         }
     }

@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.security.model.UserInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,7 @@ import static com.myplaygroup.server.other.Constants.RefreshTokenValidity;
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthorizationServiceImpl implements AuthorizationService {
@@ -42,6 +44,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
             Algorithm algorithm = getAlgorithm();
             DecodedJWT decodedJWT = getDecodedJWT(algorithm, refresh_token);
+
+            log.info("Got user " + decodedJWT.getSubject() + " from JWT token");
 
             // Get the username and authorities
             return new UserInfo(

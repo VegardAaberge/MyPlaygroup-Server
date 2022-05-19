@@ -7,6 +7,7 @@ import com.myplaygroup.server.user.request.UpdateProfileRequest;
 import com.myplaygroup.server.user.response.EditProfileResponse;
 import com.myplaygroup.server.user.service.ProfileService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 @RequestMapping(path = "api/v1/profile")
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class ProfileController {
             @PathVariable("username") String username,
             @RequestBody @Valid UpdateProfileRequest request
     ) {
+        log.info("api/v1/profile/create/" + username);
         return profileService.updateProfile(username, request);
     }
 
@@ -38,6 +41,7 @@ public class ProfileController {
             @PathVariable("username") String username,
             @RequestBody @Valid EditProfileRequest request
     ) {
+        log.info("api/v1/profile/edit/" + username);
         return profileService.editProfile(username, request);
     }
 
@@ -45,6 +49,7 @@ public class ProfileController {
     public ResponseEntity<Resource> uploadProfileImage(
             @PathVariable("username") String username
     ) {
+        log.info("api/v1/profile/get-image/" + username);
         Resource profileImage = profileService.getProfileImage(username);
 
         String contentType = "application/octet-stream";
@@ -61,6 +66,7 @@ public class ProfileController {
             @RequestParam("image") MultipartFile file,
             HttpServletRequest servletRequest
     ) {
+        log.info("api/v1/profile/upload-image/");
         String username = authorizationService.getUserInfoFromRequest(servletRequest).getUsername();
 
         return profileService.uploadProfileImage(username, file);
