@@ -3,6 +3,12 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+  ssl:
+    key-alias: tomcat
+    key-store: /etc/letsencrypt/live/vegardaaberge.no/keystore.p12
+    key-store-type: pkcs12
+    key-store-password: insert_password
+    key-password: insert_password
 
 spring:
   datasource:
