@@ -9,18 +9,12 @@ import com.myplaygroup.server.security.AuthorizationService;
 import com.myplaygroup.server.security.model.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -46,7 +40,12 @@ public class ChatSocketService {
                 request.receivers
         );
 
-        members.values().forEach(member -> {
+        List<Member> receivingMembers = members
+                .values().stream()
+                .filter(m -> request.receivers.contains(m.getUsername()) || Objects.equals(m.getUsername(), username)).
+                collect(Collectors.toList());
+
+        receivingMembers.forEach(member -> {
             try {
                 member.getSocket().sendMessage(new TextMessage(messageJson));
             } catch (IOException e) {
