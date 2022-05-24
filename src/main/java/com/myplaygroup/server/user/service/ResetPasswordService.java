@@ -20,8 +20,6 @@ public class ResetPasswordService {
     AppTokenRepository appTokenRepository;
     AppUserRepository appUserRepository;
 
-    LoginService loginService;
-
     public SendResetPasswordResponse sendResetPasswordRequest(String email) {
 
         AppUser appUser = appUserRepository.findByEmail(email)

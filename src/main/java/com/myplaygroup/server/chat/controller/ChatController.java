@@ -28,16 +28,4 @@ public class ChatController {
 
         return chatService.findByUsernameAndRecipient(username);
     }
-
-    @PostMapping
-    public MessageResponse sendMessage(@RequestBody @Valid MessageRequest request, HttpServletRequest servletRequest){
-        log.info(servletRequest.getServletPath());
-        String username = authorizationService.getUserInfoFromRequest(servletRequest).getUsername();
-
-        return chatService.storeMessage(
-                username,
-                request.message,
-                request.receivers
-        );
-    }
 }

@@ -36,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/v*/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
+        http.authorizeRequests().antMatchers("/chat-socket").permitAll();
         http.authorizeRequests().antMatchers("/api/v*/login/**", "/api/v*/reset-password/**").permitAll();
         http.authorizeRequests().antMatchers("/api/v*/chat/**", "/api/v*/profile/**").hasAnyAuthority(ADMIN.name(), USER.name());
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/v*/registration/**").hasAuthority(ADMIN.name());

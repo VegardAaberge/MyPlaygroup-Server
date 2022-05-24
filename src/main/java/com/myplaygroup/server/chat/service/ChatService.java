@@ -1,5 +1,8 @@
 package com.myplaygroup.server.chat.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.service.AppUserService;
@@ -7,6 +10,8 @@ import com.myplaygroup.server.chat.model.Message;
 import com.myplaygroup.server.chat.repository.MessageRepository;
 import com.myplaygroup.server.chat.response.MessageResponse;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ChatService {
 
     private final AppUserService appUserService;
@@ -29,9 +34,9 @@ public class ChatService {
         return messages;
     }
 
-    public MessageResponse storeMessage(String username,
+    public String storeMessage(String username,
                                String message,
-                               List<String> receivers) {
+                               List<String> receivers) throws JsonProcessingException {
 
         AppUser appUser = appUserService.loadUserByUsername(username);
 
@@ -58,6 +63,9 @@ public class ChatService {
                 messageEntity.getId()
         ).orElseThrow(() -> new NotFoundException("Message was not added"));
 
-        return messageResponse;
+        ObjectWriter ow = new ObjectMapper().findAndRegisterModules().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(messageResponse);
+
+        return json;
     }
 }
