@@ -78,7 +78,7 @@ public class ChatSocketService {
     }
 
     private String getUsernameFromSession(WebSocketSession session){
-        String authorizationHeader = session.getHandshakeHeaders().get("Cookie").get(0);
+        String authorizationHeader = session.getHandshakeHeaders().get("cookie").get(0);
         UserInfo userInfo = authorizationService.getUserInfoFromRequest(authorizationHeader);
 
         return userInfo.getUsername();
