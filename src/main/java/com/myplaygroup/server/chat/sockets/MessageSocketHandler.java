@@ -13,10 +13,10 @@ import java.io.IOException;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class MessageSocketHandler extends TextWebSocketHandler {
 
-    @Autowired
-    ChatSocketService chatSocketService;
+    private final ChatSocketService chatSocketService;
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException {
@@ -35,4 +35,6 @@ public class MessageSocketHandler extends TextWebSocketHandler {
         log.info("Received close request ");
         chatSocketService.disconnectMember(session);
     }
+
+
 }

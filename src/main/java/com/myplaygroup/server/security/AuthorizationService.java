@@ -10,6 +10,8 @@ public interface AuthorizationService {
 
     UserInfo getUserInfoFromRequest(HttpServletRequest request);
 
+    UserInfo getUserInfoFromRequest(String authorizationHeader);
+
     void setAuthenticationToken(String token);
 
     Map<String, Object> getAccessAndRefreshToken(AppUser user, String requestUrl);

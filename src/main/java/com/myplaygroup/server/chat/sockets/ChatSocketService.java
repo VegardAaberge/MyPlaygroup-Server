@@ -5,11 +5,14 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.myplaygroup.server.chat.requests.MessageRequest;
 import com.myplaygroup.server.chat.service.ChatService;
 import com.myplaygroup.server.exception.ServerErrorException;
+import com.myplaygroup.server.security.AuthorizationService;
+import com.myplaygroup.server.security.model.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -24,11 +27,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ChatSocketService {
 
-    @Autowired
-    ChatService chatService;
-
+    private final ChatService chatService;
+    private final AuthorizationService authorizationService;
     private final ConcurrentHashMap<String, Member> members = new ConcurrentHashMap<>();
 
     public void sendMessage(WebSocketSession session, TextMessage message) throws IOException {
@@ -76,9 +79,9 @@ public class ChatSocketService {
     }
 
     private String getUsernameFromSession(WebSocketSession session){
-        List<NameValuePair> params = URLEncodedUtils.parse(Objects.requireNonNull(session.getUri()), StandardCharsets.UTF_8);
-        Map<String, String> stringMap = params.stream().collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
+        String authorizationHeader = session.getHandshakeHeaders().get("Cookie").get(0);
+        UserInfo userInfo = authorizationService.getUserInfoFromRequest(authorizationHeader);
 
-        return stringMap.get("username");
+        return userInfo.getUsername();
     }
 }
