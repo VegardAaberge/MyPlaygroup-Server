@@ -1,9 +1,13 @@
 package com.myplaygroup.server.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.myplaygroup.server.exception.AppErrorResponse;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -43,12 +47,16 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
                 }catch (Exception exception) {
                     log.error("Error logging in {}", exception.getMessage());
-                    response.setHeader("error", exception.getMessage());
+
+                    AppErrorResponse forbiddenResponse = new AppErrorResponse(
+                            FORBIDDEN,
+                            exception
+                    );
+
                     response.setStatus(FORBIDDEN.value());
-                    Map<String, String> error = new HashMap<>();
-                    error.put("error_message", exception.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), error);
+                    ObjectWriter ow = new ObjectMapper().findAndRegisterModules().writer().withDefaultPrettyPrinter();
+                    ow.writeValue(response.getOutputStream(), forbiddenResponse);
                 }
             }else {
                 filterChain.doFilter(request, response);

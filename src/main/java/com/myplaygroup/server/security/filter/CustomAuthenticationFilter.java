@@ -1,6 +1,7 @@
 package com.myplaygroup.server.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         }
 
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        ObjectWriter ow = new ObjectMapper().findAndRegisterModules().writer().withDefaultPrettyPrinter();
+        ow.writeValue(response.getOutputStream(), tokens);
     }
 }

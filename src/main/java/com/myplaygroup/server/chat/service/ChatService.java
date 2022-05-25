@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.myplaygroup.server.exception.NotFoundException;
+import com.myplaygroup.server.exception.ServerErrorException;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.service.AppUserService;
 import com.myplaygroup.server.chat.model.Message;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +30,7 @@ public class ChatService {
     public List<MessageResponse> findByUsernameAndRecipient(String username) {
         AppUser appUser = appUserService.loadUserByUsername(username);
 
-        List<MessageResponse> messages = messageRepository.findByOwnerAndReceiver(appUser.getId())
-                .orElseThrow(() -> new IllegalStateException("test"));
-
-        return messages;
+        return messageRepository.findByOwnerAndReceiver(appUser.getId());
     }
 
     public String storeMessage(String username,

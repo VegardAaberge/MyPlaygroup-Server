@@ -31,7 +31,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
                     "    message.app_user_id = ?1 " +
                     "    OR message_receivers.receivers_id = ?1"
     )
-    Optional<List<MessageResponse>> findByOwnerAndReceiver(Long userID);
+    List<MessageResponse> findByOwnerAndReceiver(Long userID);
 
     @Query(
             nativeQuery = true,
