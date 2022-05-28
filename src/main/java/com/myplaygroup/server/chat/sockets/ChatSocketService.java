@@ -48,7 +48,12 @@ public class ChatSocketService {
 
         receivingMembers.forEach(member -> {
             try {
-                member.getSocket().sendMessage(new TextMessage(messageJson));
+                if(member.getSocket().isOpen()){
+                    member.getSocket().sendMessage(new TextMessage(messageJson));
+                }else {
+                    members.remove(member.getSessionId());
+                }
+
             } catch (IOException e) {
                 throw new ServerErrorException("There was an error sending message from the socket");
             }
@@ -58,10 +63,7 @@ public class ChatSocketService {
     public void connectNewMember(WebSocketSession session) {
         String username = getUsernameFromSession(session);
 
-        if(members.containsKey(username)) {
-            throw new IllegalStateException("There is already a member with that username in the room.");
-        }
-        members.put(username, new Member(
+        members.put(session.getId(), new Member(
                 username,
                 session.getId(),
                 session
@@ -72,7 +74,7 @@ public class ChatSocketService {
         String username = getUsernameFromSession(session);
 
         log.info("Disconnect " + username);
-        Member member = members.get(username);
+        Member member = members.get(session.getId());
         if(member != null && members.containsKey(username) && member.getSocket() != null){
             members.remove(username);
         }
