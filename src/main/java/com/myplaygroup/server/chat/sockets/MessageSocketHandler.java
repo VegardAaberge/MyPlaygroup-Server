@@ -2,6 +2,7 @@ package com.myplaygroup.server.chat.sockets;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -18,7 +19,7 @@ public class MessageSocketHandler extends TextWebSocketHandler {
     private final ChatSocketService chatSocketService;
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException, JSONException {
         log.info("Received message " + message.getPayload());
         chatSocketService.sendMessage(session, message);
     }
