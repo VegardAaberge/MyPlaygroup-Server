@@ -34,6 +34,7 @@ public class ChatService {
     }
 
     public String storeMessage(String username,
+                               String clientId,
                                String message,
                                List<String> receivers) throws JsonProcessingException {
 
@@ -50,6 +51,7 @@ public class ChatService {
         });
 
         Message messageEntity = new Message(
+                clientId,
                 message,
                 appUser,
                 receiversUsers,

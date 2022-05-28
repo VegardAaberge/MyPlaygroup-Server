@@ -20,6 +20,7 @@ public final class Constants {
     public static final String PROFILE_NAME_VALIDATION_MSG =  "Profile Name can't be blank";
     public static final String TOKEN_VALIDATION_MSG =  "Token cannot be empty";
     public static final String CODE_VALIDATION_MSG =  "Code cannot be empty";
+    public static final String CLIENT_ID_VALIDATION_MSG =  "Id cannot be empty";
     public static final String MESSAGE_VALIDATION_MSG =  "Message cannot be empty";
     public static final String RECEIVERS_VALIDATION_MSG =  "There need to be at least 1 receiver";
 

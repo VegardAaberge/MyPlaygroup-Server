@@ -18,6 +18,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             nativeQuery = true,
             value = "SELECT DISTINCT " +
                     "    message.id, " +
+                    "    message.client_id as clientId, " +
                     "    message.created, " +
                     "    message.message, " +
                     "    app_user.username as createdBy, " +
@@ -37,6 +38,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             nativeQuery = true,
             value = "SELECT " +
                     "    message.id, " +
+                    "    message.client_id as clientId, " +
                     "    message.created, " +
                     "    message.message, " +
                     "    app_user.username as createdBy, " +

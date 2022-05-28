@@ -4,10 +4,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-import static com.myplaygroup.server.other.Constants.MESSAGE_VALIDATION_MSG;
-import static com.myplaygroup.server.other.Constants.RECEIVERS_VALIDATION_MSG;
+import static com.myplaygroup.server.other.Constants.*;
 
 public class MessageRequest {
+
+    @NotBlank(message = CLIENT_ID_VALIDATION_MSG)
+    public String clientId;
 
     @NotBlank(message = MESSAGE_VALIDATION_MSG)
     public String message;

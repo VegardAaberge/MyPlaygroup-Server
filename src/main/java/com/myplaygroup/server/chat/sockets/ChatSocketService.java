@@ -36,6 +36,7 @@ public class ChatSocketService {
 
         String messageJson = chatService.storeMessage(
                 username,
+                request.clientId,
                 request.message,
                 request.receivers
         );

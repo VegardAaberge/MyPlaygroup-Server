@@ -11,15 +11,17 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.myplaygroup.server.other.Constants.MESSAGE_VALIDATION_MSG;
-import static com.myplaygroup.server.other.Constants.RECEIVERS_VALIDATION_MSG;
+import static com.myplaygroup.server.other.Constants.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(
-        name = "message"
+        name = "message",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "client_id_unique", columnNames = "client_id"),
+        }
 )
 public class Message {
 
@@ -35,6 +37,10 @@ public class Message {
     )
     @Column(name = "id", updatable = false)
     private Long id;
+
+    @NotBlank(message = CLIENT_ID_VALIDATION_MSG)
+    @Column(name = "client_id", updatable = false, nullable = false)
+    private String clientId;
 
     @NotBlank(message = MESSAGE_VALIDATION_MSG)
     @Column(name = "message", nullable = false)
@@ -52,10 +58,8 @@ public class Message {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
-    public Message(String message,
-                   AppUser createdBy,
-                   List<AppUser> receivers,
-                   LocalDateTime created) {
+    public Message(String clientId, String message, AppUser createdBy, List<AppUser> receivers, LocalDateTime created) {
+        this.clientId = clientId;
         this.message = message;
         this.createdBy = createdBy;
         this.receivers = receivers;

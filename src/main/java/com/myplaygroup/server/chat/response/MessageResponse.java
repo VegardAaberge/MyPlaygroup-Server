@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 public interface MessageResponse {
      Long getId();
 
+     String getClientId();
+
      String getMessage();
 
      @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
