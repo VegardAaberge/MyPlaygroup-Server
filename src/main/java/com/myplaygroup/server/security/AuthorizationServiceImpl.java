@@ -93,17 +93,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return getAuthorizationTokens(requestUrl, username, roles, algorithm, refresh_token);
     }
 
-    public Map<String, Object> getAccessTokenFromRefreshToken(String refresh_token, String requestUrl, AppUser user) {
-
-        Algorithm algorithm = getAlgorithm();
-
-        // Get the username and authorities
-        String username = user.getUsername();
-        List<String> roles = getUserRoles(user);
-
-        return getAuthorizationTokens(requestUrl, username, roles, algorithm, refresh_token);
-    }
-
     private Map<String, Object> getAuthorizationTokens(String requestUrl, String username, List<?> roles, Algorithm algorithm, String refresh_token){
         String access_token = JWT.create()
                 .withSubject(username)

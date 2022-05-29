@@ -15,6 +15,4 @@ public interface AuthorizationService {
     void setAuthenticationToken(String token);
 
     Map<String, Object> getAccessAndRefreshToken(AppUser user, String requestUrl);
-
-    Map<String, Object> getAccessTokenFromRefreshToken(String refresh_token, String requestUrl, AppUser user);
 }

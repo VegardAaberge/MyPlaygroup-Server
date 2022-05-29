@@ -51,10 +51,9 @@ public class LoginService {
             throw new IllegalStateException("Token is locked");
         }
 
-        Map<String, Object> tokens = authorizationService.getAccessTokenFromRefreshToken(
-                userInfo.getToken(),
-                request.getRequestURL().toString(),
-                user
+        Map<String, Object> tokens = authorizationService.getAccessAndRefreshToken(
+                user,
+                request.getRequestURL().toString()
         );
 
         tokenRepository.save(new LockedRefreshToken(
