@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "daily_class")
+@Table(name = "monthly_plan")
 public class MonthlyPlan {
     @Id
     @SequenceGenerator(
@@ -38,4 +38,10 @@ public class MonthlyPlan {
     @ManyToMany
     @Column(name = "classes", nullable = false)
     private List<DailyClass> classes;
+
+    public MonthlyPlan(AppUser appUser, StandardPlan plan, List<DailyClass> classes) {
+        this.appUser = appUser;
+        this.plan = plan;
+        this.classes = classes;
+    }
 }

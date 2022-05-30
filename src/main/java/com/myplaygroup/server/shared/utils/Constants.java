@@ -6,7 +6,7 @@ public final class Constants {
 
     public static final String ProfilePath = "files/profile";
 
-    public static final Long AccessTokenValidity = 10 * 60 * 1000L; // 10 minutes
+    public static final Long AccessTokenValidity = 10 * 60 * 10000L; // 10 minutes
     public static final Long RefreshTokenValidity = 30 * 24 * 60 * 60 * 1000L; // 30 days
 
     // Error message
@@ -18,11 +18,15 @@ public final class Constants {
     public static final String PHONE_NUMBER_VALIDATION_MSG = "Phone number must be 11 digits";
     public static final String EMAIL_VALIDATION_MSG = "Need to be a valid email";
     public static final String PROFILE_NAME_VALIDATION_MSG =  "Profile Name can't be blank";
+    public static final String DATE_NAME_VALIDATION_MSG =  "Date can't be null";
+    public static final String START_TIME_NAME_VALIDATION_MSG =  "start time can't be null";
+    public static final String END_TIME_NAME_VALIDATION_MSG =  "end time can't be null";
     public static final String TOKEN_VALIDATION_MSG =  "Token cannot be empty";
     public static final String CODE_VALIDATION_MSG =  "Code cannot be empty";
     public static final String CLIENT_ID_VALIDATION_MSG =  "Id cannot be empty";
     public static final String MESSAGE_VALIDATION_MSG =  "Message cannot be empty";
     public static final String RECEIVERS_VALIDATION_MSG =  "There need to be at least 1 receiver";
+    public static final String CLASS_REQUESTS_VALIDATION_MSG =  "There need to be at least 1 daily class";
 
     // Validation Pattern Regex
     public static final String USERNAME_VALIDATION_REGEX = "^[a-z\\d_]*$"; // Only lowercase, no spaces
@@ -30,19 +34,19 @@ public final class Constants {
     public static final String PHONE_NUMBER_VALIDATION_REGEX = "^\\d{11}$";  // 11 digits
 
     // Standard Plan Names
-    public static final String EVENING_GROUP_2DAYS = "Evening Group 2 days";
-    public static final String EVENING_GROUP_3DAYS = "Evening Group 3 days";
-    public static final String MORNING_GROUP_2DAYS = "Morning Group 2 days";
-    public static final String MORNING_GROUP_3DAYS = "Morning Group 3 days";
-    public static final String MORNING_GROUP_4DAYS = "Morning Group 4 days";
-    public static final String MORNING_GROUP_5DAYS = "Morning Group 5 days";
-    public static final String MORNING_GROUP_5DAYS_DISCOUNT = "Morning Group 5 days (Discount)";
+    public static final String EVENING_2 = "EVENING_2";
+    public static final String EVENING_3 = "EVENING_3";
+    public static final String MORNING_2 = "MORNING_2";
+    public static final String MORNING_3 = "MORNING_3";
+    public static final String MORNING_4 = "MORNING_4";
+    public static final String MORNING_5 = "MORNING_5";
+    public static final String MORNING_DISCOUNT_5 = "MORNING_DISCOUNT_5";
 
-    public static final Integer EVENING_GROUP_2DAYS_PRICE = 590;
-    public static final Integer EVENING_GROUP_3DAYS_PRICE = 790;
-    public static final Integer MORNING_GROUP_2DAYS_PRICE = 490;
-    public static final Integer MORNING_GROUP_3DAYS_PRICE = 690;
-    public static final Integer MORNING_GROUP_4DAYS_PRICE = 790;
-    public static final Integer MORNING_GROUP_5DAYS_PRICE = 890;
-    public static final Integer MORNING_GROUP_5DAYS_DISCOUNT_PRICE = 790;
+    public static final Integer EVENING_2_PRICE = 590;
+    public static final Integer EVENING_3_PRICE = 790;
+    public static final Integer MORNING_2_PRICE = 490;
+    public static final Integer MORNING_3_PRICE = 690;
+    public static final Integer MORNING_4_PRICE = 790;
+    public static final Integer MORNING_5_PRICE = 890;
+    public static final Integer MORNING_DISCOUNT_5_PRICE = 790;
 }

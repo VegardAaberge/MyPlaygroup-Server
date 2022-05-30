@@ -36,8 +36,12 @@ public class StandardPlan {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    public StandardPlan(String name, Integer price) {
+    @Column(name = "type", nullable = false)
+    private DailyClassType type;
+
+    public StandardPlan(String name, Integer price, DailyClassType type) {
         this.name = name;
         this.price = price;
+        this.type = type;
     }
 }
