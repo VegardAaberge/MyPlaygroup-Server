@@ -28,9 +28,9 @@ public class AppUserService implements UserDetailsService {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(AppUserRepository appUserRepository){
+    CommandLineRunner AppUserServiceLineRunner(AppUserRepository appUserRepository){
         return args -> {
-            Boolean isAdminPresent = appUserRepository.findByUsername("admin").isPresent();
+            boolean isAdminPresent = appUserRepository.findByUsername("admin").isPresent();
             if(!isAdminPresent){
                 AppUser admin = new AppUser(
                         "admin",

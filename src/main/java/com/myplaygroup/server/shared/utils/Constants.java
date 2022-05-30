@@ -28,4 +28,21 @@ public final class Constants {
     public static final String USERNAME_VALIDATION_REGEX = "^[a-z\\d_]*$"; // Only lowercase, no spaces
     public static final String PASSWORD_VALIDATION_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$"; // At least 1 digit, 1 lowercase, 1 uppercase,no whitespace and min 8 letters
     public static final String PHONE_NUMBER_VALIDATION_REGEX = "^\\d{11}$";  // 11 digits
+
+    // Standard Plan Names
+    public static final String EVENING_GROUP_2DAYS = "Evening Group 2 days";
+    public static final String EVENING_GROUP_3DAYS = "Evening Group 3 days";
+    public static final String MORNING_GROUP_2DAYS = "Morning Group 2 days";
+    public static final String MORNING_GROUP_3DAYS = "Morning Group 3 days";
+    public static final String MORNING_GROUP_4DAYS = "Morning Group 4 days";
+    public static final String MORNING_GROUP_5DAYS = "Morning Group 5 days";
+    public static final String MORNING_GROUP_5DAYS_DISCOUNT = "Morning Group 5 days (Discount)";
+
+    public static final Integer EVENING_GROUP_2DAYS_PRICE = 590;
+    public static final Integer EVENING_GROUP_3DAYS_PRICE = 790;
+    public static final Integer MORNING_GROUP_2DAYS_PRICE = 490;
+    public static final Integer MORNING_GROUP_3DAYS_PRICE = 690;
+    public static final Integer MORNING_GROUP_4DAYS_PRICE = 790;
+    public static final Integer MORNING_GROUP_5DAYS_PRICE = 890;
+    public static final Integer MORNING_GROUP_5DAYS_DISCOUNT_PRICE = 790;
 }
