@@ -16,21 +16,23 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class StandardPlanService {
 
+    private final StandardPlanRepository standardPlanRepository;
+
     @Bean
     CommandLineRunner StandardPlanServiceLineRunner(StandardPlanRepository standardPlanRepository){
         return args -> {
             List<StandardPlan> standardPlans = standardPlanRepository.findAll();
-            insertPlan(Constants.EVENING_2, Constants.EVENING_2_PRICE, DailyClassType.EVENING, standardPlans, standardPlanRepository);
-            insertPlan(Constants.EVENING_3, Constants.EVENING_3_PRICE, DailyClassType.EVENING, standardPlans, standardPlanRepository);
-            insertPlan(Constants.MORNING_2, Constants.MORNING_2_PRICE, DailyClassType.MORNING, standardPlans, standardPlanRepository);
-            insertPlan(Constants.MORNING_3, Constants.MORNING_3_PRICE, DailyClassType.MORNING, standardPlans, standardPlanRepository);
-            insertPlan(Constants.MORNING_4, Constants.MORNING_4_PRICE, DailyClassType.MORNING, standardPlans, standardPlanRepository);
-            insertPlan(Constants.MORNING_5, Constants.MORNING_5_PRICE, DailyClassType.MORNING, standardPlans, standardPlanRepository);
-            insertPlan(Constants.MORNING_DISCOUNT_5, Constants.MORNING_DISCOUNT_5_PRICE, DailyClassType.MORNING, standardPlans, standardPlanRepository);
+            insertPlan(Constants.EVENING_2, Constants.EVENING_2_PRICE, DailyClassType.EVENING, standardPlans);
+            insertPlan(Constants.EVENING_3, Constants.EVENING_3_PRICE, DailyClassType.EVENING, standardPlans);
+            insertPlan(Constants.MORNING_2, Constants.MORNING_2_PRICE, DailyClassType.MORNING, standardPlans);
+            insertPlan(Constants.MORNING_3, Constants.MORNING_3_PRICE, DailyClassType.MORNING, standardPlans);
+            insertPlan(Constants.MORNING_4, Constants.MORNING_4_PRICE, DailyClassType.MORNING, standardPlans);
+            insertPlan(Constants.MORNING_5, Constants.MORNING_5_PRICE, DailyClassType.MORNING, standardPlans);
+            insertPlan(Constants.MORNING_DISCOUNT_5, Constants.MORNING_DISCOUNT_5_PRICE, DailyClassType.MORNING, standardPlans);
         };
     }
 
-    private void insertPlan(String planName, Integer planPrice, DailyClassType classType, List<StandardPlan> standardPlans, StandardPlanRepository standardPlanRepository){
+    private void insertPlan(String planName, Integer planPrice, DailyClassType classType, List<StandardPlan> standardPlans){
         if(standardPlans.stream().noneMatch(x -> Objects.equals(x.getName(), planName))){
             standardPlanRepository.save(new StandardPlan(
                     planName,

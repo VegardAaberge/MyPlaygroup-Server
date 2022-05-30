@@ -25,10 +25,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ScheduleService {
 
-    DailyClassRepository dailyClassRepository;
-    MonthlyPlanRepository monthlyPlanRepository;
-    StandardPlanRepository standardPlanRepository;
-    AppUserService userService;
+    private final DailyClassRepository dailyClassRepository;
+    private final MonthlyPlanRepository monthlyPlanRepository;
+    private final StandardPlanRepository standardPlanRepository;
+    private final AppUserService userService;
 
     public List<MonthlyPlan> getUsersMonthlyPlans(String username) {
         return null; //monthlyPlanRepository.findByUsername(username);
@@ -39,7 +39,7 @@ public class ScheduleService {
         List<DailyClass> dailyClasses = new ArrayList<>();
 
         createClassesRequest.classRequests.forEach(dailyClassRequest -> {
-            Optional<DailyClass> dailyClass = null; //dailyClassRepository.findByDateAndClassType(dailyClassRequest.date, dailyClassRequest.startTime);
+            Optional<DailyClass> dailyClass = dailyClassRepository.findByDateAndClassType(dailyClassRequest.date, dailyClassRequest.startTime);
             if(dailyClass.isEmpty()){
                 dailyClasses.add(
                         new DailyClass(
