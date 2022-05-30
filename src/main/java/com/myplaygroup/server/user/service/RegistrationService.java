@@ -2,12 +2,8 @@ package com.myplaygroup.server.user.service;
 
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.repository.AppUserRepository;
-import com.myplaygroup.server.user.repository.AppTokenRepository;
-import com.myplaygroup.server.user.request.EditProfileRequest;
 import com.myplaygroup.server.user.request.RegistrationRequest;
-import com.myplaygroup.server.user.request.UpdateProfileRequest;
-import com.myplaygroup.server.user.response.EditProfileResponse;
-import com.myplaygroup.server.other.SimpleResponse;
+import com.myplaygroup.server.shared.data.SimpleResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

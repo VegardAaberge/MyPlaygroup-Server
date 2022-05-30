@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.myplaygroup.server.other.Constants.*;
+import static com.myplaygroup.server.shared.utils.Constants.*;
 
 @Getter
 @Setter

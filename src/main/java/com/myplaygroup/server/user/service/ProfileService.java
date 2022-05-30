@@ -2,8 +2,8 @@ package com.myplaygroup.server.user.service;
 
 import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.exception.ServerErrorException;
-import com.myplaygroup.server.other.DocumentServiceImpl;
-import com.myplaygroup.server.other.SimpleResponse;
+import com.myplaygroup.server.shared.service.DocumentServiceImpl;
+import com.myplaygroup.server.shared.data.SimpleResponse;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.repository.AppUserRepository;
 import com.myplaygroup.server.user.request.EditProfileRequest;

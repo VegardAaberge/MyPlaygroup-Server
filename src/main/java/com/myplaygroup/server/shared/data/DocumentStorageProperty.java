@@ -1,4 +1,4 @@
-package com.myplaygroup.server.other;
+package com.myplaygroup.server.shared.data;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

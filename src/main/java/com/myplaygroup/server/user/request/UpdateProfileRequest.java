@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import static com.myplaygroup.server.other.Constants.*;
+import static com.myplaygroup.server.shared.utils.Constants.*;
 
 public class UpdateProfileRequest {
     @NotBlank(message = PROFILE_NAME_VALIDATION_MSG)

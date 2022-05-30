@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.myplaygroup.server.other.Constants.AccessTokenValidity;
-import static com.myplaygroup.server.other.Constants.RefreshTokenValidity;
+import static com.myplaygroup.server.shared.utils.Constants.AccessTokenValidity;
+import static com.myplaygroup.server.shared.utils.Constants.RefreshTokenValidity;
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 

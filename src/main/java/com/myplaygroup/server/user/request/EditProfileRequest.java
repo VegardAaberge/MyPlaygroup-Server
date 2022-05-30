@@ -3,7 +3,7 @@ package com.myplaygroup.server.user.request;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-import static com.myplaygroup.server.other.Constants.*;
+import static com.myplaygroup.server.shared.utils.Constants.*;
 
 public class EditProfileRequest {
     public String profileName;

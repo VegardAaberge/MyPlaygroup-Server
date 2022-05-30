@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-import static com.myplaygroup.server.other.Constants.*;
+import static com.myplaygroup.server.shared.utils.Constants.*;
 
 public class MessageRequest {
 

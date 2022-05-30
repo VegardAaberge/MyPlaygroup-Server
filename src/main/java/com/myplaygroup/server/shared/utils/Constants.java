@@ -1,4 +1,4 @@
-package com.myplaygroup.server.other;
+package com.myplaygroup.server.shared.utils;
 
 public final class Constants {
 

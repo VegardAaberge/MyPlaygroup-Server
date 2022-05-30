@@ -1,5 +1,6 @@
-package com.myplaygroup.server.other;
+package com.myplaygroup.server.shared.service;
 
+import com.myplaygroup.server.shared.data.DocumentStorageProperty;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 

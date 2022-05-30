@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.myplaygroup.server.user.model.AppUser.UserRole.*;
-import static com.myplaygroup.server.other.Constants.USER_NOT_FOUND_MSG;
+import static com.myplaygroup.server.shared.utils.Constants.USER_NOT_FOUND_MSG;
 
 @Service
 @AllArgsConstructor

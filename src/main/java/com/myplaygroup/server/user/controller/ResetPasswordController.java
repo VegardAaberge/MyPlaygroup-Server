@@ -4,7 +4,7 @@ import com.myplaygroup.server.user.request.SendResetPasswordRequest;
 import com.myplaygroup.server.user.request.VerifyResetPasswordRequest;
 import com.myplaygroup.server.user.response.SendResetPasswordResponse;
 import com.myplaygroup.server.user.service.ResetPasswordService;
-import com.myplaygroup.server.other.SimpleResponse;
+import com.myplaygroup.server.shared.data.SimpleResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

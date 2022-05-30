@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Collections;
 
-import static com.myplaygroup.server.other.Constants.*;
+import static com.myplaygroup.server.shared.utils.Constants.*;
 
 @Getter
 @Setter

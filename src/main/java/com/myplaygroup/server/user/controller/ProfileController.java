@@ -1,6 +1,6 @@
 package com.myplaygroup.server.user.controller;
 
-import com.myplaygroup.server.other.SimpleResponse;
+import com.myplaygroup.server.shared.data.SimpleResponse;
 import com.myplaygroup.server.security.AuthorizationService;
 import com.myplaygroup.server.user.request.EditProfileRequest;
 import com.myplaygroup.server.user.request.UpdateProfileRequest;
