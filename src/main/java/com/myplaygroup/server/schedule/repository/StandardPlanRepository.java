@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface StandardPlanRepository extends JpaRepository<StandardPlan, Long> {
 
-    //Optional<StandardPlan> findByName(String standardPlan);
+    Optional<StandardPlan> findByName(String standardPlan);
 }

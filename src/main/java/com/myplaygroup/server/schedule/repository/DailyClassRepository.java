@@ -21,11 +21,18 @@ public interface DailyClassRepository extends JpaRepository<DailyClass, Long> {
             value = "SELECT * " +
                     "FROM daily_class " +
                     "WHERE " +
-                    "   date >='2022-05-22 00:00:00' " +
-                    "   AND date <'2022-05-23 00:00:00' " +
-                    "   AND class_type=1"
+                    "   date =?1 " +
+                    "   AND class_type=?2"
     )
-    Optional<DailyClass> findByDateAndClassType(LocalDate date, LocalTime startTime);
+    Optional<DailyClass> findByDateAndClassType(LocalDate date, Integer classType);
 
-    //List<DailyClass> findByDaysAndClassType(List<LocalDate> days, DailyClassType type);
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * " +
+                    "FROM daily_class " +
+                    "WHERE " +
+                    "   date IN ?1 " +
+                    "   AND class_type=?2"
+    )
+    List<DailyClass> findByDatesAndClassType(List<LocalDate> date, Integer classType);
 }
