@@ -8,13 +8,13 @@ import java.time.LocalTime;
 
 public class DailyClassRequest {
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-M-d")
     public LocalDate date;
 
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "H:mm")
     public LocalTime startTime;
 
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "H:mm")
     public LocalTime endTime;
 
     public DailyClassType classType;

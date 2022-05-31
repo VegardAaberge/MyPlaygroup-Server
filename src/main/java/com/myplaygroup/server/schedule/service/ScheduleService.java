@@ -11,6 +11,7 @@ import com.myplaygroup.server.schedule.repository.MonthlyPlanRepository;
 import com.myplaygroup.server.schedule.repository.StandardPlanRepository;
 import com.myplaygroup.server.schedule.requests.CreateClassesRequest;
 import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
+import com.myplaygroup.server.schedule.response.GetMonthlyPlanResponse;
 import com.myplaygroup.server.schedule.response.MonthlyPlanResponse;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.repository.AppUserRepository;
@@ -31,8 +32,14 @@ public class ScheduleService {
     private final StandardPlanRepository standardPlanRepository;
     private final AppUserService userService;
 
-    public List<MonthlyPlanResponse> getUsersMonthlyPlans(String username) {
-        return monthlyPlanRepository.findByUsername(username);
+    public GetMonthlyPlanResponse getUsersMonthlyPlans(String username) {
+        List<MonthlyPlanResponse> monthlyPlans = monthlyPlanRepository.findByUsername(username);
+        List<DailyClass> dailyClasses = dailyClassRepository.findByUsername(username);
+
+        return new GetMonthlyPlanResponse(
+                monthlyPlans,
+                dailyClasses
+        );
     }
 
     public List<DailyClass> createDailyClasses(CreateClassesRequest createClassesRequest) {
@@ -80,6 +87,7 @@ public class ScheduleService {
         }
 
         MonthlyPlan monthlyPlan = new MonthlyPlan(
+                request.kidName,
                 appUser,
                 standardPlan,
                 dailyClasses

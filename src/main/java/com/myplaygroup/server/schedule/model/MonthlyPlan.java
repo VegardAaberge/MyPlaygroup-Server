@@ -12,7 +12,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "monthly_plan")
+@Table(
+        name = "monthly_plan",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "kid_name_unique", columnNames = "kid_name"),
+        }
+)
 public class MonthlyPlan {
     @Id
     @SequenceGenerator(
@@ -27,6 +32,9 @@ public class MonthlyPlan {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "kid_name", nullable = false)
+    private String kidName;
+
     @ManyToOne
     @JoinColumn(name = "app_user", nullable = false)
     private AppUser appUser;
@@ -39,7 +47,8 @@ public class MonthlyPlan {
     @Column(name = "classes", nullable = false)
     private List<DailyClass> classes;
 
-    public MonthlyPlan(AppUser appUser, StandardPlan plan, List<DailyClass> classes) {
+    public MonthlyPlan(String kidName, AppUser appUser, StandardPlan plan, List<DailyClass> classes) {
+        this.kidName = kidName;
         this.appUser = appUser;
         this.plan = plan;
         this.classes = classes;

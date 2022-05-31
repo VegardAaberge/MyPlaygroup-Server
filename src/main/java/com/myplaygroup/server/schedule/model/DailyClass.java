@@ -37,15 +37,15 @@ public class DailyClass {
     private LocalTime endTime;
 
     @Column(name = "class_type", nullable = false)
-    private DailyClassType classtype;
+    private DailyClassType classType;
 
     @Column(name = "cancelled", nullable = false)
     private Boolean cancelled = false;
 
-    public DailyClass(LocalDate date, LocalTime startTime, LocalTime endTime, DailyClassType classtype) {
+    public DailyClass(LocalDate date, LocalTime startTime, LocalTime endTime, DailyClassType classType) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.classtype = classtype;
+        this.classType = classType;
     }
 }

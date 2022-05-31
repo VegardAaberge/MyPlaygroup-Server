@@ -6,6 +6,7 @@ import com.myplaygroup.server.schedule.model.MonthlyPlan;
 import com.myplaygroup.server.schedule.model.StandardPlan;
 import com.myplaygroup.server.schedule.requests.CreateClassesRequest;
 import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
+import com.myplaygroup.server.schedule.response.GetMonthlyPlanResponse;
 import com.myplaygroup.server.schedule.response.MonthlyPlanResponse;
 import com.myplaygroup.server.schedule.service.ScheduleService;
 import com.myplaygroup.server.security.AuthorizationService;
@@ -27,7 +28,7 @@ public class ScheduleController {
     ScheduleService scheduleService;
 
     @GetMapping(path = "/plans")
-    public List<MonthlyPlanResponse> getUsersMonthlyPlans(HttpServletRequest servletRequest){
+    public GetMonthlyPlanResponse getUsersMonthlyPlans(HttpServletRequest servletRequest){
         log.info(servletRequest.getServletPath());
         String username = authorizationService.getUserInfoFromRequest(servletRequest).getUsername();
 

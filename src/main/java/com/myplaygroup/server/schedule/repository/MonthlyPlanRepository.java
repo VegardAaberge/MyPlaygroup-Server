@@ -1,5 +1,6 @@
 package com.myplaygroup.server.schedule.repository;
 
+import com.myplaygroup.server.schedule.model.DailyClass;
 import com.myplaygroup.server.schedule.model.MonthlyPlan;
 import com.myplaygroup.server.schedule.response.MonthlyPlanResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,8 @@ public interface MonthlyPlanRepository extends JpaRepository<MonthlyPlan, Long> 
     @Query(
             nativeQuery = true,
             value = "SELECT " +
+                    "    monthly_plan.id as id, " +
+                    "    monthly_plan.kid_name as kidName, " +
                     "    standard_plan.name as planName, " +
                     "    standard_plan.price as planPrice " +
                     "FROM monthly_plan " +
@@ -22,7 +25,7 @@ public interface MonthlyPlanRepository extends JpaRepository<MonthlyPlan, Long> 
                     "        ON app_user.id = monthly_plan.app_user " +
                     "    JOIN standard_plan " +
                     "        ON standard_plan.id = monthly_plan.plan " +
-                    "WHERE app_user.username= 'vegard'"
+                    "WHERE app_user.username= ?1"
     )
     List<MonthlyPlanResponse> findByUsername(String username);
 }

@@ -20,5 +20,8 @@ public class MonthlyPlanRequest {
     public String username;
 
     @NotNull
+    public String kidName;
+
+    @NotNull
     public String standardPlan;
 }
