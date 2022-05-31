@@ -8,6 +8,10 @@ import java.util.List;
 @AllArgsConstructor
 public class GetMonthlyPlanResponse {
 
+    public String username;
+
+    public Long userCredit;
+
     public List<MonthlyPlanResponse> monthlyPlans;
 
     public List<DailyClass> dailyClasses;

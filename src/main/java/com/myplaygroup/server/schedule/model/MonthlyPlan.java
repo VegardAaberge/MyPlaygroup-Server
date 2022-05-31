@@ -47,6 +47,12 @@ public class MonthlyPlan {
     @Column(name = "classes", nullable = false)
     private List<DailyClass> classes;
 
+    @Column(name = "paid", nullable = false)
+    private Boolean paid = false;
+
+    @Column(name = "cancelled", nullable = false)
+    private Boolean cancelled = false;
+
     public MonthlyPlan(String kidName, AppUser appUser, StandardPlan plan, List<DailyClass> classes) {
         this.kidName = kidName;
         this.appUser = appUser;

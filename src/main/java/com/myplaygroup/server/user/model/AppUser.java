@@ -64,6 +64,9 @@ public class AppUser implements UserDetails {
     @Column(name = "app_user_role", nullable = false)
     private UserRole appUserRole;
 
+    @Column(name = "user_credit", nullable = false)
+    private Long userCredit = 0L;
+
     @Column(name = "locked", nullable = false)
     private Boolean locked = false;
 

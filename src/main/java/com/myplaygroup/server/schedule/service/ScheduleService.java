@@ -33,10 +33,13 @@ public class ScheduleService {
     private final AppUserService userService;
 
     public GetMonthlyPlanResponse getUsersMonthlyPlans(String username) {
+        AppUser appUser = userService.loadUserByUsername(username);
         List<MonthlyPlanResponse> monthlyPlans = monthlyPlanRepository.findByUsername(username);
         List<DailyClass> dailyClasses = dailyClassRepository.findByUsername(username);
 
         return new GetMonthlyPlanResponse(
+                appUser.getUsername(),
+                appUser.getUserCredit(),
                 monthlyPlans,
                 dailyClasses
         );

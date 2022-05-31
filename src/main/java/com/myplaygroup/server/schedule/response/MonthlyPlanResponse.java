@@ -4,6 +4,8 @@ public interface MonthlyPlanResponse {
 
     Long getId();
 
+    Boolean getPaid();
+
     String getPlanName();
 
     Long getPlanPrice();
