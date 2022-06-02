@@ -50,6 +50,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 request.getRequestURL().toString()
         );
 
+        tokens.put("user_role", user.getAppUserRole());
         tokens.put("profile_created", user.getProfileCreated());
         if(user.getProfileCreated()){
             tokens.put("profile_name", user.getProfileName());
