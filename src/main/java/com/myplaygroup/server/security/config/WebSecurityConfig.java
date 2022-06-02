@@ -38,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/chat-socket").permitAll();
         http.authorizeRequests().antMatchers("/api/v*/login/**", "/api/v*/reset-password/**").permitAll();
-        http.authorizeRequests().antMatchers("/api/v*/chat/**", "/api/v*/profile/**").hasAnyAuthority(ADMIN.name(), USER.name());
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/v*/registration/**", "api/v1/schedule/**").hasAuthority(ADMIN.name());
+        http.authorizeRequests().antMatchers("/api/v*/chat/**", "/api/v*/profile/**", "api/v1/schedule/**").hasAnyAuthority(ADMIN.name(), USER.name());
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/v*/registration/**", "api/v1/classes/**", "api/v1/plans/**").hasAuthority(ADMIN.name());
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(authorizationService), UsernamePasswordAuthenticationFilter.class);
