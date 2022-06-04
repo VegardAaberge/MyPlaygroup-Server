@@ -4,6 +4,8 @@ import com.myplaygroup.server.schedule.model.DailyClass;
 import com.myplaygroup.server.schedule.model.MonthlyPlan;
 import com.myplaygroup.server.schedule.requests.CreateClassesRequest;
 import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
+import com.myplaygroup.server.schedule.response.GetMonthlyPlanResponse;
+import com.myplaygroup.server.schedule.service.DailyClassesService;
 import com.myplaygroup.server.schedule.service.ScheduleService;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
@@ -21,7 +23,14 @@ import java.util.List;
 public class DailyClassesController {
 
     AuthorizationService authorizationService;
-    ScheduleService scheduleService;
+    DailyClassesService dailyClassesService;
+
+    @GetMapping
+    public List<DailyClass> getAllClasses(HttpServletRequest servletRequest){
+        log.info(servletRequest.getServletPath());
+
+        return dailyClassesService.getAllClasses();
+    }
 
     @PostMapping
     public List<DailyClass> createDailyClasses(
@@ -29,6 +38,6 @@ public class DailyClassesController {
             HttpServletRequest servletRequest
     ){
         log.info(servletRequest.getServletPath());
-        return scheduleService.createDailyClasses(createClassesRequest);
+        return dailyClassesService.createDailyClasses(createClassesRequest);
     }
 }

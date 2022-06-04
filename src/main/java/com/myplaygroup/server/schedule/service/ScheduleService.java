@@ -45,34 +45,6 @@ public class ScheduleService {
         );
     }
 
-    public List<DailyClass> createDailyClasses(CreateClassesRequest createClassesRequest) {
-
-        List<DailyClass> dailyClasses = new ArrayList<>();
-
-        createClassesRequest.classRequests.forEach(request -> {
-            Optional<DailyClass> dailyClass = dailyClassRepository.findByDateAndClassType(
-                    request.date,
-                    request.classType.ordinal()
-            );
-            if(dailyClass.isEmpty()){
-                dailyClasses.add(
-                        new DailyClass(
-                                request.date,
-                                request.startTime,
-                                request.endTime,
-                                request.classType
-                        )
-                );
-            }
-        });
-
-        if(!dailyClasses.isEmpty()){
-            dailyClassRepository.saveAll(dailyClasses);
-        }
-
-        return dailyClasses;
-    }
-
     public MonthlyPlan addMonthlyPlan(MonthlyPlanRequest request) {
 
         AppUser appUser = userService.loadUserByUsername(request.username);
