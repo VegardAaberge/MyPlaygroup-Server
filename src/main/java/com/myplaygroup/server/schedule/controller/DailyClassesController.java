@@ -1,12 +1,8 @@
 package com.myplaygroup.server.schedule.controller;
 
 import com.myplaygroup.server.schedule.model.DailyClass;
-import com.myplaygroup.server.schedule.model.MonthlyPlan;
 import com.myplaygroup.server.schedule.requests.CreateClassesRequest;
-import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
-import com.myplaygroup.server.schedule.response.GetMonthlyPlanResponse;
 import com.myplaygroup.server.schedule.service.DailyClassesService;
-import com.myplaygroup.server.schedule.service.ScheduleService;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

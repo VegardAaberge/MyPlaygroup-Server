@@ -1,27 +1,21 @@
 package com.myplaygroup.server.schedule.service;
 
-import com.myplaygroup.server.exception.BadRequestException;
 import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.schedule.model.DailyClass;
-import com.myplaygroup.server.schedule.model.DailyClassType;
 import com.myplaygroup.server.schedule.model.MonthlyPlan;
 import com.myplaygroup.server.schedule.model.StandardPlan;
 import com.myplaygroup.server.schedule.repository.DailyClassRepository;
 import com.myplaygroup.server.schedule.repository.MonthlyPlanRepository;
 import com.myplaygroup.server.schedule.repository.StandardPlanRepository;
-import com.myplaygroup.server.schedule.requests.CreateClassesRequest;
 import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
-import com.myplaygroup.server.schedule.response.GetMonthlyPlanResponse;
-import com.myplaygroup.server.schedule.response.MonthlyPlanResponse;
+import com.myplaygroup.server.schedule.response.MonthlyPlansResponse;
+import com.myplaygroup.server.schedule.response.MonthlyPlanItem;
 import com.myplaygroup.server.user.model.AppUser;
-import com.myplaygroup.server.user.repository.AppUserRepository;
 import com.myplaygroup.server.user.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +26,12 @@ public class ScheduleService {
     private final StandardPlanRepository standardPlanRepository;
     private final AppUserService userService;
 
-    public GetMonthlyPlanResponse getUsersMonthlyPlans(String username) {
+    public MonthlyPlansResponse getUsersMonthlyPlans(String username) {
         AppUser appUser = userService.loadUserByUsername(username);
-        List<MonthlyPlanResponse> monthlyPlans = monthlyPlanRepository.findByUsername(username);
+        List<MonthlyPlanItem> monthlyPlans = monthlyPlanRepository.findByUsername(username);
         List<DailyClass> dailyClasses = dailyClassRepository.findByUsername(username);
 
-        return new GetMonthlyPlanResponse(
+        return new MonthlyPlansResponse(
                 appUser.getUsername(),
                 appUser.getUserCredit(),
                 monthlyPlans,

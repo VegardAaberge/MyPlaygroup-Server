@@ -6,13 +6,13 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
-public class GetMonthlyPlanResponse {
+public class MonthlyPlansResponse {
 
     public String username;
 
     public Long userCredit;
 
-    public List<MonthlyPlanResponse> monthlyPlans;
+    public List<MonthlyPlanItem> monthlyPlans;
 
     public List<DailyClass> dailyClasses;
 }

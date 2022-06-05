@@ -1,6 +1,6 @@
 package com.myplaygroup.server.schedule.response;
 
-public interface MonthlyPlanResponse {
+public interface MonthlyPlanItem {
 
     Long getId();
 

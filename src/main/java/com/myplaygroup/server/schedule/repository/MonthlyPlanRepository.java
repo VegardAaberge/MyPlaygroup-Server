@@ -1,8 +1,7 @@
 package com.myplaygroup.server.schedule.repository;
 
-import com.myplaygroup.server.schedule.model.DailyClass;
 import com.myplaygroup.server.schedule.model.MonthlyPlan;
-import com.myplaygroup.server.schedule.response.MonthlyPlanResponse;
+import com.myplaygroup.server.schedule.response.MonthlyPlanItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -30,5 +29,5 @@ public interface MonthlyPlanRepository extends JpaRepository<MonthlyPlan, Long> 
                     "   app_user.username= ?1" +
                     "   AND monthly_plan.cancelled = false"
     )
-    List<MonthlyPlanResponse> findByUsername(String username);
+    List<MonthlyPlanItem> findByUsername(String username);
 }
