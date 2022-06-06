@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -39,13 +40,17 @@ public class DailyClass {
     @Column(name = "class_type", nullable = false)
     private DailyClassType classType;
 
+    @Column(name = "day_of_week", nullable = false)
+    private DayOfWeek dayOfWeek;
+
     @Column(name = "cancelled", nullable = false)
     private Boolean cancelled = false;
 
-    public DailyClass(LocalDate date, LocalTime startTime, LocalTime endTime, DailyClassType classType) {
+    public DailyClass(LocalDate date, LocalTime startTime, LocalTime endTime, DailyClassType classType, DayOfWeek dayOfWeek) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.classType = classType;
+        this.dayOfWeek = dayOfWeek;
     }
 }

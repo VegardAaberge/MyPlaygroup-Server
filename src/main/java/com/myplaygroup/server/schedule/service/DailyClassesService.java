@@ -38,7 +38,8 @@ public class DailyClassesService {
                                 request.date,
                                 request.startTime,
                                 request.endTime,
-                                request.classType
+                                request.classType,
+                                request.dayOfWeek
                         )
                 );
             }
