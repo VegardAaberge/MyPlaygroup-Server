@@ -55,16 +55,16 @@ public class MonthlyPlan {
     @JoinTable(name = "days_of_week", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "days_of_week", nullable = false)
     @Enumerated(EnumType.STRING)
-    private List<DayOfWeek> daysOfWeeks;
+    private List<DayOfWeek> daysOfWeek;
 
     @Column(name = "cancelled", nullable = false)
     private Boolean cancelled = false;
 
-    public MonthlyPlan(String kidName, AppUser appUser, StandardPlan plan, List<DailyClass> classes, List<DayOfWeek> daysOfWeeks) {
+    public MonthlyPlan(String kidName, AppUser appUser, StandardPlan plan, List<DailyClass> classes, List<DayOfWeek> daysOfWeek) {
         this.kidName = kidName;
         this.appUser = appUser;
         this.plan = plan;
         this.classes = classes;
-        this.daysOfWeeks = daysOfWeeks;
+        this.daysOfWeek = daysOfWeek;
     }
 }
