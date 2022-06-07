@@ -31,10 +31,10 @@ public interface DailyClassRepository extends JpaRepository<DailyClass, Long> {
             value = "SELECT * " +
                     "FROM daily_class " +
                     "WHERE " +
-                    "   date IN ?1 " +
+                    "   day_of_week IN ?1 " +
                     "   AND class_type=?2"
     )
-    List<DailyClass> findByDatesAndClassType(List<LocalDate> date, Integer classType);
+    List<DailyClass> findByDatesAndClassType(List<Integer> date, Integer classType);
 
     @Query(
             nativeQuery = true,

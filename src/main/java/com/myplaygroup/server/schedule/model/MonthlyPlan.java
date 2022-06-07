@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.util.List;
 
 @Getter
@@ -50,13 +51,20 @@ public class MonthlyPlan {
     @Column(name = "paid", nullable = false)
     private Boolean paid = false;
 
+    @ElementCollection(targetClass = DayOfWeek.class)
+    @JoinTable(name = "days_of_week", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "days_of_week", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private List<DayOfWeek> daysOfWeeks;
+
     @Column(name = "cancelled", nullable = false)
     private Boolean cancelled = false;
 
-    public MonthlyPlan(String kidName, AppUser appUser, StandardPlan plan, List<DailyClass> classes) {
+    public MonthlyPlan(String kidName, AppUser appUser, StandardPlan plan, List<DailyClass> classes, List<DayOfWeek> daysOfWeeks) {
         this.kidName = kidName;
         this.appUser = appUser;
         this.plan = plan;
         this.classes = classes;
+        this.daysOfWeeks = daysOfWeeks;
     }
 }

@@ -13,9 +13,11 @@ import com.myplaygroup.server.schedule.response.MonthlyPlanItem;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.service.AppUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,10 @@ public class ScheduleService {
         );
     }
 
+    public List<MonthlyPlan> getMonthlyPlans() {
+        return monthlyPlanRepository.findAll(Sort.by("id"));
+    }
+
     public MonthlyPlan addMonthlyPlan(MonthlyPlanRequest request) {
 
         AppUser appUser = userService.loadUserByUsername(request.username);
@@ -47,8 +53,12 @@ public class ScheduleService {
                 .orElseThrow(() -> new NotFoundException("Plan not found"));
 
 
+        List<Integer> dayOfWeeks = request.daysOfWeek.stream()
+                .map(Enum::ordinal)
+                .collect(Collectors.toList());
+
         List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
-                request.days,
+                dayOfWeeks,
                 standardPlan.getType().ordinal()
         );
         if(dailyClasses.isEmpty()){
@@ -59,7 +69,8 @@ public class ScheduleService {
                 request.kidName,
                 appUser,
                 standardPlan,
-                dailyClasses
+                dailyClasses,
+                request.daysOfWeek
         );
         monthlyPlanRepository.save(monthlyPlan);
 
