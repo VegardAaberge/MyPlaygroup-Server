@@ -1,5 +1,7 @@
 package com.myplaygroup.server.schedule.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.myplaygroup.server.schedule.requests.DailyClassItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,5 +54,15 @@ public class DailyClass {
         this.endTime = endTime;
         this.classType = classType;
         this.dayOfWeek = dayOfWeek;
+    }
+
+    public DailyClass(DailyClassItem item){
+        this.id = item.id;
+        this.date = item.date;
+        this.startTime = item.startTime;
+        this.endTime = item.endTime;
+        this.classType = item.classType;
+        this.dayOfWeek = item.dayOfWeek;
+        this.cancelled = item.cancelled;
     }
 }

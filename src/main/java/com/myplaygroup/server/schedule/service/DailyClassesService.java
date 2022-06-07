@@ -1,12 +1,12 @@
 package com.myplaygroup.server.schedule.service;
 
+import com.myplaygroup.server.exception.ServerErrorException;
 import com.myplaygroup.server.schedule.model.DailyClass;
 import com.myplaygroup.server.schedule.repository.DailyClassRepository;
-import com.myplaygroup.server.schedule.repository.MonthlyPlanRepository;
-import com.myplaygroup.server.schedule.repository.StandardPlanRepository;
-import com.myplaygroup.server.schedule.requests.CreateClassesRequest;
-import com.myplaygroup.server.user.service.AppUserService;
+import com.myplaygroup.server.schedule.requests.DailyClassItem;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,35 +20,25 @@ public class DailyClassesService {
     private final DailyClassRepository dailyClassRepository;
 
     public List<DailyClass> getAllClasses() {
-        return dailyClassRepository.findAll();
+        return dailyClassRepository.findAll(Sort.by("id"));
     }
 
-    public List<DailyClass> createDailyClasses(CreateClassesRequest createClassesRequest) {
+    public List<DailyClass> uploadDailyClasses(List<DailyClassItem> dailyClasses) {
 
-        List<DailyClass> dailyClasses = new ArrayList<>();
+        dailyClasses.stream().filter(x -> x.id != -1).forEach(item ->
+                dailyClassRepository.save(new DailyClass(item))
+        );
 
-        createClassesRequest.classRequests.forEach(request -> {
-            Optional<DailyClass> dailyClass = dailyClassRepository.findByDateAndClassType(
-                    request.date,
-                    request.classType.ordinal()
+        dailyClasses.stream().filter(x -> x.id == -1).forEach(item -> {
+            Optional<DailyClass> dailyClassOptional = dailyClassRepository.findByDateAndClassType(
+                    item.date,
+                    item.classType.ordinal()
             );
-            if(dailyClass.isEmpty()){
-                dailyClasses.add(
-                        new DailyClass(
-                                request.date,
-                                request.startTime,
-                                request.endTime,
-                                request.classType,
-                                request.dayOfWeek
-                        )
-                );
+            if(dailyClassOptional.isEmpty()){
+                dailyClassRepository.save(new DailyClass(item));
             }
         });
 
-        if(!dailyClasses.isEmpty()){
-            dailyClassRepository.saveAll(dailyClasses);
-        }
-
-        return dailyClasses;
+        return getAllClasses();
     }
 }

@@ -1,7 +1,7 @@
 package com.myplaygroup.server.schedule.controller;
 
 import com.myplaygroup.server.schedule.model.DailyClass;
-import com.myplaygroup.server.schedule.requests.CreateClassesRequest;
+import com.myplaygroup.server.schedule.requests.DailyClassItem;
 import com.myplaygroup.server.schedule.service.DailyClassesService;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
@@ -29,11 +29,11 @@ public class DailyClassesController {
     }
 
     @PostMapping
-    public List<DailyClass> createDailyClasses(
-            @RequestBody @Valid CreateClassesRequest createClassesRequest,
+    public List<DailyClass> uploadDailyClasses(
+            @RequestBody @Valid List<DailyClassItem> dailyClasses,
             HttpServletRequest servletRequest
     ){
         log.info(servletRequest.getServletPath());
-        return dailyClassesService.createDailyClasses(createClassesRequest);
+        return dailyClassesService.uploadDailyClasses(dailyClasses);
     }
 }

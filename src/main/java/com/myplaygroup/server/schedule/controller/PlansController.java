@@ -1,8 +1,6 @@
 package com.myplaygroup.server.schedule.controller;
 
-import com.myplaygroup.server.schedule.model.DailyClass;
 import com.myplaygroup.server.schedule.model.MonthlyPlan;
-import com.myplaygroup.server.schedule.requests.CreateClassesRequest;
 import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
 import com.myplaygroup.server.schedule.service.ScheduleService;
 import com.myplaygroup.server.security.AuthorizationService;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Slf4j
 @RestController
