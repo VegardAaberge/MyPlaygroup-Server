@@ -41,8 +41,20 @@ public class ScheduleService {
         );
     }
 
-    public List<MonthlyPlan> getMonthlyPlans() {
-        return monthlyPlanRepository.findAll(Sort.by("id"));
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    public List<MonthlyPlanItem> getMonthlyPlans() {
+        List<MonthlyPlan> monthlyPlans = monthlyPlanRepository.findAll(Sort.by("id"));
+
+        List<MonthlyPlanItem> monthlyPlanItem = monthlyPlans.stream().map(item -> new MonthlyPlanItem(
+                item.getId(),
+                item.getPaid(),
+                item.getPlan().getName(),
+                item.getDaysOfWeek(),
+                item.getPlan().getPrice(),
+                item.getKidName()
+        )).collect(Collectors.toList());
+
+        return monthlyPlanItem;
     }
 
     public MonthlyPlan addMonthlyPlan(MonthlyPlanRequest request) {

@@ -1,14 +1,22 @@
 package com.myplaygroup.server.schedule.response;
 
-public interface MonthlyPlanItem {
+import lombok.AllArgsConstructor;
 
-    Long getId();
+import java.time.DayOfWeek;
+import java.util.List;
 
-    Boolean getPaid();
+@AllArgsConstructor
+public class MonthlyPlanItem {
 
-    String getPlanName();
+    public Long id;
 
-    Long getPlanPrice();
+    public Boolean paid;
 
-    String getKidName();
+    public String planName;
+
+    public List<DayOfWeek> daysOfWeek;
+
+    public Integer planPrice;
+
+    public String kidName;
 }
