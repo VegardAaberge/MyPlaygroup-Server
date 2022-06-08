@@ -32,9 +32,10 @@ public interface DailyClassRepository extends JpaRepository<DailyClass, Long> {
                     "FROM daily_class " +
                     "WHERE " +
                     "   day_of_week IN ?1 " +
-                    "   AND class_type=?2"
+                    "   AND class_type=?2 " +
+                    "   AND EXTRACT(MONTH FROM date) = ?3"
     )
-    List<DailyClass> findByDatesAndClassType(List<Integer> date, Integer classType);
+    List<DailyClass> findByDatesAndClassType(List<Integer> date, Integer classType, Integer month);
 
     @Query(
             nativeQuery = true,

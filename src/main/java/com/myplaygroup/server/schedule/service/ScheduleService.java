@@ -66,7 +66,8 @@ public class ScheduleService {
 
         List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
                 dayOfWeeks,
-                standardPlan.getType().ordinal()
+                standardPlan.getType().ordinal(),
+                request.month.ordinal()
         );
         if(dailyClasses.isEmpty()){
             throw new NotFoundException("No classes found");
@@ -75,6 +76,7 @@ public class ScheduleService {
         MonthlyPlan monthlyPlan = new MonthlyPlan(
                 request.kidName,
                 appUser,
+                request.month,
                 standardPlan,
                 dailyClasses,
                 request.daysOfWeek
@@ -87,11 +89,13 @@ public class ScheduleService {
     private List<MonthlyPlanItem> getMonthlyPlanItems(List<MonthlyPlan> monthlyPlans){
         return monthlyPlans.stream().map(item -> new MonthlyPlanItem(
                 item.getId(),
+                item.getAppUser().getUsername(),
+                item.getKidName(),
+                item.getMonth(),
                 item.getPaid(),
                 item.getPlan().getName(),
                 item.getDaysOfWeek(),
-                item.getPlan().getPrice(),
-                item.getKidName()
+                item.getPlan().getPrice()
         )).collect(Collectors.toList());
     }
 }
