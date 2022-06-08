@@ -9,9 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 import static com.myplaygroup.server.shared.utils.Constants.*;
 
@@ -40,6 +42,10 @@ public class AppUser implements UserDetails {
     )
     @Column(name= "id", updatable = false)
     private long id;
+
+    @NotBlank(message = CLIENT_ID_VALIDATION_MSG)
+    @Column(name = "client_id", updatable = false, nullable = false)
+    private String clientId = UUID.randomUUID().toString();
 
     @Pattern(regexp=USERNAME_VALIDATION_REGEX, message=USERNAME_VALIDATION_MSG)
     @Column(name = "username", nullable = false)

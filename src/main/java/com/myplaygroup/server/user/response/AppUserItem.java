@@ -4,6 +4,8 @@ public interface AppUserItem {
 
     Long getId();
 
+    String getClientId();
+
     String getUsername();
 
     String getProfileName();

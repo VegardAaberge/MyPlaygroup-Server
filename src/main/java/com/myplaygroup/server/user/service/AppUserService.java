@@ -37,6 +37,10 @@ public class AppUserService implements UserDetailsService {
                         bCryptPasswordEncoder.encode("a123456B"), // Need to be changed
                         ADMIN
                 );
+                admin.setProfileName("Playgroup");
+                admin.setPhoneNumber("13900204214");
+                admin.setEmail("vegard.aaberge@gmail.com");
+                admin.setProfileCreated(true);
                 appUserRepository.save(admin);
 
                 AppUser vegard = new AppUser(
