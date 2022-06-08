@@ -30,13 +30,15 @@ public class ScheduleService {
 
     public MonthlyPlansResponse getUsersMonthlyPlans(String username) {
         AppUser appUser = userService.loadUserByUsername(username);
-        List<MonthlyPlanItem> monthlyPlans = monthlyPlanRepository.findByUsername(username);
+        List<MonthlyPlan> monthlyPlans = monthlyPlanRepository.findByUsername(username);
         List<DailyClass> dailyClasses = dailyClassRepository.findByUsername(username);
+
+        List<MonthlyPlanItem> monthlyPlanItem = getMonthlyPlanItems(monthlyPlans);
 
         return new MonthlyPlansResponse(
                 appUser.getUsername(),
                 appUser.getUserCredit(),
-                monthlyPlans,
+                monthlyPlanItem,
                 dailyClasses
         );
     }
@@ -45,14 +47,7 @@ public class ScheduleService {
     public List<MonthlyPlanItem> getMonthlyPlans() {
         List<MonthlyPlan> monthlyPlans = monthlyPlanRepository.findAll(Sort.by("id"));
 
-        List<MonthlyPlanItem> monthlyPlanItem = monthlyPlans.stream().map(item -> new MonthlyPlanItem(
-                item.getId(),
-                item.getPaid(),
-                item.getPlan().getName(),
-                item.getDaysOfWeek(),
-                item.getPlan().getPrice(),
-                item.getKidName()
-        )).collect(Collectors.toList());
+        List<MonthlyPlanItem> monthlyPlanItem = getMonthlyPlanItems(monthlyPlans);
 
         return monthlyPlanItem;
     }
@@ -87,5 +82,16 @@ public class ScheduleService {
         monthlyPlanRepository.save(monthlyPlan);
 
         return monthlyPlan;
+    }
+
+    private List<MonthlyPlanItem> getMonthlyPlanItems(List<MonthlyPlan> monthlyPlans){
+        return monthlyPlans.stream().map(item -> new MonthlyPlanItem(
+                item.getId(),
+                item.getPaid(),
+                item.getPlan().getName(),
+                item.getDaysOfWeek(),
+                item.getPlan().getPrice(),
+                item.getKidName()
+        )).collect(Collectors.toList());
     }
 }

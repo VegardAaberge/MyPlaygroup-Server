@@ -6,7 +6,7 @@ public final class Constants {
 
     public static final String ProfilePath = "files/profile";
 
-    public static final Long AccessTokenValidity = 10 * 60 * 10000L; // 10 minutes
+    public static final Long AccessTokenValidity = 30 * 24 * 60 * 60 * 1000L; //10 * 60 * 1000L; // 10 minutes
     public static final Long RefreshTokenValidity = 30 * 24 * 60 * 60 * 1000L; // 30 days
 
     // Error message

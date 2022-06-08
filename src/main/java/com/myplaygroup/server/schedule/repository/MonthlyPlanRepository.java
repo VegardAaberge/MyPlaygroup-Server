@@ -14,20 +14,13 @@ public interface MonthlyPlanRepository extends JpaRepository<MonthlyPlan, Long> 
 
     @Query(
             nativeQuery = true,
-            value = "SELECT " +
-                    "    monthly_plan.id as id, " +
-                    "    monthly_plan.kid_name as kidName, " +
-                    "    monthly_plan.paid as paid, " +
-                    "    standard_plan.name as planName, " +
-                    "    standard_plan.price as planPrice " +
+            value = "SELECT * " +
                     "FROM monthly_plan " +
                     "    JOIN app_user " +
                     "        ON app_user.id = monthly_plan.app_user " +
-                    "    JOIN standard_plan " +
-                    "        ON standard_plan.id = monthly_plan.plan " +
                     "WHERE " +
                     "   app_user.username= ?1" +
                     "   AND monthly_plan.cancelled = false"
     )
-    List<MonthlyPlanItem> findByUsername(String username);
+    List<MonthlyPlan> findByUsername(String username);
 }
