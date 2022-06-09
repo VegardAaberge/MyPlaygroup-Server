@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.myplaygroup.server.user.model.AppUser.UserRole.USER;
 
@@ -26,25 +27,28 @@ public class UsersService {
         return appUserRepository.getAllUsers();
     }
 
-    public SimpleResponse registerUser(RegistrationRequest request) {
-        Optional<AppUser> appUserOptional = appUserRepository.findByUsername(request.username);
+    public List<AppUserItem> registerUsers(List<RegistrationRequest> requests) {
 
-        if(appUserOptional.isPresent()){
-            AppUser appUser = appUserOptional.get();
-            if(appUser.isEnabled()){
-                throw new IllegalStateException("username already taken");
+        List<AppUser> appUsers = requests.stream().map(request -> {
+            Optional<AppUser> appUserOptional = appUserRepository.findByUsername(request.username);
+
+            if(appUserOptional.isPresent()){
+                if(appUserOptional.get().isEnabled()){
+                    throw new IllegalStateException("username already taken");
+                }
             }
-        }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(request.password);
+            String encodedPassword = bCryptPasswordEncoder.encode(request.password);
 
-        AppUser appUser = new AppUser(
-                request.username,
-                encodedPassword,
-                USER
-        );
-        appUserRepository.save(appUser);
+            return new AppUser(
+                    request.username,
+                    encodedPassword,
+                    USER
+            );
+        }).collect(Collectors.toList());
 
-        return new SimpleResponse("Registered user: " + request.username);
+        appUserRepository.saveAll(appUsers);
+
+        return getUsers();
     }
 }

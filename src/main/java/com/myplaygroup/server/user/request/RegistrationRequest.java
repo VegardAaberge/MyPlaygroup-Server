@@ -11,6 +11,5 @@ public class RegistrationRequest {
     public String username;
 
     @NotNull(message = PASSWORD_VALIDATION_MSG)
-    @Pattern(regexp = PASSWORD_VALIDATION_REGEX, message = PASSWORD_VALIDATION_MSG)
     public String password;
 }

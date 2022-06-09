@@ -21,13 +21,13 @@ public class UsersController {
 
     @GetMapping
     public List<AppUserItem> getUsers(){
-        log.info("api/v1/registration");
+        log.info("api/v1/users");
         return usersService.getUsers();
     }
 
     @PostMapping
-    public SimpleResponse registerUser(@RequestBody @Valid RegistrationRequest registrationRequest){
-        log.info("api/v1/registration");
-        return usersService.registerUser(registrationRequest);
+    public List<AppUserItem> registerUser(@RequestBody @Valid List<RegistrationRequest> registrationRequest){
+        log.info("api/v1/users");
+        return usersService.registerUsers(registrationRequest);
     }
 }
