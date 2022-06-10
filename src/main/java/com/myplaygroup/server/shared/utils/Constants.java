@@ -16,7 +16,6 @@ public final class Constants {
     public static final String USERNAME_VALIDATION_MSG = "Username must be lowercase alphanumeric with no spaces";
     public static final String PASSWORD_VALIDATION_MSG = "Password must be at least 8 letters, contain one number, lowercase and one uppercase letter with no spaces";
     public static final String PHONE_NUMBER_VALIDATION_MSG = "Phone number must be 11 digits";
-    public static final String EMAIL_VALIDATION_MSG = "Need to be a valid email";
     public static final String PROFILE_NAME_VALIDATION_MSG =  "Profile Name can't be blank";
     public static final String DATE_NAME_VALIDATION_MSG =  "Date can't be null";
     public static final String START_TIME_NAME_VALIDATION_MSG =  "start time can't be null";

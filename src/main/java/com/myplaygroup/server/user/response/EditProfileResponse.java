@@ -9,5 +9,4 @@ public class EditProfileResponse {
     private String username;
     private String profileName;
     private String phoneNumber;
-    private String email;
 }

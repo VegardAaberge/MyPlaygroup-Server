@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
@@ -25,7 +24,6 @@ import static com.myplaygroup.server.shared.utils.Constants.*;
         name = "app_user",
         uniqueConstraints = {
                 @UniqueConstraint(name = "username_unique", columnNames = "username"),
-                @UniqueConstraint(name = "email_unique", columnNames = "email")
         }
 )
 public class AppUser implements UserDetails {
@@ -57,10 +55,6 @@ public class AppUser implements UserDetails {
     @Pattern(regexp = PHONE_NUMBER_VALIDATION_REGEX, message = PHONE_NUMBER_VALIDATION_MSG)
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    @Email(message = EMAIL_VALIDATION_MSG)
-    @Column(name = "email")
-    private String email;
 
     @Pattern(regexp = PASSWORD_VALIDATION_REGEX, message = PASSWORD_VALIDATION_MSG)
     @Column(name = "password", nullable = false)

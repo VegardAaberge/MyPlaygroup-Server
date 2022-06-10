@@ -16,8 +16,6 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     @Query("SELECT u FROM AppUser u")
     List<AppUserItem> getAllUsers();
-    
-    Optional<AppUser> findByUsername(String username);
 
-    Optional<AppUser> findByEmail(String email);
+    Optional<AppUser> findByUsername(String username);
 }

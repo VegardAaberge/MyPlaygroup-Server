@@ -39,7 +39,6 @@ public class AppUserService implements UserDetailsService {
                 );
                 admin.setProfileName("Playgroup");
                 admin.setPhoneNumber("13900204214");
-                admin.setEmail("vegard.aaberge@gmail.com");
                 admin.setProfileCreated(true);
                 appUserRepository.save(admin);
 

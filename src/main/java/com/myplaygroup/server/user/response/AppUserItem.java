@@ -12,8 +12,6 @@ public interface AppUserItem {
 
     String getPhoneNumber();
 
-    String getEmail();
-
     Long getUserCredit();
 
     Boolean getLocked();

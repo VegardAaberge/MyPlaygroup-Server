@@ -47,7 +47,6 @@ public class ProfileService {
         appUser.setPassword(encodedPassword);
         appUser.setProfileName(request.profileName);
         appUser.setPhoneNumber(request.phoneNumber);
-        appUser.setEmail(request.email);
         appUser.setProfileCreated(true);
 
         appUserRepository.save(appUser);
@@ -55,8 +54,7 @@ public class ProfileService {
         return new EditProfileResponse(
                 username,
                 appUser.getProfileName(),
-                appUser.getPhoneNumber(),
-                appUser.getEmail()
+                appUser.getPhoneNumber()
         );
     }
 
@@ -75,10 +73,6 @@ public class ProfileService {
             appUser.setProfileName(request.profileName);
         }
 
-        if (request.email != null) {
-            appUser.setEmail(request.email);
-        }
-
         if (request.phoneNumber != null) {
             appUser.setPhoneNumber(request.phoneNumber);
         }
@@ -88,8 +82,7 @@ public class ProfileService {
         return new EditProfileResponse(
                 username,
                 appUser.getProfileName(),
-                appUser.getPhoneNumber(),
-                appUser.getEmail()
+                appUser.getPhoneNumber()
         );
     }
 

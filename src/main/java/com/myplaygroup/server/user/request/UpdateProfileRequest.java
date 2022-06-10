@@ -1,6 +1,5 @@
 package com.myplaygroup.server.user.request;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -17,7 +16,4 @@ public class UpdateProfileRequest {
 
     @Pattern(regexp = PHONE_NUMBER_VALIDATION_REGEX, message = PHONE_NUMBER_VALIDATION_MSG)
     public String phoneNumber;
-
-    @Email(message = EMAIL_VALIDATION_MSG)
-    public String email;
 }
