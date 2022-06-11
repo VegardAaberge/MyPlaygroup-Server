@@ -3,6 +3,7 @@ package com.myplaygroup.server.schedule.response;
 import lombok.AllArgsConstructor;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -15,11 +16,9 @@ public class MonthlyPlanItem {
 
     public String kidName;
 
-    public Month month;
+    public LocalDate startDate;
 
-    public Integer year;
-
-    public Boolean paid;
+    public LocalDate endDate;
 
     public String planName;
 

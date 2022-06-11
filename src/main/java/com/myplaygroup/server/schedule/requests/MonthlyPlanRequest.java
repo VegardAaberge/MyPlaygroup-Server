@@ -1,15 +1,10 @@
 package com.myplaygroup.server.schedule.requests;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
-
-import static com.myplaygroup.server.shared.utils.Constants.DATE_NAME_VALIDATION_MSG;
 
 public class MonthlyPlanRequest {
 
@@ -24,10 +19,9 @@ public class MonthlyPlanRequest {
     public String kidName;
 
     @NotNull
-    public Month month;
+    public LocalDate startDate;
 
-    @NotNull
-    public Integer year;
+    public LocalDate endDate;
 
     @NotNull
     public String standardPlan;

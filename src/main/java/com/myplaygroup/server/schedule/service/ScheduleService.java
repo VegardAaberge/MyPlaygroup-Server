@@ -67,8 +67,8 @@ public class ScheduleService {
         List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
                 dayOfWeeks,
                 standardPlan.getType().ordinal(),
-                request.month.ordinal(),
-                request.year
+                request.startDate,
+                request.endDate
         );
         if(dailyClasses.isEmpty()){
             throw new NotFoundException("No classes found");
@@ -77,8 +77,8 @@ public class ScheduleService {
         MonthlyPlan monthlyPlan = new MonthlyPlan(
                 request.kidName,
                 appUser,
-                request.month,
-                request.year,
+                request.startDate,
+                request.endDate,
                 standardPlan,
                 dailyClasses,
                 request.daysOfWeek
@@ -93,9 +93,8 @@ public class ScheduleService {
                 item.getId(),
                 item.getAppUser().getUsername(),
                 item.getKidName(),
-                item.getMonth(),
-                item.getYear(),
-                item.getPaid(),
+                item.getStartDate(),
+                item.getEndDate(),
                 item.getPlan().getName(),
                 item.getDaysOfWeek(),
                 item.getPlan().getPrice()

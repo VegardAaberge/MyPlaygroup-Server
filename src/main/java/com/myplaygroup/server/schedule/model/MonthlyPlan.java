@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -41,11 +42,11 @@ public class MonthlyPlan {
     @JoinColumn(name = "app_user", nullable = false)
     private AppUser appUser;
 
-    @Column(name = "month", nullable = false)
-    private Month month;
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
 
-    @Column(name = "year", nullable = false)
-    private Integer year;
+    @Column(name = "end_date", nullable = false)
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "plan", nullable = false)
@@ -54,9 +55,6 @@ public class MonthlyPlan {
     @ManyToMany
     @Column(name = "classes", nullable = false)
     private List<DailyClass> classes;
-
-    @Column(name = "paid", nullable = false)
-    private Boolean paid = false;
 
     @ElementCollection(targetClass = DayOfWeek.class)
     @JoinTable(name = "days_of_week", joinColumns = @JoinColumn(name = "id"))
@@ -67,11 +65,11 @@ public class MonthlyPlan {
     @Column(name = "cancelled", nullable = false)
     private Boolean cancelled = false;
 
-    public MonthlyPlan(String kidName, AppUser appUser, Month month, Integer year, StandardPlan plan, List<DailyClass> classes, List<DayOfWeek> daysOfWeek) {
+    public MonthlyPlan(String kidName, AppUser appUser, LocalDate startDate, LocalDate endDate, StandardPlan plan, List<DailyClass> classes, List<DayOfWeek> daysOfWeek) {
         this.kidName = kidName;
         this.appUser = appUser;
-        this.month = month;
-        this.year = year;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.plan = plan;
         this.classes = classes;
         this.daysOfWeek = daysOfWeek;
