@@ -3,7 +3,9 @@ package com.myplaygroup.server.schedule.controller;
 import com.myplaygroup.server.schedule.model.MonthlyPlan;
 import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
 import com.myplaygroup.server.schedule.response.MonthlyPlanItem;
+import com.myplaygroup.server.schedule.response.StandardPlanItem;
 import com.myplaygroup.server.schedule.service.ScheduleService;
+import com.myplaygroup.server.schedule.service.StandardPlanService;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +23,18 @@ public class PlansController {
 
     AuthorizationService authorizationService;
     ScheduleService scheduleService;
+    StandardPlanService standardPlanService;
 
     @GetMapping
     public List<MonthlyPlanItem> getMonthlyPlans(HttpServletRequest servletRequest){
         log.info(servletRequest.getServletPath());
         return scheduleService.getMonthlyPlans();
+    }
+
+    @GetMapping(path = "/standard")
+    public List<StandardPlanItem> getStandardPlans(HttpServletRequest servletRequest){
+        log.info(servletRequest.getServletPath());
+        return standardPlanService.getStandardPlans();
     }
 
     @PostMapping
