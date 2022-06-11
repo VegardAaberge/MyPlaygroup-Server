@@ -1,9 +1,8 @@
 package com.myplaygroup.server.user.controller;
 
-import com.myplaygroup.server.user.request.RegistrationRequest;
+import com.myplaygroup.server.user.request.AppUserRequest;
 import com.myplaygroup.server.user.response.AppUserItem;
 import com.myplaygroup.server.user.service.UsersService;
-import com.myplaygroup.server.shared.data.SimpleResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,7 @@ public class UsersController {
     }
 
     @PostMapping
-    public List<AppUserItem> registerUser(@RequestBody @Valid List<RegistrationRequest> registrationRequest){
+    public List<AppUserItem> registerUser(@RequestBody @Valid List<AppUserRequest> registrationRequest){
         log.info("api/v1/users");
         return usersService.registerUsers(registrationRequest);
     }

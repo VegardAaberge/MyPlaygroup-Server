@@ -1,9 +1,9 @@
 package com.myplaygroup.server.user.service;
 
+import com.myplaygroup.server.shared.utils.Constants;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.repository.AppUserRepository;
-import com.myplaygroup.server.user.request.RegistrationRequest;
-import com.myplaygroup.server.shared.data.SimpleResponse;
+import com.myplaygroup.server.user.request.AppUserRequest;
 import com.myplaygroup.server.user.response.AppUserItem;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,28 +27,62 @@ public class UsersService {
         return appUserRepository.getAllUsers();
     }
 
-    public List<AppUserItem> registerUsers(List<RegistrationRequest> requests) {
+    public List<AppUserItem> registerUsers(List<AppUserRequest> requests) {
 
-        List<AppUser> appUsers = requests.stream().map(request -> {
-            Optional<AppUser> appUserOptional = appUserRepository.findByUsername(request.username);
-
-            if(appUserOptional.isPresent()){
-                if(appUserOptional.get().isEnabled()){
-                    throw new IllegalStateException("username already taken");
-                }
+        requests.forEach(request -> {
+            if(request.id == -1L){
+                registerNewUser(request.username);
             }
 
-            String encodedPassword = bCryptPasswordEncoder.encode(request.password);
-
-            return new AppUser(
-                    request.username,
-                    encodedPassword,
-                    USER
-            );
-        }).collect(Collectors.toList());
-
-        appUserRepository.saveAll(appUsers);
+            modifyExistingUser(request);
+        });
 
         return getUsers();
+    }
+
+    public void registerNewUser(String username){
+
+        Optional<AppUser> appUserOptional = appUserRepository.findByUsername(username);
+
+        if(appUserOptional.isPresent()){
+            throw new IllegalStateException("username already taken");
+        }
+
+        String encodedPassword = bCryptPasswordEncoder.encode(Constants.MY_PLAYGROUP);
+
+        appUserRepository.save(new AppUser(
+                username,
+                encodedPassword,
+                USER
+        ));
+    }
+
+    public void modifyExistingUser(AppUserRequest request){
+
+        Optional<AppUser> appUserOptional = appUserRepository.findByUsername(request.username);
+
+        if(appUserOptional.isEmpty()){
+            throw new IllegalStateException("username not found");
+        }
+
+        AppUser appUser = appUserOptional.get();
+        if(request.resetPassword){
+            String encodedPassword = bCryptPasswordEncoder.encode(Constants.MY_PLAYGROUP);
+            appUser.setPassword(encodedPassword);
+        }
+
+        if(request.phoneNumber != null && !request.phoneNumber.isBlank()){
+            appUser.setPhoneNumber(request.phoneNumber);
+        }
+
+        if(request.profileName != null && !request.profileName.isBlank()){
+            appUser.setProfileName(request.profileName);
+        }
+
+        appUser.setLocked(request.locked);
+        appUser.setProfileCreated(request.profileCreated);
+        appUser.setUserCredit(request.userCredit);
+
+        appUserRepository.save(appUser);
     }
 }
