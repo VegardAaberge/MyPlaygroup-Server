@@ -17,6 +17,8 @@ public class MonthlyPlanItem {
 
     public Month month;
 
+    public Integer year;
+
     public Boolean paid;
 
     public String planName;

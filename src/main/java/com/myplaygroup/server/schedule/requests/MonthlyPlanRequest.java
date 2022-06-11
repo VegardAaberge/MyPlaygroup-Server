@@ -27,5 +27,8 @@ public class MonthlyPlanRequest {
     public Month month;
 
     @NotNull
+    public Integer year;
+
+    @NotNull
     public String standardPlan;
 }

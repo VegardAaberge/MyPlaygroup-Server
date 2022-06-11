@@ -44,6 +44,9 @@ public class MonthlyPlan {
     @Column(name = "month", nullable = false)
     private Month month;
 
+    @Column(name = "year", nullable = false)
+    private Integer year;
+
     @ManyToOne
     @JoinColumn(name = "plan", nullable = false)
     private StandardPlan plan;
@@ -64,10 +67,11 @@ public class MonthlyPlan {
     @Column(name = "cancelled", nullable = false)
     private Boolean cancelled = false;
 
-    public MonthlyPlan(String kidName, AppUser appUser, Month month, StandardPlan plan, List<DailyClass> classes, List<DayOfWeek> daysOfWeek) {
+    public MonthlyPlan(String kidName, AppUser appUser, Month month, Integer year, StandardPlan plan, List<DailyClass> classes, List<DayOfWeek> daysOfWeek) {
         this.kidName = kidName;
         this.appUser = appUser;
         this.month = month;
+        this.year = year;
         this.plan = plan;
         this.classes = classes;
         this.daysOfWeek = daysOfWeek;
