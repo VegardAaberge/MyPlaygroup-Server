@@ -6,10 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.UUID;
+
+import static com.myplaygroup.server.shared.utils.Constants.CLIENT_ID_VALIDATION_MSG;
 
 @Getter
 @Setter
@@ -18,7 +22,7 @@ import java.util.List;
 @Table(
         name = "monthly_plan",
         uniqueConstraints = {
-                @UniqueConstraint(name = "kid_name_unique", columnNames = "kid_name"),
+                @UniqueConstraint(name = "client_id_unique", columnNames = "client_id"),
         }
 )
 public class MonthlyPlan {
@@ -34,6 +38,10 @@ public class MonthlyPlan {
     )
     @Column(name = "id", updatable = false)
     private Long id;
+
+    @NotNull(message = CLIENT_ID_VALIDATION_MSG)
+    @Column(name = "client_id", updatable = false)
+    public String clientId = UUID.randomUUID().toString();
 
     @Column(name = "kid_name", nullable = false)
     private String kidName;
@@ -52,6 +60,9 @@ public class MonthlyPlan {
     @JoinColumn(name = "plan", nullable = false)
     private StandardPlan plan;
 
+    @NotNull
+    private Long planPrice;
+
     @ManyToMany
     @Column(name = "classes", nullable = false)
     private List<DailyClass> classes;
@@ -65,12 +76,22 @@ public class MonthlyPlan {
     @Column(name = "cancelled", nullable = false)
     private Boolean cancelled = false;
 
-    public MonthlyPlan(String kidName, AppUser appUser, LocalDate startDate, LocalDate endDate, StandardPlan plan, List<DailyClass> classes, List<DayOfWeek> daysOfWeek) {
+    public MonthlyPlan(String clientId,
+                       String kidName,
+                       AppUser appUser,
+                       LocalDate startDate,
+                       LocalDate endDate,
+                       StandardPlan plan,
+                       Long planPrice,
+                       List<DailyClass> classes,
+                       List<DayOfWeek> daysOfWeek) {
+        this.clientId = clientId;
         this.kidName = kidName;
         this.appUser = appUser;
         this.startDate = startDate;
         this.endDate = endDate;
         this.plan = plan;
+        this.planPrice = planPrice;
         this.classes = classes;
         this.daysOfWeek = daysOfWeek;
     }

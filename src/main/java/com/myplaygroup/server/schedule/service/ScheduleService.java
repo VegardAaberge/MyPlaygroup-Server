@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,15 @@ public class ScheduleService {
     public MonthlyPlansResponse getUsersMonthlyPlans(String username) {
         AppUser appUser = userService.loadUserByUsername(username);
         List<MonthlyPlan> monthlyPlans = monthlyPlanRepository.findByUsername(username);
-        List<DailyClass> dailyClasses = dailyClassRepository.findByUsername(username);
+
+        List<DailyClass> dailyClasses = new ArrayList<>();
+        monthlyPlans.forEach(monthlyPlan -> {
+            monthlyPlan.getClasses().forEach(dailyClass -> {
+                if(dailyClasses.stream().anyMatch(x -> x.getId().equals(dailyClass.getId()))){
+                    dailyClasses.add(dailyClass);
+                }
+            });
+        });
 
         List<MonthlyPlanItem> monthlyPlanItem = getMonthlyPlanItems(monthlyPlans);
 
@@ -52,52 +61,58 @@ public class ScheduleService {
         return monthlyPlanItem;
     }
 
-    public MonthlyPlan addMonthlyPlan(MonthlyPlanRequest request) {
+    public List<MonthlyPlanItem> addMonthlyPlan(List<MonthlyPlanRequest> request) {
 
-        AppUser appUser = userService.loadUserByUsername(request.username);
+        request.forEach(item -> {
+            AppUser appUser = userService.loadUserByUsername(item.username);
 
-        StandardPlan standardPlan = standardPlanRepository.findByName(request.standardPlan)
-                .orElseThrow(() -> new NotFoundException("Plan not found"));
+            StandardPlan standardPlan = standardPlanRepository.findByName(item.planName)
+                    .orElseThrow(() -> new NotFoundException("Plan not found"));
 
 
-        List<Integer> dayOfWeeks = request.daysOfWeek.stream()
-                .map(Enum::ordinal)
-                .collect(Collectors.toList());
+            List<Integer> dayOfWeeks = item.daysOfWeek.stream()
+                    .map(Enum::ordinal)
+                    .collect(Collectors.toList());
 
-        List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
-                dayOfWeeks,
-                standardPlan.getType().ordinal(),
-                request.startDate,
-                request.endDate
-        );
-        if(dailyClasses.isEmpty()){
-            throw new NotFoundException("No classes found");
-        }
+            List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
+                    dayOfWeeks,
+                    standardPlan.getType().ordinal(),
+                    item.startDate,
+                    item.endDate
+            );
+            if(dailyClasses.isEmpty()){
+                throw new NotFoundException("No classes found");
+            }
 
-        MonthlyPlan monthlyPlan = new MonthlyPlan(
-                request.kidName,
-                appUser,
-                request.startDate,
-                request.endDate,
-                standardPlan,
-                dailyClasses,
-                request.daysOfWeek
-        );
-        monthlyPlanRepository.save(monthlyPlan);
+            MonthlyPlan monthlyPlan = new MonthlyPlan(
+                    item.clientId,
+                    item.kidName,
+                    appUser,
+                    item.startDate,
+                    item.endDate,
+                    standardPlan,
+                    item.planPrice,
+                    dailyClasses,
+                    item.daysOfWeek
+            );
+            monthlyPlanRepository.save(monthlyPlan);
+        });
 
-        return monthlyPlan;
+        return getMonthlyPlans();
     }
 
     private List<MonthlyPlanItem> getMonthlyPlanItems(List<MonthlyPlan> monthlyPlans){
         return monthlyPlans.stream().map(item -> new MonthlyPlanItem(
                 item.getId(),
+                item.getClientId(),
                 item.getAppUser().getUsername(),
                 item.getKidName(),
                 item.getStartDate(),
                 item.getEndDate(),
                 item.getPlan().getName(),
                 item.getDaysOfWeek(),
-                item.getPlan().getPrice()
+                item.getPlanPrice(),
+                item.getCancelled()
         )).collect(Collectors.toList());
     }
 }

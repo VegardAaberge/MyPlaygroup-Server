@@ -38,8 +38,8 @@ public class PlansController {
     }
 
     @PostMapping
-    public MonthlyPlan addMonthlyPlan(
-            @RequestBody @Valid MonthlyPlanRequest monthlyPlanRequest,
+    public List<MonthlyPlanItem> addMonthlyPlan(
+            @RequestBody @Valid List<MonthlyPlanRequest> monthlyPlanRequest,
             HttpServletRequest servletRequest
     ){
         log.info(servletRequest.getServletPath());

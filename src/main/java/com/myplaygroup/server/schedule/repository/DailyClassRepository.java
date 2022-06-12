@@ -33,23 +33,7 @@ public interface DailyClassRepository extends JpaRepository<DailyClass, Long> {
                     "WHERE " +
                     "   day_of_week IN ?1 " +
                     "   AND class_type=?2 " +
-                    "   AND date BETWEEN '?3' AND '?4' "
+                    "   AND date BETWEEN ?3 AND ?4 "
     )
     List<DailyClass> findByDatesAndClassType(List<Integer> date, Integer classType, LocalDate startDate, LocalDate endDate);
-
-    @Query(
-            nativeQuery = true,
-            value = "SELECT " +
-                    "    daily_class.* " +
-                    "FROM monthly_plan_classes " +
-                    "    JOIN daily_class " +
-                    "        ON daily_class.id = monthly_plan_classes.classes_id " +
-                    "    JOIN monthly_plan " +
-                    "        ON monthly_plan.id = monthly_plan_classes.monthly_plan_id " +
-                    "    JOIN app_user " +
-                    "        ON monthly_plan.app_user = app_user.id " +
-                    "WHERE " +
-                    "    app_user.username = ?1"
-    )
-    List<DailyClass> findByUsername(String username);
 }
