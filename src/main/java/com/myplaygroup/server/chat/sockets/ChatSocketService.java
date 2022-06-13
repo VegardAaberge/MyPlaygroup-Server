@@ -36,7 +36,7 @@ public class ChatSocketService {
     private final AuthorizationService authorizationService;
     private final ConcurrentHashMap<String, Member> members = new ConcurrentHashMap<>();
 
-    public void sendMessage(WebSocketSession session, TextMessage message) throws IOException, JSONException {
+    public void sendMessage(WebSocketSession session, TextMessage message) throws IOException {
         ObjectReader reader = new ObjectMapper().findAndRegisterModules().reader();
         MessageRequest request = reader.readValue(message.getPayload(), MessageRequest.class);
 
