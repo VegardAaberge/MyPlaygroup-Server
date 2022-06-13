@@ -19,7 +19,7 @@ public class MessageSocketHandler extends TextWebSocketHandler {
     private final ChatSocketService chatSocketService;
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException, JSONException {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException {
         log.info("Received message " + message.getPayload());
         chatSocketService.sendMessage(session, message);
     }
