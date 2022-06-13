@@ -8,7 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class DailyClassItem {
+public class DailyClassRequest {
 
     @NotNull
     public Long id;
