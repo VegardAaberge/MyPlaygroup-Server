@@ -14,6 +14,7 @@ import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class ScheduleService {
         List<DailyClass> dailyClasses = new ArrayList<>();
         monthlyPlans.forEach(monthlyPlan -> {
             monthlyPlan.getClasses().forEach(dailyClass -> {
-                if(dailyClasses.stream().anyMatch(x -> x.getId().equals(dailyClass.getId()))){
+                if(!dailyClasses.stream().anyMatch(x -> x.getId().equals(dailyClass.getId()))){
                     dailyClasses.add(dailyClass);
                 }
             });
@@ -64,41 +65,58 @@ public class ScheduleService {
     public List<MonthlyPlanItem> addMonthlyPlan(List<MonthlyPlanRequest> request) {
 
         request.forEach(item -> {
-            AppUser appUser = userService.loadUserByUsername(item.username);
-
-            StandardPlan standardPlan = standardPlanRepository.findByName(item.planName)
-                    .orElseThrow(() -> new NotFoundException("Plan not found"));
-
-
-            List<Integer> dayOfWeeks = item.daysOfWeek.stream()
-                    .map(Enum::ordinal)
-                    .collect(Collectors.toList());
-
-            List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
-                    dayOfWeeks,
-                    standardPlan.getType().ordinal(),
-                    item.startDate,
-                    item.endDate
-            );
-            if(dailyClasses.isEmpty()){
-                throw new NotFoundException("No classes found");
+            if(item.id == -1){
+                addNewMonthlyPlan(item);
+            }else {
+                modifyMonthlyPlan(item);
             }
-
-            MonthlyPlan monthlyPlan = new MonthlyPlan(
-                    item.clientId,
-                    item.kidName,
-                    appUser,
-                    item.startDate,
-                    item.endDate,
-                    standardPlan,
-                    item.planPrice,
-                    dailyClasses,
-                    item.daysOfWeek
-            );
-            monthlyPlanRepository.save(monthlyPlan);
         });
 
         return getMonthlyPlans();
+    }
+
+    private void modifyMonthlyPlan(MonthlyPlanRequest item){
+        MonthlyPlan monthlyPlan = monthlyPlanRepository.findById(item.id)
+                .orElseThrow(() -> new NotFoundException("Monthly plan not found"));
+
+        monthlyPlan.setKidName(item.kidName);
+        monthlyPlan.setPlanPrice(item.planPrice);
+        monthlyPlan.setCancelled(item.cancelled);
+    }
+
+    private void addNewMonthlyPlan(MonthlyPlanRequest item){
+        AppUser appUser = userService.loadUserByUsername(item.username);
+
+        StandardPlan standardPlan = standardPlanRepository.findByName(item.planName)
+                .orElseThrow(() -> new NotFoundException("Plan not found"));
+
+
+        List<Integer> dayOfWeeks = item.daysOfWeek.stream()
+                .map(Enum::ordinal)
+                .collect(Collectors.toList());
+
+        List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
+                dayOfWeeks,
+                standardPlan.getType().ordinal(),
+                item.startDate,
+                item.endDate
+        );
+        if(dailyClasses.isEmpty()){
+            throw new NotFoundException("No classes found");
+        }
+
+        MonthlyPlan monthlyPlan = new MonthlyPlan(
+                item.clientId,
+                item.kidName,
+                appUser,
+                item.startDate,
+                item.endDate,
+                standardPlan,
+                item.planPrice,
+                dailyClasses,
+                item.daysOfWeek
+        );
+        monthlyPlanRepository.save(monthlyPlan);
     }
 
     private List<MonthlyPlanItem> getMonthlyPlanItems(List<MonthlyPlan> monthlyPlans){
