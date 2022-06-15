@@ -3,6 +3,7 @@ package com.myplaygroup.server.chat.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.myplaygroup.server.chat.response.MessageResponseItem;
 import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.exception.ServerErrorException;
 import com.myplaygroup.server.user.model.AppUser;
@@ -13,12 +14,14 @@ import com.myplaygroup.server.chat.response.MessageResponse;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,5 +71,27 @@ public class ChatService {
         String json = ow.writeValueAsString(messageResponse);
 
         return json;
+    }
+
+    public List<MessageResponseItem> getAllMessages() {
+        List<Message> messages = messageRepository.findAll();
+
+        List<MessageResponseItem> messageResponseItems = messages.stream().map(item -> {
+
+            List<String> receivers = item.getReceivers().stream()
+                    .map(AppUser::getUsername)
+                    .collect(Collectors.toList());
+
+            return new MessageResponseItem(
+                    item.getId(),
+                    item.getClientId(),
+                    item.getMessage(),
+                    item.getCreatedBy().getUsername(),
+                    receivers,
+                    item.getCreated()
+            );
+        }).collect(Collectors.toList());
+
+        return messageResponseItems;
     }
 }

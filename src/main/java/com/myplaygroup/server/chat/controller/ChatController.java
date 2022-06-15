@@ -2,6 +2,7 @@ package com.myplaygroup.server.chat.controller;
 
 import com.myplaygroup.server.chat.requests.MessageRequest;
 import com.myplaygroup.server.chat.response.MessageResponse;
+import com.myplaygroup.server.chat.response.MessageResponseItem;
 import com.myplaygroup.server.chat.service.ChatService;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
@@ -21,11 +22,18 @@ public class ChatController {
     private ChatService chatService;
     private AuthorizationService authorizationService;
 
-    @GetMapping
+    @GetMapping(path = "/user")
     public List<MessageResponse> getChatMessages(HttpServletRequest servletRequest){
         log.info(servletRequest.getServletPath());
         String username = authorizationService.getUserInfoFromRequest(servletRequest).getUsername();
 
         return chatService.findByUsernameAndRecipient(username);
+    }
+
+    @GetMapping(path = "/admin")
+    public List<MessageResponseItem> getAllChatMessages(HttpServletRequest servletRequest){
+        log.info(servletRequest.getServletPath());
+
+        return chatService.getAllMessages();
     }
 }
