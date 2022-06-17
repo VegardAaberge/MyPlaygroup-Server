@@ -82,6 +82,8 @@ public class ScheduleService {
         monthlyPlan.setKidName(item.kidName);
         monthlyPlan.setPlanPrice(item.planPrice);
         monthlyPlan.setCancelled(item.cancelled);
+
+        monthlyPlanRepository.save(monthlyPlan);
     }
 
     private void addNewMonthlyPlan(MonthlyPlanRequest item){
