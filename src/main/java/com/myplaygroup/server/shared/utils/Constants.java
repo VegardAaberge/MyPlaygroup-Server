@@ -41,6 +41,7 @@ public final class Constants {
     public static final String MORNING_4 = "MORNING_4";
     public static final String MORNING_5 = "MORNING_5";
     public static final String MORNING_DISCOUNT_5 = "MORNING_DISCOUNT_5";
+    public static final String WEEKEND_1 = "WEEKEND_1";
 
     public static final Integer EVENING_2_PRICE = 590;
     public static final Integer EVENING_3_PRICE = 790;
@@ -49,4 +50,5 @@ public final class Constants {
     public static final Integer MORNING_4_PRICE = 790;
     public static final Integer MORNING_5_PRICE = 890;
     public static final Integer MORNING_DISCOUNT_5_PRICE = 790;
+    public static final Integer WEEKEND_1_PRICE = 390;
 }

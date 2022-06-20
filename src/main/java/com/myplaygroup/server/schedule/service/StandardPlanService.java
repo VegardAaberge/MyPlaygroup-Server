@@ -30,6 +30,7 @@ public class StandardPlanService {
             insertPlan(Constants.MORNING_4, Constants.MORNING_4_PRICE, DailyClassType.MORNING, standardPlans);
             insertPlan(Constants.MORNING_5, Constants.MORNING_5_PRICE, DailyClassType.MORNING, standardPlans);
             insertPlan(Constants.MORNING_DISCOUNT_5, Constants.MORNING_DISCOUNT_5_PRICE, DailyClassType.MORNING, standardPlans);
+            insertPlan(Constants.WEEKEND_1, Constants.WEEKEND_1_PRICE, DailyClassType.WEEKEND, standardPlans);
         };
     }
 
