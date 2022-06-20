@@ -81,7 +81,6 @@ public class UsersService {
 
         appUser.setLocked(request.locked);
         appUser.setProfileCreated(request.profileCreated);
-        appUser.setUserCredit(request.userCredit);
 
         appUserRepository.save(appUser);
     }

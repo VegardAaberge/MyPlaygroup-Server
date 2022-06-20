@@ -26,9 +26,6 @@ public class AppUserRequest {
     public String phoneNumber;
 
     @NotNull
-    public Long userCredit;
-
-    @NotNull
     public Boolean locked;
 
     @NotNull

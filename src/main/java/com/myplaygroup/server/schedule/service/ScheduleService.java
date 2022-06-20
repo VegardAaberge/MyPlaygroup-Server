@@ -47,7 +47,6 @@ public class ScheduleService {
 
         return new MonthlyPlansResponse(
                 appUser.getUsername(),
-                appUser.getUserCredit(),
                 monthlyPlanItem,
                 dailyClasses
         );

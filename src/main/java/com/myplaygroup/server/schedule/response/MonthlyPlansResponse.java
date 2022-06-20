@@ -10,8 +10,6 @@ public class MonthlyPlansResponse {
 
     public String username;
 
-    public Long userCredit;
-
     public List<MonthlyPlanItem> monthlyPlans;
 
     public List<DailyClass> dailyClasses;

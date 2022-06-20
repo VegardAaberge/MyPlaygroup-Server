@@ -12,8 +12,6 @@ public interface AppUserItem {
 
     String getPhoneNumber();
 
-    Long getUserCredit();
-
     Boolean getLocked();
 
     Boolean getProfileCreated();
