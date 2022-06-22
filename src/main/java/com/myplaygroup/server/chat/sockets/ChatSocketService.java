@@ -9,6 +9,7 @@ import com.myplaygroup.server.chat.service.ChatService;
 import com.myplaygroup.server.exception.ServerErrorException;
 import com.myplaygroup.server.security.AuthorizationService;
 import com.myplaygroup.server.security.model.UserInfo;
+import com.myplaygroup.server.shared.utils.Constants;
 import com.myplaygroup.server.shared.utils.UrlUtils;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.service.AppUserService;
@@ -120,6 +121,10 @@ public class ChatSocketService {
 
         // Should receive its own messages
         if(Objects.equals(member.getUsername(), username))
+            return true;
+
+        // If receive all is found, then listen to all messages
+        if(member.getListenTo().stream().anyMatch(x -> x.equals(Constants.RECEIVE_ALL)))
             return true;
 
         // Should receive if both user and member are receivers
