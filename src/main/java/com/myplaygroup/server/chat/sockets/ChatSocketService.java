@@ -1,6 +1,5 @@
 package com.myplaygroup.server.chat.sockets;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -10,19 +9,18 @@ import com.myplaygroup.server.chat.service.ChatService;
 import com.myplaygroup.server.exception.ServerErrorException;
 import com.myplaygroup.server.security.AuthorizationService;
 import com.myplaygroup.server.security.model.UserInfo;
+import com.myplaygroup.server.shared.utils.UrlUtils;
 import com.myplaygroup.server.user.model.AppUser;
-import com.myplaygroup.server.user.repository.AppUserRepository;
 import com.myplaygroup.server.user.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -52,14 +50,14 @@ public class ChatSocketService {
 
             List<Member> receivingMembers = members
                     .values().stream()
-                    .filter(m -> request.receivers.contains(m.getUsername()) || Objects.equals(m.getUsername(), username)).
-                    collect(Collectors.toList());
+                    .filter(m -> shouldReceiveMessage(m, request.receivers, username))
+                    .collect(Collectors.toList());
 
             receivingMembers.forEach(member -> {
                 try {
-                    if(member.getSocket().isOpen()){
+                    if (member.getSocket().isOpen()) {
                         member.getSocket().sendMessage(new TextMessage(messageJson));
-                    }else {
+                    } else {
                         members.remove(member.getSessionId());
                     }
 
@@ -91,13 +89,21 @@ public class ChatSocketService {
     }
 
     public void connectNewMember(WebSocketSession session) {
-        String username = getUsernameFromSession(session);
 
-        members.put(session.getId(), new Member(
-                username,
-                session.getId(),
-                session
-        ));
+        try {
+            String username = getUsernameFromSession(session);
+            Map<String, List<String>> parameters = UrlUtils.splitQuery(session.getUri());
+            List<String> listenTo = parameters.get("listen");
+
+            members.put(session.getId(), new Member(
+                    username,
+                    session.getId(),
+                    session,
+                    listenTo
+            ));
+        } catch (UnsupportedEncodingException e) {
+            throw new ServerErrorException("Could not init session");
+        }
     }
 
     public void disconnectMember(WebSocketSession session) {
@@ -108,6 +114,19 @@ public class ChatSocketService {
         if(member != null && members.containsKey(username) && member.getSocket() != null){
             members.remove(username);
         }
+    }
+
+    private Boolean shouldReceiveMessage(Member member, List<String> receivers, String username){
+
+        // Should receive its own messages
+        if(Objects.equals(member.getUsername(), username))
+            return true;
+
+        // Should receive if both user and member are receivers
+        if(receivers.contains(member.getUsername()) && member.getListenTo().contains(username))
+            return true;
+
+        return false;
     }
 
     private String getUsernameFromSession(WebSocketSession session){
