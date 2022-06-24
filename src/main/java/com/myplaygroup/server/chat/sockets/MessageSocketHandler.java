@@ -35,6 +35,4 @@ public class MessageSocketHandler extends TextWebSocketHandler {
         log.info("Received close request ");
         chatSocketService.disconnectMember(session);
     }
-
-
 }

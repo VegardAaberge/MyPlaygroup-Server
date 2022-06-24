@@ -27,6 +27,7 @@ public final class Constants {
     public static final String CLIENT_ID_VALIDATION_MSG =  "Id cannot be empty";
     public static final String MESSAGE_VALIDATION_MSG =  "Message cannot be empty";
     public static final String RECEIVERS_VALIDATION_MSG =  "There need to be at least 1 receiver";
+    public static final String READ_BY_VALIDATION_MSG =  "Read by cannot be null";
     public static final String CLASS_REQUESTS_VALIDATION_MSG =  "There need to be at least 1 daily class";
 
     // Validation Pattern Regex

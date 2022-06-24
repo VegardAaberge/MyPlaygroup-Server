@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,6 +17,7 @@ public class MessageResponseError {
     public String message;
     public String profileName;
     public String createdBy;
+    public List<String> readBy = new ArrayList<>();
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     public LocalDateTime created = LocalDateTime.now();

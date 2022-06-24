@@ -3,25 +3,18 @@ package com.myplaygroup.server.chat.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.myplaygroup.server.chat.response.MessageResponseItem;
-import com.myplaygroup.server.exception.NotFoundException;
-import com.myplaygroup.server.exception.ServerErrorException;
-import com.myplaygroup.server.user.model.AppUser;
-import com.myplaygroup.server.user.service.AppUserService;
 import com.myplaygroup.server.chat.model.Message;
 import com.myplaygroup.server.chat.repository.MessageRepository;
+import com.myplaygroup.server.chat.requests.MessageRequest;
 import com.myplaygroup.server.chat.response.MessageResponse;
-import lombok.AllArgsConstructor;
+import com.myplaygroup.server.exception.NotFoundException;
+import com.myplaygroup.server.user.model.AppUser;
+import com.myplaygroup.server.user.service.AppUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,16 +29,21 @@ public class ChatService {
         return messageRepository.findByOwnerAndReceiver(appUser.getId());
     }
 
-    public String storeMessage(String username,
-                               String clientId,
-                               String message,
-                               List<String> receivers) throws JsonProcessingException {
+    public List<MessageResponse> getAllMessages() {
+        List<Message> messages = messageRepository.findAll();
 
-        AppUser appUser = appUserService.loadUserByUsername(username);
+        return messageRepository.getAllMessageResponseItems();
+    }
+
+    public String storeMessage(MessageRequest request) throws JsonProcessingException {
+
+        AppUser appUser = appUserService.loadUserByUsername(request.createdBy);
 
         List<AppUser> receiversUsers = new ArrayList<AppUser>();
+        List<AppUser> readByUsers = new ArrayList<AppUser>();
+        Message messageEntity = null;
 
-        receivers.forEach(receiver -> {
+        request.receivers.forEach(receiver -> {
             AppUser receiverUser = appUserService.loadUserByUsername(receiver);
             if(receiverUser.getUsername() == appUser.getUsername()){
                 throw new IllegalStateException("Not allowed to add app user as a receiver");
@@ -53,15 +51,32 @@ public class ChatService {
             receiversUsers.add(receiverUser);
         });
 
-        Message messageEntity = new Message(
-                clientId,
-                message,
-                appUser,
-                receiversUsers,
-                LocalDateTime.now()
-        );
+        request.readBy.forEach(receiver -> {
+            AppUser readByUser = appUserService.loadUserByUsername(receiver);
+            if(readByUser.getUsername() == appUser.getUsername()){
+                throw new IllegalStateException("Not allowed to add app user as a receiver");
+            }
+            readByUsers.add(readByUser);
+        });
 
-        messageRepository.save(messageEntity);
+        if(request.id == -1){
+            messageEntity = new Message(
+                    request.clientId,
+                    request.message,
+                    appUser,
+                    receiversUsers,
+                    readByUsers
+            );
+
+            messageRepository.save(messageEntity);
+        }else {
+            messageEntity = messageRepository.findById(request.id)
+                    .orElseThrow(() -> new NotFoundException("Message not found"));
+
+            messageEntity.setReadBy(readByUsers);
+
+            messageRepository.save(messageEntity);
+        }
 
         MessageResponse messageResponse = messageRepository.findMessageResponseById(
                 messageEntity.getId()
@@ -71,27 +86,5 @@ public class ChatService {
         String json = ow.writeValueAsString(messageResponse);
 
         return json;
-    }
-
-    public List<MessageResponseItem> getAllMessages() {
-        List<Message> messages = messageRepository.findAll();
-
-        List<MessageResponseItem> messageResponseItems = messages.stream().map(item -> {
-
-            List<String> receivers = item.getReceivers().stream()
-                    .map(AppUser::getUsername)
-                    .collect(Collectors.toList());
-
-            return new MessageResponseItem(
-                    item.getId(),
-                    item.getClientId(),
-                    item.getMessage(),
-                    item.getCreatedBy().getUsername(),
-                    receivers,
-                    item.getCreated()
-            );
-        }).collect(Collectors.toList());
-
-        return messageResponseItems;
     }
 }

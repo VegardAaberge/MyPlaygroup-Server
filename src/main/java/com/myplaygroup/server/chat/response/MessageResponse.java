@@ -1,8 +1,8 @@
 package com.myplaygroup.server.chat.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface MessageResponse {
      Long getId();
@@ -17,4 +17,8 @@ public interface MessageResponse {
      String getCreatedBy();
 
      String getProfileName();
+
+     List<String> getReadBy();
+
+     List<String> getReceivers();
 }

@@ -16,37 +16,19 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Query(
             nativeQuery = true,
-            value = "SELECT DISTINCT " +
-                    "    message.id, " +
-                    "    message.client_id as clientId, " +
-                    "    message.created, " +
-                    "    message.message, " +
-                    "    app_user.username as createdBy, " +
-                    "    app_user.profile_name as profileName " +
-                    "FROM message " +
-                    "    JOIN message_receivers  " +
-                    "        ON message.id = message_receivers.message_id " +
-                    "    JOIN app_user " +
-                    "        ON app_user.id = message.app_user_id " +
-                    "WHERE " +
-                    "    message.app_user_id = ?1 " +
-                    "    OR message_receivers.receivers_id = ?1"
+            value = MessageQuery.QUERY_OWNER_AND_RECEIVER
     )
     List<MessageResponse> findByOwnerAndReceiver(Long userID);
 
     @Query(
             nativeQuery = true,
-            value = "SELECT " +
-                    "    message.id, " +
-                    "    message.client_id as clientId, " +
-                    "    message.created, " +
-                    "    message.message, " +
-                    "    app_user.username as createdBy, " +
-                    "    app_user.profile_name as profileName " +
-                    "FROM message " +
-                    "    JOIN app_user " +
-                    "        ON app_user.id = message.app_user_id " +
-                    "WHERE " +
-                    "    message.id = ?1 ")
+            value = MessageQuery.QUERY_ALL
+    )
+    List<MessageResponse> getAllMessageResponseItems();
+
+
+    @Query(
+            nativeQuery = true,
+            value = MessageQuery.QUERY_BY_ID)
     Optional<MessageResponse> findMessageResponseById(Long messageId);
 }

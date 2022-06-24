@@ -7,7 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -51,6 +53,11 @@ public class Message {
     private AppUser createdBy;
 
     @ManyToMany
+    @NotNull
+    @Column(name = "readBy", nullable = false)
+    private List<AppUser> readBy;
+
+    @ManyToMany
     @Size(min = 1, message = RECEIVERS_VALIDATION_MSG)
     @Column(name = "receivers", nullable = false)
     private List<AppUser> receivers;
@@ -58,11 +65,12 @@ public class Message {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
-    public Message(String clientId, String message, AppUser createdBy, List<AppUser> receivers, LocalDateTime created) {
+    public Message(String clientId, String message, AppUser createdBy, List<AppUser> receivers, List<AppUser> readBy) {
         this.clientId = clientId;
         this.message = message;
         this.createdBy = createdBy;
         this.receivers = receivers;
-        this.created = created;
+        this.readBy = readBy;
+        this.created = LocalDateTime.now();
     }
 }

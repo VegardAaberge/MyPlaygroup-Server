@@ -40,18 +40,19 @@ public class ChatSocketService {
         MessageRequest request = reader.readValue(message.getPayload(), MessageRequest.class);
 
         try {
-            String username = getUsernameFromSession(session);
+            String usernameFromSession = getUsernameFromSession(session);
+            boolean usernameIsValid = request.createdBy.equals(usernameFromSession) || request.readBy.contains(usernameFromSession);
+            if(!usernameIsValid){
+                throw new IllegalStateException();
+            }
 
             String messageJson = chatService.storeMessage(
-                    username,
-                    request.clientId,
-                    request.message,
-                    request.receivers
+                    request
             );
 
             List<Member> receivingMembers = members
                     .values().stream()
-                    .filter(m -> shouldReceiveMessage(m, request.receivers, username))
+                    .filter(m -> shouldReceiveMessage(m, request.receivers, request.createdBy))
                     .collect(Collectors.toList());
 
             receivingMembers.forEach(member -> {
