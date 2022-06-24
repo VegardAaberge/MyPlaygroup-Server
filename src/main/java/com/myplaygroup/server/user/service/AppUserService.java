@@ -1,6 +1,7 @@
 package com.myplaygroup.server.user.service;
 
 import com.myplaygroup.server.exception.NotFoundException;
+import com.myplaygroup.server.shared.utils.Constants;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class AppUserService implements UserDetailsService {
             if(!isAdminPresent){
                 AppUser admin = new AppUser(
                         "admin",
-                        bCryptPasswordEncoder.encode("a123456B"), // Need to be changed
+                        bCryptPasswordEncoder.encode(Constants.MY_PLAYGROUP), // Need to be changed
                         ADMIN
                 );
                 admin.setProfileName("Playgroup");
@@ -42,19 +43,12 @@ public class AppUserService implements UserDetailsService {
                 admin.setProfileCreated(true);
                 appUserRepository.save(admin);
 
-                AppUser vegard = new AppUser(
-                        "vegard",
-                        bCryptPasswordEncoder.encode("a123456B"),
+                AppUser guest = new AppUser(
+                        "guest",
+                        bCryptPasswordEncoder.encode(Constants.MY_PLAYGROUP),
                         USER
                 );
-                appUserRepository.save(vegard);
-
-                AppUser meng = new AppUser(
-                        "meng",
-                        bCryptPasswordEncoder.encode("a123456B"),
-                        USER
-                );
-                appUserRepository.save(meng);
+                appUserRepository.save(guest);
             }
         };
     }
