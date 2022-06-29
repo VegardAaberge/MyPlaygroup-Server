@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,29 +83,30 @@ public class ScheduleService {
         monthlyPlan.setPlanPrice(item.planPrice);
         monthlyPlan.setCancelled(item.cancelled);
 
+        if(item.changeDays){
+            StandardPlan standardPlan = standardPlanRepository.findByName(item.planName)
+                    .orElseThrow(() -> new NotFoundException("Plan not found"));
+
+            List<DailyClass> dailyClasses = getMonthlyPlanDays(item, standardPlan);
+
+            monthlyPlan.setPlan(standardPlan);
+            monthlyPlan.setDaysOfWeek(item.daysOfWeek);
+            monthlyPlan.setStartDate(item.startDate);
+            monthlyPlan.setEndDate(item.endDate);
+            monthlyPlan.setClasses(dailyClasses);
+        }
+
         monthlyPlanRepository.save(monthlyPlan);
     }
 
     private void addNewMonthlyPlan(MonthlyPlanRequest item){
+
         AppUser appUser = userService.loadUserByUsername(item.username);
 
         StandardPlan standardPlan = standardPlanRepository.findByName(item.planName)
                 .orElseThrow(() -> new NotFoundException("Plan not found"));
 
-
-        List<Integer> dayOfWeeks = item.daysOfWeek.stream()
-                .map(Enum::ordinal)
-                .collect(Collectors.toList());
-
-        List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
-                dayOfWeeks,
-                standardPlan.getType().ordinal(),
-                item.startDate,
-                item.endDate
-        );
-        if(dailyClasses.isEmpty()){
-            throw new NotFoundException("No classes found");
-        }
+        List<DailyClass> dailyClasses = getMonthlyPlanDays(item, standardPlan);
 
         MonthlyPlan monthlyPlan = new MonthlyPlan(
                 item.clientId,
@@ -120,6 +122,27 @@ public class ScheduleService {
         monthlyPlanRepository.save(monthlyPlan);
     }
 
+    private List<DailyClass> getMonthlyPlanDays(
+            MonthlyPlanRequest item,
+            StandardPlan standardPlan
+    ){
+        List<Integer> dayOfWeeks = item.daysOfWeek.stream()
+                .map(Enum::ordinal)
+                .collect(Collectors.toList());
+
+        List<DailyClass> dailyClasses = dailyClassRepository.findByDatesAndClassType(
+                dayOfWeeks,
+                standardPlan.getType().ordinal(),
+                item.startDate,
+                item.endDate
+        );
+        if(dailyClasses.isEmpty()){
+            throw new NotFoundException("No classes found");
+        }
+
+        return dailyClasses;
+    }
+
     private List<MonthlyPlanItem> getMonthlyPlanItems(List<MonthlyPlan> monthlyPlans){
         return monthlyPlans.stream().map(item -> new MonthlyPlanItem(
                 item.getId(),
@@ -131,7 +154,8 @@ public class ScheduleService {
                 item.getPlan().getName(),
                 item.getDaysOfWeek(),
                 item.getPlanPrice(),
-                item.getCancelled()
+                item.getCancelled(),
+                false
         )).collect(Collectors.toList());
     }
 }

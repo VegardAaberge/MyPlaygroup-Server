@@ -42,4 +42,7 @@ public class MonthlyPlanRequest {
 
     @NotNull
     public Boolean cancelled;
+
+    @NotNull
+    public Boolean changeDays;
 }

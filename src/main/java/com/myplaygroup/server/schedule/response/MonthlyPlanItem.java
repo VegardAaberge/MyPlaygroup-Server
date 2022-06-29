@@ -34,4 +34,6 @@ public class MonthlyPlanItem {
     public Long planPrice;
 
     public Boolean cancelled;
+
+    public Boolean changeDays;
 }
