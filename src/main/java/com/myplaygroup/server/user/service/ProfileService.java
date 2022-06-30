@@ -5,6 +5,7 @@ import com.myplaygroup.server.exception.ServerErrorException;
 import com.myplaygroup.server.shared.service.DocumentServiceImpl;
 import com.myplaygroup.server.shared.data.SimpleResponse;
 import com.myplaygroup.server.user.model.AppUser;
+import com.myplaygroup.server.user.model.EditProfileType;
 import com.myplaygroup.server.user.repository.AppUserRepository;
 import com.myplaygroup.server.user.request.EditProfileRequest;
 import com.myplaygroup.server.user.request.UpdateProfileRequest;
@@ -64,16 +65,16 @@ public class ProfileService {
             throw new IllegalStateException("User profile hasn't been created");
         }
 
-        if (request.password != null) {
+        if (request.editProfileType == EditProfileType.PASSWORD) {
             String encodedPassword = bCryptPasswordEncoder.encode(request.password);
             appUser.setPassword(encodedPassword);
         }
 
-        if (request.profileName != null) {
+        if (request.editProfileType == EditProfileType.PROFILE_NAME) {
             appUser.setProfileName(request.profileName);
         }
 
-        if (request.phoneNumber != null) {
+        if (request.editProfileType == EditProfileType.PHONE_NUMBER) {
             appUser.setPhoneNumber(request.phoneNumber);
         }
 
