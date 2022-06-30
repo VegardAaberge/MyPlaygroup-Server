@@ -3,21 +3,22 @@ package com.myplaygroup.server.schedule.service;
 import com.myplaygroup.server.exception.NotFoundException;
 import com.myplaygroup.server.schedule.model.DailyClass;
 import com.myplaygroup.server.schedule.model.MonthlyPlan;
+import com.myplaygroup.server.schedule.model.Payment;
 import com.myplaygroup.server.schedule.model.StandardPlan;
 import com.myplaygroup.server.schedule.repository.DailyClassRepository;
 import com.myplaygroup.server.schedule.repository.MonthlyPlanRepository;
+import com.myplaygroup.server.schedule.repository.PaymentsRepository;
 import com.myplaygroup.server.schedule.repository.StandardPlanRepository;
 import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
-import com.myplaygroup.server.schedule.response.MonthlyPlansResponse;
+import com.myplaygroup.server.schedule.response.UserScheduleResponse;
 import com.myplaygroup.server.schedule.response.MonthlyPlanItem;
+import com.myplaygroup.server.schedule.response.PaymentItem;
 import com.myplaygroup.server.user.model.AppUser;
 import com.myplaygroup.server.user.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,11 +29,14 @@ public class ScheduleService {
 
     private final DailyClassRepository dailyClassRepository;
     private final MonthlyPlanRepository monthlyPlanRepository;
+    private final PaymentsRepository paymentsRepository;
     private final StandardPlanRepository standardPlanRepository;
     private final AppUserService userService;
 
-    public MonthlyPlansResponse getUsersMonthlyPlans(String username) {
+    public UserScheduleResponse getUserSchedule(String username) {
         AppUser appUser = userService.loadUserByUsername(username);
+
+        List<Payment> payments = paymentsRepository.findByUsername(username);
         List<MonthlyPlan> monthlyPlans = monthlyPlanRepository.findByUsername(username);
 
         List<DailyClass> dailyClasses = new ArrayList<>();
@@ -44,10 +48,12 @@ public class ScheduleService {
             });
         });
 
+        List<PaymentItem> paymentItems = getPaymentItems(payments);
         List<MonthlyPlanItem> monthlyPlanItem = getMonthlyPlanItems(monthlyPlans);
 
-        return new MonthlyPlansResponse(
+        return new UserScheduleResponse(
                 appUser.getUsername(),
+                paymentItems,
                 monthlyPlanItem,
                 dailyClasses
         );
@@ -156,6 +162,17 @@ public class ScheduleService {
                 item.getPlanPrice(),
                 item.getCancelled(),
                 false
+        )).collect(Collectors.toList());
+    }
+
+    private List<PaymentItem> getPaymentItems(List<Payment> payments){
+        return payments.stream().map(item -> new PaymentItem(
+                item.getId(),
+                item.getClientId(),
+                item.getAppUser().getUsername(),
+                item.getDate(),
+                item.getAmount(),
+                item.getCancelled()
         )).collect(Collectors.toList());
     }
 }

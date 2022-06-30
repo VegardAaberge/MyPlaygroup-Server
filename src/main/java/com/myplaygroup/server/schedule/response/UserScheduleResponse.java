@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
-public class MonthlyPlansResponse {
+public class UserScheduleResponse {
 
     public String username;
+
+    public List<PaymentItem> payments;
 
     public List<MonthlyPlanItem> monthlyPlans;
 

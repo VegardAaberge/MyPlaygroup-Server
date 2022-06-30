@@ -1,6 +1,6 @@
 package com.myplaygroup.server.schedule.controller;
 
-import com.myplaygroup.server.schedule.response.MonthlyPlansResponse;
+import com.myplaygroup.server.schedule.response.UserScheduleResponse;
 import com.myplaygroup.server.schedule.service.ScheduleService;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
@@ -19,10 +19,10 @@ public class ScheduleController {
     ScheduleService scheduleService;
 
     @GetMapping
-    public MonthlyPlansResponse getUsersMonthlyPlans(HttpServletRequest servletRequest){
+    public UserScheduleResponse getUserSchedule(HttpServletRequest servletRequest){
         log.info(servletRequest.getServletPath());
         String username = authorizationService.getUserInfoFromRequest(servletRequest).getUsername();
 
-        return scheduleService.getUsersMonthlyPlans(username);
+        return scheduleService.getUserSchedule(username);
     }
 }
