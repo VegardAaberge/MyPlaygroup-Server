@@ -49,6 +49,7 @@ public class PaymentService {
 
         payment.setAmount(item.amount);
         payment.setDate(item.date);
+        payment.setCancelled(item.cancelled);
 
         paymentsRepository.save(payment);
     }

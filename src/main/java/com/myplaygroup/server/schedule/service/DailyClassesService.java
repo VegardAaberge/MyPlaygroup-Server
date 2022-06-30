@@ -28,6 +28,7 @@ public class DailyClassesService {
         return dailyClasses.stream().map(item -> {
 
             List<String> kids = monthlyPlans.stream()
+                    .filter(x -> !x.getCancelled())
                     .filter(x -> x.getClasses().stream()
                             .anyMatch(dailyClass -> dailyClass.getId().equals(item.getId())))
                     .map(MonthlyPlan::getKidName)

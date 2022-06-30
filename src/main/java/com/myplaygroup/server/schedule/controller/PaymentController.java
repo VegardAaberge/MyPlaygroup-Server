@@ -1,13 +1,8 @@
 package com.myplaygroup.server.schedule.controller;
 
-import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
 import com.myplaygroup.server.schedule.requests.PaymentRequest;
-import com.myplaygroup.server.schedule.response.MonthlyPlanItem;
 import com.myplaygroup.server.schedule.response.PaymentItem;
-import com.myplaygroup.server.schedule.response.StandardPlanItem;
 import com.myplaygroup.server.schedule.service.PaymentService;
-import com.myplaygroup.server.schedule.service.ScheduleService;
-import com.myplaygroup.server.schedule.service.StandardPlanService;
 import com.myplaygroup.server.security.AuthorizationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +28,7 @@ public class PaymentController {
     }
 
     @PostMapping
-    public List<PaymentItem> addMPayments(
+    public List<PaymentItem> addPayments(
             @RequestBody @Valid List<PaymentRequest> paymentRequests,
             HttpServletRequest servletRequest
     ){
