@@ -31,6 +31,10 @@ public class MonthlyPlanItem {
 
     public List<DayOfWeek> daysOfWeek;
 
+    public Integer cancelledClasses;
+
+    public Integer availableClasses;
+
     public Long planPrice;
 
     public Boolean cancelled;

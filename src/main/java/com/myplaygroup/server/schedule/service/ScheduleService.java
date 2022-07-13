@@ -150,6 +150,7 @@ public class ScheduleService {
     }
 
     private List<MonthlyPlanItem> getMonthlyPlanItems(List<MonthlyPlan> monthlyPlans){
+
         return monthlyPlans.stream().map(item -> new MonthlyPlanItem(
                 item.getId(),
                 item.getClientId(),
@@ -159,6 +160,8 @@ public class ScheduleService {
                 item.getEndDate(),
                 item.getPlan().getName(),
                 item.getDaysOfWeek(),
+                (int) item.getClasses().stream().filter(DailyClass::getCancelled).count(),
+                item.getClasses().size(),
                 item.getPlanPrice(),
                 item.getCancelled(),
                 false

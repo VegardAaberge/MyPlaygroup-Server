@@ -1,9 +1,8 @@
 package com.myplaygroup.server.schedule.controller;
 
-import com.myplaygroup.server.schedule.model.MonthlyPlan;
+import com.myplaygroup.server.schedule.model.StandardPlan;
 import com.myplaygroup.server.schedule.requests.MonthlyPlanRequest;
 import com.myplaygroup.server.schedule.response.MonthlyPlanItem;
-import com.myplaygroup.server.schedule.response.StandardPlanItem;
 import com.myplaygroup.server.schedule.service.ScheduleService;
 import com.myplaygroup.server.schedule.service.StandardPlanService;
 import com.myplaygroup.server.security.AuthorizationService;
@@ -32,7 +31,7 @@ public class PlansController {
     }
 
     @GetMapping(path = "/standard")
-    public List<StandardPlanItem> getStandardPlans(HttpServletRequest servletRequest){
+    public List<StandardPlan> getStandardPlans(HttpServletRequest servletRequest){
         log.info(servletRequest.getServletPath());
         return standardPlanService.getStandardPlans();
     }

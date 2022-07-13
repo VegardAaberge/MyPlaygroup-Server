@@ -3,7 +3,6 @@ package com.myplaygroup.server.schedule.service;
 import com.myplaygroup.server.schedule.model.DailyClassType;
 import com.myplaygroup.server.schedule.model.StandardPlan;
 import com.myplaygroup.server.schedule.repository.StandardPlanRepository;
-import com.myplaygroup.server.schedule.response.StandardPlanItem;
 import com.myplaygroup.server.shared.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -44,7 +43,7 @@ public class StandardPlanService {
         }
     }
 
-    public List<StandardPlanItem> getStandardPlans() {
+    public List<StandardPlan> getStandardPlans() {
         return standardPlanRepository.getAllStandardPlans();
     }
 }
