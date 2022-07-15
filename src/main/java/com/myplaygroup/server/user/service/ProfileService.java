@@ -114,7 +114,7 @@ public class ProfileService {
         try {
             List<Path> profileImages = Files.list(profileDir).filter(file ->
                     file.getFileName().toString().endsWith(username)
-            ).collect(Collectors.toList());
+            ).sorted().collect(Collectors.toList());
 
             if(profileImages.size() == 0){
                 throw new NotFoundException("No profile image");
